@@ -6,6 +6,10 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeClassMapperSpec", "TypeClassMapperSpec\TypeClassMapperSpec.csproj", "{8B258072-7AFA-43EC-8821-D441B6B36A02}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "testdrive", "testdrive\testdrive.csproj", "{78957F01-94C0-4F78-84ED-D2D1115B1341}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D05D3530-E10C-4732-8887-A54D923D472A} = {D05D3530-E10C-4732-8887-A54D923D472A}
+		{62257CE9-2541-4C85-AC6E-277D6538750C} = {62257CE9-2541-4C85-AC6E-277D6538750C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeClassMapper", "TypeClassMapper\TypeClassMapper.csproj", "{6D93F0EB-25E5-43FF-BE62-A6F14C74FF02}"
 EndProject

@@ -24,7 +24,6 @@ class exe
 {
   static void ioc1()
   {
-    //Console.WriteLine(typeof(Module.Source).FullName);return;
     var typemap = new TypeClassMapper(new Dictionary<string, string>
     {
         { "lib1.ISource", "lib2.Source, lib2" },
