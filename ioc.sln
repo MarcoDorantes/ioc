@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Executable specification", "1 - Executable specification", "{AEA0B619-D4A0-4C7D-A9A6-8D0DD471FE4B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Core implementation", "2 - Core implementation", "{2C9B6E7D-FD56-48D9-A1E4-B27C4F3D5A0A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeClassMapperSpec", "TypeClassMapperSpec\TypeClassMapperSpec.csproj", "{8B258072-7AFA-43EC-8821-D441B6B36A02}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeClassMapper", "TypeClassMapper\TypeClassMapper.csproj", "{6D93F0EB-25E5-43FF-BE62-A6F14C74FF02}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8B258072-7AFA-43EC-8821-D441B6B36A02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B258072-7AFA-43EC-8821-D441B6B36A02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B258072-7AFA-43EC-8821-D441B6B36A02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B258072-7AFA-43EC-8821-D441B6B36A02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D93F0EB-25E5-43FF-BE62-A6F14C74FF02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D93F0EB-25E5-43FF-BE62-A6F14C74FF02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D93F0EB-25E5-43FF-BE62-A6F14C74FF02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D93F0EB-25E5-43FF-BE62-A6F14C74FF02}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8B258072-7AFA-43EC-8821-D441B6B36A02} = {AEA0B619-D4A0-4C7D-A9A6-8D0DD471FE4B}
+		{6D93F0EB-25E5-43FF-BE62-A6F14C74FF02} = {2C9B6E7D-FD56-48D9-A1E4-B27C4F3D5A0A}
+	EndGlobalSection
+EndGlobal
