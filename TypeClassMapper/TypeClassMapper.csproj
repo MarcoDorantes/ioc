@@ -46,9 +46,10 @@
     <Compile Include="ConfigurationSection\ScopeCollection.cs" />
     <Compile Include="ConfigurationSection\ScopeCollectionElement.cs" />
     <Compile Include="ConfigurationSection\TypeClassMapperConfigurationSection.cs" />
-    <Compile Include="TypeClassMapper.cs" />
+    <Compile Include="DefaultClass\TypeClassMapper.cs" />
+    <Compile Include="ExtensibilityInterface\ITypeClassMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TypeClassMapperException.cs" />
+    <Compile Include="Exceptions\TypeClassMapperException.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

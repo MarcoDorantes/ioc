@@ -5,9 +5,9 @@ namespace utility
 {
   /// <summary>
   /// Given the runtime dependency management tradition of early design patterns, e.g., Microsoft COM IUnknown::QueryInterface method, this class follows
-  /// such design tradition and relies on basic equivalent mechanisms from .NET Framework.
+  /// such design tradition and relies on basic equivalent mechanisms from .NET Framework (System.IServiceProvider interface).
   /// </summary>
-  public class TypeClassMapper : IServiceProvider
+  public class TypeClassMapper : ITypeClassMapper
   {
     /// <summary>
     /// Keep basic Type - Class mapping.
