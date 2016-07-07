@@ -25,7 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Basic use case", "Basic use
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Executable specification", "Executable specification", "{EFACE203-E261-4F27-942D-4309D91A5B6D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Default implementation", "3 - Default implementation", "{8F7BA8C8-C1A6-4AF6-A66C-E8752A1AA26C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Default implementation", "2 - Default implementation", "{8F7BA8C8-C1A6-4AF6-A66C-E8752A1AA26C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
