@@ -50,8 +50,14 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="BasicModuleUse.cs" />
+    <Compile Include="ExplicitMappingCases.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TypeClassMapper\TypeClassMapper.csproj">
+      <Project>{6d93f0eb-25e5-43ff-be62-a6f14c74ff02}</Project>
+      <Name>TypeClassMapper</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
