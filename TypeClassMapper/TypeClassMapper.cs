@@ -53,6 +53,11 @@ namespace utility
     }
 
     /// <summary>
+    /// Existing type-class mappings.
+    /// </summary>
+    public IEnumerable<KeyValuePair<string, string>> Mappings { get { return typemap; } }
+
+    /// <summary>
     /// Given a Type, it returns its configured/mapped Class.
     /// </summary>
     /// <param name="requiredType">Required Type</param>

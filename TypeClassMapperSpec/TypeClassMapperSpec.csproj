@@ -56,6 +56,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ImplicitMappingCases.cs" />
     <Compile Include="ImplicitMappingCasesAtNoDefaultSection.cs" />
+    <Compile Include="QueryMappingCases.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TypeClassMapper\TypeClassMapper.csproj">
