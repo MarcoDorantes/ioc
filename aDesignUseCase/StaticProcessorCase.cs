@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 #region Types & Classes used by the test cases in this TestClass
 
-namespace app1.Contract
+namespace App2.Contract
 {
   public class RiskRequest
   {
@@ -12,11 +12,11 @@ namespace app1.Contract
   }
   public class RiskResponse
   {
-    public decimal RiskAmount;
+    public decimal RiskAmount { get; set; }
   }
 }
 
-namespace app1.BusinessLayer
+namespace App2.BusinessLayer
 {
   public interface ITransit
   {
@@ -45,7 +45,7 @@ namespace app1.BusinessLayer
     }
   }
 }
-namespace app1.DataAccess
+namespace App2.DataAccess
 {
   public class Transit : BusinessLayer.ITransit
   {
@@ -71,7 +71,7 @@ namespace app1.DataAccess
   {
     private decimal threshold;
     public Threshold() : this(threshold: 101) { }
-    public Threshold(decimal threshold = 101)
+    public Threshold(decimal threshold)
     {
       this.threshold = threshold;
     }
@@ -84,7 +84,7 @@ namespace app1.DataAccess
 namespace aDesignUseCase
 {
   [TestClass]
-  public class ProcessorCase
+  public class StaticProcessorCase
   {
     [TestMethod]
     public void ProcessorStaticOperation1()
@@ -92,14 +92,14 @@ namespace aDesignUseCase
       //Arrange
       var typemap = new utility.TypeClassMapper(new Dictionary<string, object>
       {
-        { "app1.BusinessLayer.ITransit", "app1.DataAccess.Transit, aDesignUseCase" },
-        { "app1.BusinessLayer.IProfile", "app1.DataAccess.Profile, aDesignUseCase" },
-        { "app1.BusinessLayer.IThreshold", "app1.DataAccess.Threshold, aDesignUseCase" }
+        { "App2.BusinessLayer.ITransit", "App2.DataAccess.Transit, aDesignUseCase" },
+        { "App2.BusinessLayer.IProfile", "App2.DataAccess.Profile, aDesignUseCase" },
+        { "App2.BusinessLayer.IThreshold", "App2.DataAccess.Threshold, aDesignUseCase" }
       });
-      var request = new app1.Contract.RiskRequest() { Threshold = 105 };
+      var request = new App2.Contract.RiskRequest() { Threshold = 105 };
 
       //Act
-      app1.Contract.RiskResponse response = app1.BusinessLayer.ProcessorA.GetRisk(request, typemap);
+      App2.Contract.RiskResponse response = App2.BusinessLayer.ProcessorA.GetRisk(request, typemap);
 
       //Assert
       Assert.AreEqual<decimal>(3, response.RiskAmount);
@@ -111,14 +111,14 @@ namespace aDesignUseCase
       //Arrange
       var typemap = new utility.TypeClassMapper(new Dictionary<string, object>
       {
-        { "app1.BusinessLayer.ITransit", new app1.DataAccess.Transit(100) },
-        { "app1.BusinessLayer.IProfile", "app1.DataAccess.Profile, aDesignUseCase" },
-        { "app1.BusinessLayer.IThreshold", new app1.DataAccess.Threshold(500) }
+        { "App2.BusinessLayer.ITransit", new App2.DataAccess.Transit(100) },
+        { "App2.BusinessLayer.IProfile", "App2.DataAccess.Profile, aDesignUseCase" },
+        { "App2.BusinessLayer.IThreshold", new App2.DataAccess.Threshold(500) }
       });
-      var request = new app1.Contract.RiskRequest() { Threshold = 501 };
+      var request = new App2.Contract.RiskRequest() { Threshold = 501 };
 
       //Act
-      app1.Contract.RiskResponse response = app1.BusinessLayer.ProcessorA.GetRisk(request, typemap);
+      App2.Contract.RiskResponse response = App2.BusinessLayer.ProcessorA.GetRisk(request, typemap);
 
       //Assert
       Assert.AreEqual<decimal>(102, response.RiskAmount);

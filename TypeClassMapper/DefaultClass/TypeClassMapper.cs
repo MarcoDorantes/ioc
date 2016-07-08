@@ -52,17 +52,6 @@ namespace utility
       this.typemap = typemap;
     }
 
-    /*public TypeClassMapper(IDictionary<string, object> typemap)
-    {
-      if (typemap == null)
-      {
-        throw new TypeClassMapperException($"Parameter cannot be null: {nameof(typemap)}", new ArgumentNullException(nameof(typemap)));
-      }
-      this.scope = "<explicit>";
-      this.section = "<instance>";
-      this.typemap = typemap;
-    }*/
-
     /// <summary>
     /// Existing type-class mappings.
     /// </summary>
@@ -94,6 +83,12 @@ namespace utility
       }
     }
 
+    /// <summary>
+    /// A new instance is created from the mapped class.
+    /// </summary>
+    /// <param name="classname">Name of the mapped class</param>
+    /// <param name="requiredType">Required type</param>
+    /// <returns></returns>
     private object CreateInstanceOfMappedClass(string classname, Type requiredType)
     {
       if (string.IsNullOrWhiteSpace(classname))
