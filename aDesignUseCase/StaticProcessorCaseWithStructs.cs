@@ -55,7 +55,7 @@ namespace App3.DataAccess
       this.transit = transit;
     }
     public decimal GetTransit() => transit ?? GetLoadedTransit();
-    private decimal GetLoadedTransit() { return 1; }
+    private decimal GetLoadedTransit() => 1; //Get value from whichever store.
   }
   public struct Profile : BusinessLayer.IProfile
   {
@@ -65,7 +65,7 @@ namespace App3.DataAccess
       this.profile = profile;
     }
     public decimal GetProfile() => profile ?? GetLoadedProfile();
-    private decimal GetLoadedProfile() { return 2; }
+    private decimal GetLoadedProfile() => 2; //Get value from whichever store.
   }
   public struct Threshold : BusinessLayer.IThreshold
   {
@@ -74,8 +74,8 @@ namespace App3.DataAccess
     {
       this.threshold = threshold;
     }
-    public decimal GetLimit() => threshold ?? GetLoadedProfile();
-    private decimal GetLoadedProfile() { return 101; }
+    public decimal GetLimit() => threshold ?? GetLoadedThreshold();
+    private decimal GetLoadedThreshold() => 101; //Get value from whichever store.
   }
 }
 
