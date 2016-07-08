@@ -12,7 +12,7 @@ namespace utility
     /// <summary>
     /// Keep basic Type - Class mapping.
     /// </summary>
-    private IDictionary<string, string> typemap;
+    private IDictionary<string, object> typemap;
 
     /// <summary>
     /// Name of the configured Scope.
@@ -41,7 +41,7 @@ namespace utility
     /// For explicit type-class mappings.
     /// </summary>
     /// <param name="typemap">Type-Class map</param>
-    public TypeClassMapper(IDictionary<string, string> typemap)
+    public TypeClassMapper(IDictionary<string, object> typemap)
     {
       if (typemap == null)
       {
@@ -52,10 +52,21 @@ namespace utility
       this.typemap = typemap;
     }
 
+    /*public TypeClassMapper(IDictionary<string, object> typemap)
+    {
+      if (typemap == null)
+      {
+        throw new TypeClassMapperException($"Parameter cannot be null: {nameof(typemap)}", new ArgumentNullException(nameof(typemap)));
+      }
+      this.scope = "<explicit>";
+      this.section = "<instance>";
+      this.typemap = typemap;
+    }*/
+
     /// <summary>
     /// Existing type-class mappings.
     /// </summary>
-    public IEnumerable<KeyValuePair<string, string>> Mappings { get { return typemap; } }
+    public IEnumerable<KeyValuePair<string, object>> Mappings { get { return typemap; } }
 
     /// <summary>
     /// Given a Type, it returns its configured/mapped Class.
@@ -72,7 +83,23 @@ namespace utility
       {
         throw new TypeClassMapperException($"Type not found: [{requiredType.FullName}] at configured scope [{scope ?? "<default>"}] and section [{section ?? "<default>"}]");
       }
-      string classname = typemap[requiredType.FullName];
+      object mapped_value = typemap[requiredType.FullName];
+      if (mapped_value is string)
+      {
+        return CreateInstanceOfMappedClass(mapped_value as string, requiredType);
+      }
+      else
+      {
+        return mapped_value;
+      }
+    }
+
+    private object CreateInstanceOfMappedClass(string classname, Type requiredType)
+    {
+      if (string.IsNullOrWhiteSpace(classname))
+      {
+        throw new TypeClassMapperException($"Mapped class for type [{requiredType.FullName}] cannot be empty: [{classname}] at configured scope [{scope ?? "<default>"}] and section [{section ?? "<default>"}]");
+      }
       Type mappedClass = GetClass(classname);
       if (mappedClass == null)
       {
@@ -97,7 +124,7 @@ namespace utility
     /// </summary>
     /// <param name="classname">Fully qualified Type name</param>
     /// <returns>Required Type</returns>
-    internal Type GetClass(string classname)
+    private Type GetClass(string classname)
     {
       return System.Type.GetType(classname);
     }
@@ -121,7 +148,7 @@ namespace utility
 
     private void InitAndLoadMappings(TypeClassMapperConfigurationSection configSection, string scope = null)
     {
-      typemap = new Dictionary<string, string>();
+      typemap = new Dictionary<string, object>();
       if (string.IsNullOrWhiteSpace(scope))
       {
         foreach (MappingCollectionElement mapping in configSection.Mappings)

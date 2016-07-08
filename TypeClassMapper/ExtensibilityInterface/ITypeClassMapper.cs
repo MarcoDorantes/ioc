@@ -11,6 +11,6 @@ namespace utility
     /// <summary>
     /// Existing type-class mappings.
     /// </summary>
-    IEnumerable<KeyValuePair<string, string>> Mappings { get; }
+    IEnumerable<KeyValuePair<string, object>> Mappings { get; }
   }
 }

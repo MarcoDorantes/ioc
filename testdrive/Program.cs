@@ -24,7 +24,7 @@ class exe
 {
   static void ioc1()
   {
-    var typemap = new TypeClassMapper(new Dictionary<string, string>
+    var typemap = new TypeClassMapper(new Dictionary<string, object>
     {
         { "lib1.ISource", "lib2.Source, lib2" },
         { "lib1.ITarget", "lib2.Target, lib2" }
