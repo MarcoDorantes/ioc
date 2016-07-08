@@ -84,7 +84,7 @@ namespace App3.DataAccess
 namespace aDesignUseCase
 {
   /// <summary>
-  /// Lean structs could be a more efficient design choice.
+  /// Lean structs *might* be a more efficient design choice, but boxing would prevent such supposed efficiency.
   /// </summary>
   [TestClass]
   public class StaticProcessorCaseWithStructs
