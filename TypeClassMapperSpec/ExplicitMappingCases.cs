@@ -2,8 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 
-#region Types & Classes used by the test cases of the following TestClasses: ExplicitMappingCases, ImplicitMappingCases, ImplicitMappingCasesAtNoDefaultSection, QueryMappingCases
-
+#region Types & Classes used by the test cases of this TestClass.
 namespace app1
 {
   public interface ISource
@@ -39,7 +38,6 @@ namespace module3
     public abstract string Name { get; }
   }
 }
-
 #endregion
 
 namespace TypeClassMapperSpec
@@ -51,7 +49,7 @@ namespace TypeClassMapperSpec
     public void VeryBasicUseCase()
     {
       //Arrange
-      var typemap = new utility.TypeClassMapper(new Dictionary<string, object> { { "app1.ISource", "module1.Source, TypeClassMapperSpec" } });
+      var typemap = new utility.TypeClassMapper(new Dictionary<string, string> { { "app1.ISource", "module1.Source, TypeClassMapperSpec" } });
 
       //Act
       var instance = (app1.ISource)typemap.GetService(typeof(app1.ISource));
@@ -64,7 +62,7 @@ namespace TypeClassMapperSpec
     public void BadMappings()
     {
       //Arrange
-      IDictionary<string, object> mappings = null;
+      IDictionary<string, string> mappings = null;
 
       //Act
       Exception exception = null;
@@ -88,7 +86,7 @@ namespace TypeClassMapperSpec
     public void BadRequiredType()
     {
       //Arrange
-      var typemap = new utility.TypeClassMapper(new Dictionary<string, object> { { "app1.ISource", "bad.Source, TypeClassMapperSpec" } });
+      var typemap = new utility.TypeClassMapper(new Dictionary<string, string> { { "app1.ISource", "bad.Source, TypeClassMapperSpec" } });
 
       //Act
       Exception exception = null;
@@ -112,7 +110,7 @@ namespace TypeClassMapperSpec
     public void BadTypeName()
     {
       //Arrange
-      var typemap = new utility.TypeClassMapper(new Dictionary<string, object> { { "bad.ISource", "module1.Source, TypeClassMapperSpec" } });
+      var typemap = new utility.TypeClassMapper(new Dictionary<string, string> { { "bad.ISource", "module1.Source, TypeClassMapperSpec" } });
 
       //Act
       Exception exception = null;
@@ -136,7 +134,7 @@ namespace TypeClassMapperSpec
     public void BadClassName()
     {
       //Arrange
-      var typemap = new utility.TypeClassMapper(new Dictionary<string, object> { { "app1.ISource", "bad.Source, TypeClassMapperSpec" } });
+      var typemap = new utility.TypeClassMapper(new Dictionary<string, string> { { "app1.ISource", "bad.Source, TypeClassMapperSpec" } });
 
       //Act
       Exception exception = null;
@@ -157,47 +155,10 @@ namespace TypeClassMapperSpec
     }
 
     [TestMethod]
-    public void BadEmptyClassName()
-    {
-      //Arrange
-      var typemap = new utility.TypeClassMapper(new Dictionary<string, object> { { "app1.ISource", "" } });
-
-      //Act
-      Exception exception = null;
-      try
-      {
-        var instance = (app1.ISource)typemap.GetService(typeof(app1.ISource));
-      }
-      catch (Exception ex)
-      {
-        exception = ex;
-      }
-
-      //Assert
-      Assert.IsNotNull(exception);
-      Assert.AreEqual<Type>(typeof(utility.TypeClassMapperException), exception.GetType());
-      Assert.AreEqual<string>("Mapped class for type [app1.ISource] cannot be empty: [] at configured scope [<explicit>] and section [<explicit>]", exception.Message);
-      Assert.IsNull(exception.InnerException);
-    }
-
-    [TestMethod]
-    public void NullMappedInstance()
-    {
-      //Arrange
-      var typemap = new utility.TypeClassMapper(new Dictionary<string, object> { { "app1.ISource", null } });
-
-      //Act
-      var instance = (app1.ISource)typemap.GetService(typeof(app1.ISource));
-
-      //Assert
-      Assert.IsNull(instance);
-    }
-
-    [TestMethod]
     public void BadTypeInit()
     {
       //Arrange
-      var typemap = new utility.TypeClassMapper(new Dictionary<string, object> { { "app1.ISource", "module2.Source, TypeClassMapperSpec" } });
+      var typemap = new utility.TypeClassMapper(new Dictionary<string, string> { { "app1.ISource", "module2.Source, TypeClassMapperSpec" } });
 
       //Act
       Exception exception = null;
@@ -223,7 +184,7 @@ namespace TypeClassMapperSpec
     public void BadTypeLoad()
     {
       //Arrange
-      var typemap = new utility.TypeClassMapper(new Dictionary<string, object> { { "app1.ISource", "module3.Source, TypeClassMapperSpec" } });
+      var typemap = new utility.TypeClassMapper(new Dictionary<string, string> { { "app1.ISource", "module3.Source, TypeClassMapperSpec" } });
 
       //Act
       Exception exception = null;

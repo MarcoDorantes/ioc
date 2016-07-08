@@ -142,29 +142,5 @@ namespace TypeClassMapperSpec
       Assert.IsInstanceOfType(exception.InnerException, typeof(System.MissingMethodException));
       Assert.AreEqual<string>("Cannot create an abstract class.", exception.InnerException.Message);
     }
-
-    [TestMethod]
-    public void BadEmptyClassName()
-    {
-      //Arrange
-      var typemap = new utility.TypeClassMapper(scope: "F");
-
-      //Act
-      Exception exception = null;
-      try
-      {
-        var instance = (app1.ISource)typemap.GetService(typeof(app1.ISource));
-      }
-      catch (Exception ex)
-      {
-        exception = ex;
-      }
-
-      //Assert
-      Assert.IsNotNull(exception);
-      Assert.AreEqual<Type>(typeof(utility.TypeClassMapperException), exception.GetType());
-      Assert.AreEqual<string>("Mapped class for type [app1.ISource] cannot be empty: [] at configured scope [F] and section [<default>]", exception.Message);
-      Assert.IsNull(exception.InnerException);
-    }
   }
 }
