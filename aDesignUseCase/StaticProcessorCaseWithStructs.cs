@@ -83,6 +83,9 @@ namespace App3.DataAccess
 
 namespace aDesignUseCase
 {
+  /// <summary>
+  /// Lean structs could be a more efficient design choice.
+  /// </summary>
   [TestClass]
   public class StaticProcessorCaseWithStructs
   {
