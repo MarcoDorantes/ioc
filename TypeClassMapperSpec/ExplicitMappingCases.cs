@@ -51,7 +51,7 @@ namespace TypeClassMapperSpec
     public void VeryBasicUseCase()
     {
       //Arrange
-      var typemap = new utility.TypeClassMapper(new Dictionary<string, object> { { "app1.ISource", "module1.Source, TypeClassMapperSpec" } });
+      var typemap = new nutility.TypeClassMapper(new Dictionary<string, object> { { "app1.ISource", "module1.Source, TypeClassMapperSpec" } });
 
       //Act
       var instance = (app1.ISource)typemap.GetService(typeof(app1.ISource));
@@ -70,7 +70,7 @@ namespace TypeClassMapperSpec
       Exception exception = null;
       try
       {
-        var typemap = new utility.TypeClassMapper(typemap: mappings);
+        var typemap = new nutility.TypeClassMapper(typemap: mappings);
       }
       catch (Exception ex)
       {
@@ -79,7 +79,7 @@ namespace TypeClassMapperSpec
 
       //Assert
       Assert.IsNotNull(exception);
-      Assert.AreEqual<Type>(typeof(utility.TypeClassMapperException), exception.GetType());
+      Assert.AreEqual<Type>(typeof(nutility.TypeClassMapperException), exception.GetType());
       Assert.AreEqual<string>("Parameter cannot be null: typemap", exception.Message);
       Assert.IsInstanceOfType(exception.InnerException, typeof(ArgumentNullException));
     }
@@ -88,7 +88,7 @@ namespace TypeClassMapperSpec
     public void BadRequiredType()
     {
       //Arrange
-      var typemap = new utility.TypeClassMapper(new Dictionary<string, object> { { "app1.ISource", "bad.Source, TypeClassMapperSpec" } });
+      var typemap = new nutility.TypeClassMapper(new Dictionary<string, object> { { "app1.ISource", "bad.Source, TypeClassMapperSpec" } });
 
       //Act
       Exception exception = null;
@@ -103,7 +103,7 @@ namespace TypeClassMapperSpec
 
       //Assert
       Assert.IsNotNull(exception);
-      Assert.AreEqual<Type>(typeof(utility.TypeClassMapperException), exception.GetType());
+      Assert.AreEqual<Type>(typeof(nutility.TypeClassMapperException), exception.GetType());
       Assert.AreEqual<string>("Parameter cannot be null: requiredType", exception.Message);
       Assert.IsInstanceOfType(exception.InnerException, typeof(ArgumentNullException));
     }
@@ -112,7 +112,7 @@ namespace TypeClassMapperSpec
     public void BadTypeName()
     {
       //Arrange
-      var typemap = new utility.TypeClassMapper(new Dictionary<string, object> { { "bad.ISource", "module1.Source, TypeClassMapperSpec" } });
+      var typemap = new nutility.TypeClassMapper(new Dictionary<string, object> { { "bad.ISource", "module1.Source, TypeClassMapperSpec" } });
 
       //Act
       Exception exception = null;
@@ -127,7 +127,7 @@ namespace TypeClassMapperSpec
 
       //Assert
       Assert.IsNotNull(exception);
-      Assert.AreEqual<Type>(typeof(utility.TypeClassMapperException), exception.GetType());
+      Assert.AreEqual<Type>(typeof(nutility.TypeClassMapperException), exception.GetType());
       Assert.AreEqual<string>("Type not found: [app1.ISource] at configured scope [<explicit>] and section [<explicit>]", exception.Message);
       Assert.IsNull(exception.InnerException);
     }
@@ -136,7 +136,7 @@ namespace TypeClassMapperSpec
     public void BadClassName()
     {
       //Arrange
-      var typemap = new utility.TypeClassMapper(new Dictionary<string, object> { { "app1.ISource", "bad.Source, TypeClassMapperSpec" } });
+      var typemap = new nutility.TypeClassMapper(new Dictionary<string, object> { { "app1.ISource", "bad.Source, TypeClassMapperSpec" } });
 
       //Act
       Exception exception = null;
@@ -151,7 +151,7 @@ namespace TypeClassMapperSpec
 
       //Assert
       Assert.IsNotNull(exception);
-      Assert.AreEqual<Type>(typeof(utility.TypeClassMapperException), exception.GetType());
+      Assert.AreEqual<Type>(typeof(nutility.TypeClassMapperException), exception.GetType());
       Assert.AreEqual<string>("Mapped class for type [app1.ISource] not found: [bad.Source, TypeClassMapperSpec] at configured scope [<explicit>] and section [<explicit>]", exception.Message);
       Assert.IsNull(exception.InnerException);
     }
@@ -160,7 +160,7 @@ namespace TypeClassMapperSpec
     public void BadEmptyClassName()
     {
       //Arrange
-      var typemap = new utility.TypeClassMapper(new Dictionary<string, object> { { "app1.ISource", "" } });
+      var typemap = new nutility.TypeClassMapper(new Dictionary<string, object> { { "app1.ISource", "" } });
 
       //Act
       Exception exception = null;
@@ -175,7 +175,7 @@ namespace TypeClassMapperSpec
 
       //Assert
       Assert.IsNotNull(exception);
-      Assert.AreEqual<Type>(typeof(utility.TypeClassMapperException), exception.GetType());
+      Assert.AreEqual<Type>(typeof(nutility.TypeClassMapperException), exception.GetType());
       Assert.AreEqual<string>("Mapped class for type [app1.ISource] cannot be empty: [] at configured scope [<explicit>] and section [<explicit>]", exception.Message);
       Assert.IsNull(exception.InnerException);
     }
@@ -184,7 +184,7 @@ namespace TypeClassMapperSpec
     public void NullMappedInstance()
     {
       //Arrange
-      var typemap = new utility.TypeClassMapper(new Dictionary<string, object> { { "app1.ISource", null } });
+      var typemap = new nutility.TypeClassMapper(new Dictionary<string, object> { { "app1.ISource", null } });
 
       //Act
       var instance = (app1.ISource)typemap.GetService(typeof(app1.ISource));
@@ -197,7 +197,7 @@ namespace TypeClassMapperSpec
     public void BadTypeInit()
     {
       //Arrange
-      var typemap = new utility.TypeClassMapper(new Dictionary<string, object> { { "app1.ISource", "module2.Source, TypeClassMapperSpec" } });
+      var typemap = new nutility.TypeClassMapper(new Dictionary<string, object> { { "app1.ISource", "module2.Source, TypeClassMapperSpec" } });
 
       //Act
       Exception exception = null;
@@ -212,7 +212,7 @@ namespace TypeClassMapperSpec
 
       //Assert
       Assert.IsNotNull(exception);
-      Assert.AreEqual<Type>(typeof(utility.TypeClassMapperException), exception.GetType());
+      Assert.AreEqual<Type>(typeof(nutility.TypeClassMapperException), exception.GetType());
       Assert.AreEqual<string>("Cannot create an instance of [module2.Source] at configured scope [<explicit>] and section [<explicit>]. Check InnerException.", exception.Message);
       Assert.IsNotNull(exception.InnerException);
       Assert.IsInstanceOfType(exception.InnerException, typeof(System.TypeInitializationException));
@@ -223,7 +223,7 @@ namespace TypeClassMapperSpec
     public void BadTypeLoad()
     {
       //Arrange
-      var typemap = new utility.TypeClassMapper(new Dictionary<string, object> { { "app1.ISource", "module3.Source, TypeClassMapperSpec" } });
+      var typemap = new nutility.TypeClassMapper(new Dictionary<string, object> { { "app1.ISource", "module3.Source, TypeClassMapperSpec" } });
 
       //Act
       Exception exception = null;
@@ -238,7 +238,7 @@ namespace TypeClassMapperSpec
 
       //Assert
       Assert.IsNotNull(exception);
-      Assert.AreEqual<Type>(typeof(utility.TypeClassMapperException), exception.GetType());
+      Assert.AreEqual<Type>(typeof(nutility.TypeClassMapperException), exception.GetType());
       Assert.AreEqual<string>("Cannot create an instance of [module3.Source] at configured scope [<explicit>] and section [<explicit>]. Check InnerException.", exception.Message);
       Assert.IsNotNull(exception.InnerException);
       Assert.IsInstanceOfType(exception.InnerException, typeof(System.MissingMethodException));

@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+ <package>
+ <!--
+https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
+
+(
+\Users\Marco\Documents\tools\nuget spec TypeClassMapper.dll
+TypeClassMapper.dll.nuspec
+)
+xcopy /v ..\..\..\nuget_release.xml TypeClassMapper.dll.nuspec
+
+SET apikey=31ab53ce-94a1-49e8-9a41-f837cfc04f31
+SET nugetServer=https://www.nuget.org/api/v2/package
+\Users\Marco\Documents\tools\nuget pack TypeClassMapper.dll.nuspec
+output: TypeClassMapper.1.0.0.nupkg
+https://www.nuget.org/packages/upload
+(
+\Users\Marco\Documents\tools\nuget push TypeClassMapper.1.0.0.nupkg 31ab53ce-94a1-49e8-9a41-f837cfc04f31 -s https://www.nuget.org/api/v2/package
+\Users\Marco\Documents\tools\nuget delete TypeClassMapper 1.0.0 31ab53ce-94a1-49e8-9a41-f837cfc04f31 -s https://www.nuget.org/api/v2/package
+)
+published at: https://www.nuget.org/packages/TypeClassMapper/1.0.0
+ -->
+   <metadata>
+     <id>TypeClassMapper</id>
+     <version>1.0.0</version>
+     <title>Basic .NET runtime dependency Type-Class mapping.</title>
+     <authors>Textum - Marco A. Dorantes</authors>
+     <owners>Textum</owners>
+     <licenseUrl>https://creativecommons.org/licenses/by/4.0/</licenseUrl>
+     <projectUrl>https://github.com/MarcoDorantes/ioc</projectUrl>
+     <requireLicenseAcceptance>false</requireLicenseAcceptance>
+     <summary>TypeClassMapper class - Given the runtime dependency management tradition of early design patterns, e.g., Microsoft COM IUnknown::QueryInterface method, this class follows such design tradition and relies on basic equivalent mechanisms from .NET Framework (System.IServiceProvider interface).</summary>
+     <description>TypeClassMapper class - Given the runtime dependency management tradition of early design patterns, e.g., Microsoft COM IUnknown::QueryInterface method, this class follows such design tradition and relies on basic equivalent mechanisms from .NET Framework (System.IServiceProvider interface).</description>
+     <releaseNotes></releaseNotes>
+     <copyright>Copyright © Textum 2016. Marco A. Dorantes</copyright>
+     <tags>IoC Container Dependency Inversion</tags>
+   </metadata>
+   <files>
+     <file src="TypeClassMapper.dll" target="lib\net46\TypeClassMapper.dll" />
+     <file src="TypeClassMapper.xml" target="lib\net46\TypeClassMapper.xml" />
+<!-- <file src="Switch - argument parser v3.6.pdf" target="Switch - argument parser v3.6.pdf" /> -->
+   </files>
+ </package>

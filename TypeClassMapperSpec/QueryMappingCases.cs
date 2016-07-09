@@ -12,7 +12,7 @@ namespace TypeClassMapperSpec
     public void QueryMappings()
     {
       //Arrange
-      utility.ITypeClassMapper typemap = new utility.TypeClassMapper(new Dictionary<string, object>
+      nutility.ITypeClassMapper typemap = new nutility.TypeClassMapper(new Dictionary<string, object>
       {
         { "app1.ISource", "module1.Source, TypeClassMapperSpec" },
         { "app1.ITarget", new object()},

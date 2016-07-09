@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace utility
+namespace nutility
 {
   /// <summary>
   /// By now, if query to existing mappings is required, then casting to this interface is in order.

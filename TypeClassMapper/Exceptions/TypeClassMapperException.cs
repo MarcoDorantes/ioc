@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace utility
+namespace nutility
 {
   [Serializable]
   public class TypeClassMapperException : Exception

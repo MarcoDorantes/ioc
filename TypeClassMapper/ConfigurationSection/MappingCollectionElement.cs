@@ -1,4 +1,4 @@
-﻿namespace utility
+﻿namespace nutility
 {
   public class MappingCollectionElement : System.Configuration.ConfigurationElement
   {

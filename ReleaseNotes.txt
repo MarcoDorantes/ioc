@@ -1,0 +1,2 @@
+﻿Jul 9, 2016: v1.0.0
+	Initially released at https://www.nuget.org/packages/TypeClassMapper/1.0.0

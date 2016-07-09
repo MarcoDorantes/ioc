@@ -1,4 +1,4 @@
-﻿namespace utility
+﻿namespace nutility
 {
   public class TypeClassMapperConfigurationSection : System.Configuration.ConfigurationSection
   {

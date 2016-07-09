@@ -1,4 +1,4 @@
-﻿namespace utility
+﻿namespace nutility
 {
   public class ScopeCollectionElement : System.Configuration.ConfigurationElement
   {
