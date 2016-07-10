@@ -15,6 +15,9 @@ namespace nutility
     /// </summary>
     private IDictionary<string, object> typemap;
 
+    /// <summary>
+    /// Type-Creator mapping.
+    /// </summary>
     IDictionary<string, Func<object>> typecreatormap;
     
     /// <summary>
@@ -58,9 +61,9 @@ namespace nutility
     }
 
     /// <summary>
-    /// 
+    /// For explicit type-class mappings.
     /// </summary>
-    /// <param name="typeclassmap"></param>
+    /// <param name="typeclassmap">Type-Class map</param>
     public TypeClassMapper(IDictionary<Type, object> typeclassmap)
     {
       if (typeclassmap == null)
@@ -74,9 +77,9 @@ namespace nutility
     }
 
     /// <summary>
-    /// 
+    /// For explicit type-class mappings.
     /// </summary>
-    /// <param name="typeclassmap"></param>
+    /// <param name="typeclassmap">Type-Class map</param>
     public TypeClassMapper(IDictionary<Type, Type> typeclassmap)
     {
       if (typeclassmap == null)
@@ -90,10 +93,10 @@ namespace nutility
     }
 
     /// <summary>
-    /// 
+    /// For explicit type-class mappings.
     /// </summary>
-    /// <param name="typeclassmap"></param>
-    /// <param name="typecreatormap"></param>
+    /// <param name="typeclassmap">Type-Class map</param>
+    /// <param name="typecreatormap">Type-Creator map</param>
     public TypeClassMapper(IDictionary<Type, Type> typeclassmap, IDictionary<Type, Func<object>> typecreatormap) : this(typeclassmap)
     {
       this.typecreatormap = typecreatormap.Aggregate(new Dictionary<string, Func<object>>(), (whole, next) => { whole.Add(next.Key.FullName, next.Value); return whole; });

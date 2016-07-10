@@ -18,11 +18,13 @@ https://www.nuget.org/packages/upload
 \Users\Marco\Documents\tools\nuget push TypeClassMapper.1.0.0.nupkg 31ab53ce-94a1-49e8-9a41-f837cfc04f31 -s https://www.nuget.org/api/v2/package
 \Users\Marco\Documents\tools\nuget delete TypeClassMapper 1.0.0 31ab53ce-94a1-49e8-9a41-f837cfc04f31 -s https://www.nuget.org/api/v2/package
 )
-published at: https://www.nuget.org/packages/TypeClassMapper/1.0.0
+published at:
+  https://www.nuget.org/packages/TypeClassMapper/1.0.0
+  https://www.nuget.org/packages/TypeClassMapper/1.1.0
  -->
    <metadata>
      <id>TypeClassMapper</id>
-     <version>1.0.0</version>
+     <version>1.1.0</version>
      <title>Basic .NET runtime dependency Type-Class mapping.</title>
      <authors>Textum - Marco A. Dorantes</authors>
      <owners>Textum</owners>
