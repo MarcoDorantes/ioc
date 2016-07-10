@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using System.Data;
 
 #region Types & Classes used by the test cases in this TestClass
 
@@ -25,10 +26,12 @@ namespace App2.BusinessLayer
   public interface IProfile
   {
     decimal GetProfile();
+    System.Data.IDataReader GetProfileTotalRisk(int threshold);
   }
   public interface IThreshold
   {
     decimal GetLimit();
+    System.Data.IDataReader GetThresholdTotalRisk(int threshold);
   }
 
   public static class ProcessorA
@@ -43,6 +46,35 @@ namespace App2.BusinessLayer
       response.RiskAmount = request.Threshold > threshold.GetLimit() ? transit.GetTransit() + profile.GetProfile() : 0;
       return response;
     }
+
+    public static Contract.RiskResponse GetTotalRisk(Contract.RiskRequest request, IServiceProvider typemap)
+    {
+      var profile = (IProfile)typemap.GetService(typeof(IProfile));
+      var threshold = (IThreshold)typemap.GetService(typeof(IThreshold));
+
+      decimal profile_amount = 0;
+      using (System.Data.IDataReader reader = profile.GetProfileTotalRisk(request.Threshold))
+      {
+        if(reader.Read())
+        {
+          profile_amount = Convert.ToDecimal(reader["Field1"]) + Convert.ToDecimal(reader["Field2"]);
+        }
+      }
+
+      decimal threshold_amount = 0;
+      using (System.Data.IDataReader reader = threshold.GetThresholdTotalRisk(request.Threshold))
+      {
+        if (reader.Read())
+        {
+          threshold_amount = Convert.ToDecimal(reader["Field3"]) + Convert.ToDecimal(reader["Field4"]);
+        }
+      }
+
+      var response = new Contract.RiskResponse();
+      response.RiskAmount = profile_amount + threshold_amount;
+      return response;
+    }
+
   }
 }
 namespace App2.DataAccess
@@ -57,7 +89,7 @@ namespace App2.DataAccess
     }
     public decimal GetTransit() => transit;
   }
-  public class Profile : BusinessLayer.IProfile
+  public class Profile : BusinessLayer.IProfile, System.Data.IDataReader
   {
     private decimal profile;
     public Profile() : this(profile: 2) { }
@@ -66,9 +98,199 @@ namespace App2.DataAccess
       this.profile = profile;
     }
     public decimal GetProfile() => profile;
+    public System.Data.IDataReader GetProfileTotalRisk(int threshold)
+    {
+      return this;
+    }
+
+    #region IDataReader
+    public object this[string name]
+    {
+      get
+      {
+        switch (name)
+        {
+          case "Field1": return 100;
+          case "Field2": return 200;
+          default:
+            throw new Exception($"this[string] called for unexpected field: [{name}]");
+        }
+      }
+    }
+
+    public object this[int i]
+    {
+      get
+      {
+        throw new NotImplementedException();
+      }
+    }
+
+    public int Depth
+    {
+      get
+      {
+        throw new NotImplementedException();
+      }
+    }
+
+    public int FieldCount
+    {
+      get
+      {
+        throw new NotImplementedException();
+      }
+    }
+
+    public bool IsClosed
+    {
+      get
+      {
+        throw new NotImplementedException();
+      }
+    }
+
+    public int RecordsAffected
+    {
+      get
+      {
+        throw new NotImplementedException();
+      }
+    }
+
+    public void Close() {}
+
+    public void Dispose(){}
+
+    public bool GetBoolean(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public byte GetByte(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public long GetBytes(int i, long fieldOffset, byte[] buffer, int bufferoffset, int length)
+    {
+      throw new NotImplementedException();
+    }
+
+    public char GetChar(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public long GetChars(int i, long fieldoffset, char[] buffer, int bufferoffset, int length)
+    {
+      throw new NotImplementedException();
+    }
+
+    public IDataReader GetData(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public string GetDataTypeName(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public DateTime GetDateTime(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public decimal GetDecimal(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public double GetDouble(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Type GetFieldType(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public float GetFloat(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Guid GetGuid(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public short GetInt16(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public int GetInt32(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public long GetInt64(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public string GetName(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public int GetOrdinal(string name)
+    {
+      throw new NotImplementedException();
+    }
+
+    public DataTable GetSchemaTable()
+    {
+      throw new NotImplementedException();
+    }
+
+    public string GetString(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public object GetValue(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public int GetValues(object[] values)
+    {
+      throw new NotImplementedException();
+    }
+
+    public bool IsDBNull(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public bool NextResult()
+    {
+      throw new NotImplementedException();
+    }
+
+    public bool Read()
+    {
+      return true;
+    }
+    #endregion
   }
   public class Threshold : BusinessLayer.IThreshold
   {
+    internal System.Data.IDataReader data;
     private decimal threshold;
     public Threshold() : this(threshold: 101) { }
     public Threshold(decimal threshold)
@@ -76,6 +298,10 @@ namespace App2.DataAccess
       this.threshold = threshold;
     }
     public decimal GetLimit() => threshold;
+    public System.Data.IDataReader GetThresholdTotalRisk(int threshold)
+    {
+      return data;
+    }
   }
   static class Factory1
   {
@@ -84,6 +310,190 @@ namespace App2.DataAccess
   class Factory2
   {
     public object CreateInstance() => new App2.DataAccess.Threshold(500);
+  }
+  class TestDataReader : IDataReader
+  {
+    IDictionary<string, object> data;
+    public TestDataReader(IDictionary<string, object> data)
+    {
+      this.data = data;
+    }
+    public object this[string name]
+    {
+      get
+      {
+        return data[name];
+      }
+    }
+
+    public object this[int i]
+    {
+      get
+      {
+        throw new NotImplementedException();
+      }
+    }
+
+    public int Depth
+    {
+      get
+      {
+        throw new NotImplementedException();
+      }
+    }
+
+    public int FieldCount
+    {
+      get
+      {
+        throw new NotImplementedException();
+      }
+    }
+
+    public bool IsClosed
+    {
+      get
+      {
+        throw new NotImplementedException();
+      }
+    }
+
+    public int RecordsAffected
+    {
+      get
+      {
+        throw new NotImplementedException();
+      }
+    }
+
+    public void Close(){}
+
+    public void Dispose(){}
+
+    public bool GetBoolean(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public byte GetByte(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public long GetBytes(int i, long fieldOffset, byte[] buffer, int bufferoffset, int length)
+    {
+      throw new NotImplementedException();
+    }
+
+    public char GetChar(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public long GetChars(int i, long fieldoffset, char[] buffer, int bufferoffset, int length)
+    {
+      throw new NotImplementedException();
+    }
+
+    public IDataReader GetData(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public string GetDataTypeName(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public DateTime GetDateTime(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public decimal GetDecimal(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public double GetDouble(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Type GetFieldType(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public float GetFloat(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Guid GetGuid(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public short GetInt16(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public int GetInt32(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public long GetInt64(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public string GetName(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public int GetOrdinal(string name)
+    {
+      throw new NotImplementedException();
+    }
+
+    public DataTable GetSchemaTable()
+    {
+      throw new NotImplementedException();
+    }
+
+    public string GetString(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public object GetValue(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public int GetValues(object[] values)
+    {
+      throw new NotImplementedException();
+    }
+
+    public bool IsDBNull(int i)
+    {
+      throw new NotImplementedException();
+    }
+
+    public bool NextResult()
+    {
+      throw new NotImplementedException();
+    }
+
+    public bool Read()
+    {
+      return true;
+    }
   }
 }
 
@@ -149,6 +559,24 @@ namespace aDesignUseCase
 
       //Assert
       Assert.AreEqual<decimal>(3, response.RiskAmount);
+    }
+
+    [TestMethod]
+    public void ProcessorStaticOperation2_B()
+    {
+      //Arrange
+      var typemap = new nutility.TypeClassMapper(new Dictionary<Type, object>
+      {
+        { typeof(App2.BusinessLayer.IProfile), "App2.DataAccess.Profile, aDesignUseCase" },
+        { typeof(App2.BusinessLayer.IThreshold), new App2.DataAccess.Threshold() { data=new App2.DataAccess.TestDataReader(new Dictionary<string, object> { { "Field3", 200M }, { "Field4", 300M } }) } }
+      });
+      var request = new App2.Contract.RiskRequest() { Threshold = 105 };
+
+      //Act
+      App2.Contract.RiskResponse response = App2.BusinessLayer.ProcessorA.GetTotalRisk(request, typemap);
+
+      //Assert
+      Assert.AreEqual<decimal>(800, response.RiskAmount);
     }
 
     [TestMethod]
