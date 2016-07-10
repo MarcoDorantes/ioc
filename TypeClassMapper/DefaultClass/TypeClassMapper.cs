@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace nutility
@@ -14,6 +15,8 @@ namespace nutility
     /// </summary>
     private IDictionary<string, object> typemap;
 
+    IDictionary<string, Func<object>> typecreatormap;
+    
     /// <summary>
     /// Name of the configured Scope.
     /// </summary>
@@ -35,21 +38,65 @@ namespace nutility
       this.section = section;
       TypeClassMapperConfigurationSection configSection = GetConfiguration(section);
       InitAndLoadMappings(configSection, scope);
+      this.typecreatormap = new Dictionary<string, Func<object>>();
     }
 
     /// <summary>
     /// For explicit type-class mappings.
     /// </summary>
-    /// <param name="typemap">Type-Class map</param>
-    public TypeClassMapper(IDictionary<string, object> typemap)
+    /// <param name="typeclassmap">Type-Class map</param>
+    public TypeClassMapper(IDictionary<string, object> typeclassmap)
     {
-      if (typemap == null)
+      if (typeclassmap == null)
       {
-        throw new TypeClassMapperException($"Parameter cannot be null: {nameof(typemap)}", new ArgumentNullException(nameof(typemap)));
+        throw new TypeClassMapperException($"Parameter cannot be null: {nameof(typeclassmap)}", new ArgumentNullException(nameof(typeclassmap)));
       }
       this.scope = "<explicit>";
       this.section = "<explicit>";
-      this.typemap = typemap;
+      this.typemap = typeclassmap;
+      this.typecreatormap = new Dictionary<string, Func<object>>();
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="typeclassmap"></param>
+    public TypeClassMapper(IDictionary<Type, object> typeclassmap)
+    {
+      if (typeclassmap == null)
+      {
+        throw new TypeClassMapperException($"Parameter cannot be null: {nameof(typeclassmap)}", new ArgumentNullException(nameof(typeclassmap)));
+      }
+      this.scope = "<explicit>";
+      this.section = "<explicit>";
+      this.typemap = typeclassmap.Aggregate(new Dictionary<string, object>(), (whole, next) => { whole.Add(next.Key.FullName, next.Value); return whole; });
+      this.typecreatormap = new Dictionary<string, Func<object>>();
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="typeclassmap"></param>
+    public TypeClassMapper(IDictionary<Type, Type> typeclassmap)
+    {
+      if (typeclassmap == null)
+      {
+        throw new TypeClassMapperException($"Parameter cannot be null: {nameof(typeclassmap)}", new ArgumentNullException(nameof(typeclassmap)));
+      }
+      this.scope = "<explicit>";
+      this.section = "<explicit>";
+      this.typemap = typeclassmap.Aggregate(new Dictionary<string, object>(), (whole, next) => { whole.Add(next.Key.FullName, next.Value.AssemblyQualifiedName); return whole; });
+      this.typecreatormap = new Dictionary<string, Func<object>>();
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="typeclassmap"></param>
+    /// <param name="typecreatormap"></param>
+    public TypeClassMapper(IDictionary<Type, Type> typeclassmap, IDictionary<Type, Func<object>> typecreatormap) : this(typeclassmap)
+    {
+      this.typecreatormap = typecreatormap.Aggregate(new Dictionary<string, Func<object>>(), (whole, next) => { whole.Add(next.Key.FullName, next.Value); return whole; });
     }
 
     /// <summary>
@@ -68,19 +115,27 @@ namespace nutility
       {
         throw new TypeClassMapperException($"Parameter cannot be null: {nameof(requiredType)}", new ArgumentNullException(nameof(requiredType)));
       }
-      if (!typemap.ContainsKey(requiredType.FullName))
+      object mapped_value = null;
+      if (typecreatormap.ContainsKey(requiredType.FullName))
       {
-        throw new TypeClassMapperException($"Type not found: [{requiredType.FullName}] at configured scope [{scope ?? "<default>"}] and section [{section ?? "<default>"}]");
-      }
-      object mapped_value = typemap[requiredType.FullName];
-      if (mapped_value is string)
-      {
-        return CreateInstanceOfMappedClass(mapped_value as string, requiredType);
+        if (typecreatormap[requiredType.FullName] != null)
+        {
+          mapped_value = typecreatormap[requiredType.FullName]();
+        }
       }
       else
       {
-        return mapped_value;
+        if (!typemap.ContainsKey(requiredType.FullName))
+        {
+          throw new TypeClassMapperException($"Type not found: [{requiredType.FullName}] at configured scope [{scope ?? "<default>"}] and section [{section ?? "<default>"}]");
+        }
+        mapped_value = typemap[requiredType.FullName];
+        if (mapped_value is string)
+        {
+          mapped_value = CreateInstanceOfMappedClass(mapped_value as string, requiredType);
+        }
       }
+      return mapped_value;
     }
 
     /// <summary>

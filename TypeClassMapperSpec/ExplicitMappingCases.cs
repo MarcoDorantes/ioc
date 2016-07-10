@@ -70,7 +70,7 @@ namespace TypeClassMapperSpec
       Exception exception = null;
       try
       {
-        var typemap = new nutility.TypeClassMapper(typemap: mappings);
+        var typemap = new nutility.TypeClassMapper(typeclassmap: mappings);
       }
       catch (Exception ex)
       {
@@ -80,7 +80,7 @@ namespace TypeClassMapperSpec
       //Assert
       Assert.IsNotNull(exception);
       Assert.AreEqual<Type>(typeof(nutility.TypeClassMapperException), exception.GetType());
-      Assert.AreEqual<string>("Parameter cannot be null: typemap", exception.Message);
+      Assert.AreEqual<string>("Parameter cannot be null: typeclassmap", exception.Message);
       Assert.IsInstanceOfType(exception.InnerException, typeof(ArgumentNullException));
     }
 

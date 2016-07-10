@@ -77,6 +77,14 @@ namespace App2.DataAccess
     }
     public decimal GetLimit() => threshold;
   }
+  static class Factory1
+  {
+    public static object CreateInstance() => new App2.DataAccess.Transit(100);
+  }
+  class Factory2
+  {
+    public object CreateInstance() => new App2.DataAccess.Threshold(500);
+  }
 }
 
 #endregion
@@ -87,7 +95,7 @@ namespace aDesignUseCase
   public class StaticProcessorCase
   {
     [TestMethod]
-    public void ProcessorStaticOperation1()
+    public void ProcessorStaticOperation1_A()
     {
       //Arrange
       var typemap = new nutility.TypeClassMapper(new Dictionary<string, object>
@@ -106,14 +114,74 @@ namespace aDesignUseCase
     }
 
     [TestMethod]
-    public void ProcessorStaticOperation1WithInstances()
+    public void ProcessorStaticOperation1_B()
+    {
+      //Arrange
+      var typemap = new nutility.TypeClassMapper(new Dictionary<Type, object>
+      {
+        { typeof(App2.BusinessLayer.ITransit), typeof(App2.DataAccess.Transit).AssemblyQualifiedName },
+        { typeof(App2.BusinessLayer.IProfile), "App2.DataAccess.Profile, aDesignUseCase" },
+        { typeof(App2.BusinessLayer.IThreshold), "App2.DataAccess.Threshold, aDesignUseCase" }
+      });
+      var request = new App2.Contract.RiskRequest() { Threshold = 105 };
+
+      //Act
+      App2.Contract.RiskResponse response = App2.BusinessLayer.ProcessorA.GetRisk(request, typemap);
+
+      //Assert
+      Assert.AreEqual<decimal>(3, response.RiskAmount);
+    }
+
+    [TestMethod]
+    public void ProcessorStaticOperation1_C()
+    {
+      //Arrange
+      var typemap = new nutility.TypeClassMapper(new Dictionary<Type, Type>
+      {
+        { typeof(App2.BusinessLayer.ITransit), typeof(App2.DataAccess.Transit) },
+        { typeof(App2.BusinessLayer.IProfile), typeof(App2.DataAccess.Profile) },
+        { typeof(App2.BusinessLayer.IThreshold), typeof(App2.DataAccess.Threshold) }
+      });
+      var request = new App2.Contract.RiskRequest() { Threshold = 105 };
+
+      //Act
+      App2.Contract.RiskResponse response = App2.BusinessLayer.ProcessorA.GetRisk(request, typemap);
+
+      //Assert
+      Assert.AreEqual<decimal>(3, response.RiskAmount);
+    }
+
+    [TestMethod]
+    public void ProcessorStaticOperation1WithInstances1()
     {
       //Arrange
       var typemap = new nutility.TypeClassMapper(new Dictionary<string, object>
       {
-        { "App2.BusinessLayer.ITransit", new App2.DataAccess.Transit(100) },
+        { typeof(App2.BusinessLayer.ITransit).FullName, new App2.DataAccess.Transit(100) },
         { "App2.BusinessLayer.IProfile", "App2.DataAccess.Profile, aDesignUseCase" },
         { "App2.BusinessLayer.IThreshold", new App2.DataAccess.Threshold(500) }
+      });
+      var request = new App2.Contract.RiskRequest() { Threshold = 501 };
+
+      //Act
+      App2.Contract.RiskResponse response = App2.BusinessLayer.ProcessorA.GetRisk(request, typemap);
+
+      //Assert
+      Assert.AreEqual<decimal>(102, response.RiskAmount);
+    }
+
+    [TestMethod]
+    public void ProcessorStaticOperation1WithInstances2()
+    {
+      //Arrange
+      var typemap = new nutility.TypeClassMapper(new Dictionary<Type, Type>
+      {
+        { typeof(App2.BusinessLayer.IProfile), typeof(App2.DataAccess.Profile) }
+      },
+      new Dictionary<Type, Func<object>>
+      {
+        { typeof(App2.BusinessLayer.ITransit), new Func<object>(App2.DataAccess.Factory1.CreateInstance) },
+        { typeof(App2.BusinessLayer.IThreshold), new Func<object>((new App2.DataAccess.Factory2()).CreateInstance) }
       });
       var request = new App2.Contract.RiskRequest() { Threshold = 501 };
 
