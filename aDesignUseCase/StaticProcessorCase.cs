@@ -152,7 +152,7 @@ namespace aDesignUseCase
     }
 
     [TestMethod]
-    public void ProcessorStaticOperation1WithInstances1()
+    public void ProcessorStaticOperation1WithInstances_A()
     {
       //Arrange
       var typemap = new nutility.TypeClassMapper(new Dictionary<string, object>
@@ -171,7 +171,26 @@ namespace aDesignUseCase
     }
 
     [TestMethod]
-    public void ProcessorStaticOperation1WithInstances2()
+    public void ProcessorStaticOperation1WithInstances_B()
+    {
+      //Arrange
+      var typemap = new nutility.TypeClassMapper(new Dictionary<Type, object>
+      {
+        { typeof(App2.BusinessLayer.ITransit), new App2.DataAccess.Transit(100) },
+        { typeof(App2.BusinessLayer.IProfile), "App2.DataAccess.Profile, aDesignUseCase" },
+        { typeof(App2.BusinessLayer.IThreshold), new App2.DataAccess.Threshold(500) }
+      });
+      var request = new App2.Contract.RiskRequest() { Threshold = 501 };
+
+      //Act
+      App2.Contract.RiskResponse response = App2.BusinessLayer.ProcessorA.GetRisk(request, typemap);
+
+      //Assert
+      Assert.AreEqual<decimal>(102, response.RiskAmount);
+    }
+
+    [TestMethod]
+    public void ProcessorStaticOperation1WithInstances_C()
     {
       //Arrange
       var typemap = new nutility.TypeClassMapper(new Dictionary<Type, Type>
