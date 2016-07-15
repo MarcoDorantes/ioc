@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 
-#region Types & Classes used by the test cases of the following TestClasses: ExplicitMappingCases, ImplicitMappingCases, ImplicitMappingCasesAtNoDefaultSection, QueryMappingCases
+#region Types & Classes used by the test cases of the following TestClasses: ExplicitMappingCases, ImplicitMappingCases, ImplicitMappingCasesAtNoDefaultSection, InterfaceAugmentationCases
 
 namespace app1
 {

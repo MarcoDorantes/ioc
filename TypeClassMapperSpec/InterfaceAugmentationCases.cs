@@ -44,9 +44,7 @@ namespace TypeClassMapperSpec
       //Arrange
       nutility.ITypeClassMapper typemap = new nutility.TypeClassMapper(new Dictionary<string, object>
       {
-        { "app1.ISource", "module1.Source, TypeClassMapperSpec" },
-        { "app1.ITarget", new object()},
-        { "app1.ILog", null },
+        { "app1.ISource", "module1.Source, TypeClassMapperSpec" }
       });
 
       //Act
