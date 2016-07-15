@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace TypeClassMapperSpec
 {
   [TestClass]
-  public class QueryMappingCases
+  public class InterfaceAugmentationCases
   {
     [TestMethod]
     public void QueryMappings()
@@ -36,6 +36,29 @@ namespace TypeClassMapperSpec
       Assert.AreEqual("module1.Source, TypeClassMapperSpec", mapped_found);
       Assert.IsNull(mapped_notfound);
       Assert.IsNotNull(target);
+    }
+
+    [TestMethod]
+    public void GenericExpresionForGetService()
+    {
+      //Arrange
+      nutility.ITypeClassMapper typemap = new nutility.TypeClassMapper(new Dictionary<string, object>
+      {
+        { "app1.ISource", "module1.Source, TypeClassMapperSpec" },
+        { "app1.ITarget", new object()},
+        { "app1.ILog", null },
+      });
+
+      //Act
+      app1.ISource source1 = (app1.ISource)typemap.GetService(typeof(app1.ISource));
+      app1.ISource source2 = typemap.GetService<app1.ISource>();
+
+      //Assert
+      Assert.IsNotNull(source1);
+      Assert.IsNotNull(source2);
+      Assert.AreEqual<string>(source1.Name, source2.Name);
+      Assert.AreEqual<string>("module1.Source", source2.Name);
+      Assert.AreEqual<string>("module1.Source, TypeClassMapperSpec, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", source2.GetType().AssemblyQualifiedName);
     }
   }
 }

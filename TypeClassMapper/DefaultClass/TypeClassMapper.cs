@@ -142,6 +142,13 @@ namespace nutility
     }
 
     /// <summary>
+    /// For a given tradeoff between little syntactic sugar and the dependency to the ITypeClassMapper interface, this method would be the generic version of System.IServiceProvider.GetService method.
+    /// </summary>
+    /// <typeparam name="T">Required Type</typeparam>
+    /// <returns>Mapped Class</returns>
+    public T GetService<T>() => (T)this.GetService(typeof(T));
+
+    /// <summary>
     /// A new instance is created from the mapped class.
     /// </summary>
     /// <param name="classname">Name of the mapped class</param>
