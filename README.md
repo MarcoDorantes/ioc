@@ -29,7 +29,7 @@ There are multiple ways to properly manage the dependencies on a large-scale sof
 ##How does it work?
 For example, the following `CopyProcessor` class only depends on its required abstractions and on the `System.IServiceProvider` interface. That is, it does not depend on concrete implementation details:
 
-`
+```
   public class CopyProcessor
   {
     private ISource source;
@@ -51,4 +51,4 @@ For example, the following `CopyProcessor` class only depends on its required ab
       }
     }
   }
-`
+```
