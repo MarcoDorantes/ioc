@@ -35,12 +35,14 @@ For example, the following `CopyProcessor` class only depends on its required ab
     private ISource source;
     private ITarget target;
     private ILogBook logger;
+
     public CopyProcessor(IServiceProvider typemap)
     {
       source = (ISource)typemap.GetService(typeof(ISource));
       target = (ITarget)typemap.GetService(typeof(ITarget));
       logger = (ILogBook)typemap.GetService(typeof(ILogBook));
     }
+
     public void Copy()
     {
       int count = 0;
