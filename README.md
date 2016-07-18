@@ -77,7 +77,7 @@ public class SampleCase1
     });
 
     //Act
-    var processor = new lib1.sample.CopyProcessor(typemap);
+    var processor = new lib1.CopyProcessor(typemap);
     processor.Copy();
 
 
