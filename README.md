@@ -49,8 +49,9 @@ For example, the following `CopyProcessor` class only depends on its required ab
       foreach (var value in source)
       {
         string result = target.Write(value);
-        logger.Log($"Value#{++count} from {source.Name} to {target.Name}: {result}");
+        logger.Log($"Value #{++count} from {source.Name} to {target.Name}: {result}");
       }
     }
   }
 ```
+A particular instance of `TypeClassMapper` is passed to `CopyProcessor`'s constructor based on the kind of host for a particular execution context host. For example, a unit testing host, an integration testing host, the actual host at a productive enviroment, etc.

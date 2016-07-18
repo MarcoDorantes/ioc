@@ -34,7 +34,7 @@ namespace samplecase
       foreach (var value in source)
       {
         string result = target.Write(value);
-        logger.Log($"Value#{++count} from {source.Name} to {target.Name}: {result}");
+        logger.Log($"Value #{++count} from {source.Name} to {target.Name}: {result}");
       }
     }
   }
