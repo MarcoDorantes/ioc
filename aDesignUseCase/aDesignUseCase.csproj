@@ -56,6 +56,10 @@
     <Compile Include="StaticProcessorCaseWithStructs.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\lib1\lib1.csproj">
+      <Project>{9fe76e3e-9321-489f-80ce-2a1e7494c3a2}</Project>
+      <Name>lib1</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TypeClassMapper\TypeClassMapper.csproj">
       <Project>{6d93f0eb-25e5-43ff-be62-a6f14c74ff02}</Project>
       <Name>TypeClassMapper</Name>

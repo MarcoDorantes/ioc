@@ -11,9 +11,9 @@ The `TypeClassMapper` class provides a simple implementation for the .NET Framew
 The custom support in this case is the mapping between requested types, mainly interfaces, and their related implementation class instances. The custom support also includes instance activation, i.e., object construction.
 
 ##Key concepts
-«Type» as abstract data type, interface, protocol, public or published contract, or application programming interface (API).
+«Type» as abstract data type, interface, protocol, published contract, or application programming interface (API).
 
-«Class» as concrete class, module, implementation, usually hidden or private programmed executable artifact.
+«Class» as concrete class, module with implementation details, usually hidden state and private behavior, separate-compiled executable artifact.
 
 «Mapper» as associative array, map, symbol table, hash table, or dictionary.
 
@@ -30,13 +30,15 @@ There are multiple ways to properly manage the dependencies on a large-scale sof
 For example, the following `CopyProcessor` class only depends on its required abstractions and on the `System.IServiceProvider` interface. That is, it does not depend on concrete implementation details:
 
 ```
+namespace lib1
+{
   public class CopyProcessor
   {
     private ISource source;
     private ITarget target;
     private ILogBook logger;
 
-    public CopyProcessor(IServiceProvider typemap)
+    public CopyProcessor(System.IServiceProvider typemap)
     {
       source = (ISource)typemap.GetService(typeof(ISource));
       target = (ITarget)typemap.GetService(typeof(ITarget));
@@ -53,5 +55,34 @@ For example, the following `CopyProcessor` class only depends on its required ab
       }
     }
   }
+}
 ```
 A particular instance of `TypeClassMapper` must be passed to `CopyProcessor`'s constructor based on the kind of host for a particular execution context. For example, a unit testing host, an integration testing host, the actual host at a productive enviroment, etc.
+
+For example, in the context of a unit test as part of a Visual Studio Test Project host:
+
+```
+[TestClass]
+public class SampleCase1
+{
+  [TestMethod]
+  public void Unit_testable()
+  {
+    //Arrange
+    var typemap = new nutility.TypeClassMapper(new Dictionary<Type, object>
+    {
+      { typeof(lib1.ISource), new SourceStub() },
+      { typeof(lib1.ITarget), new TargetStub() },
+      { typeof(lib1.ILogBook), new LogBookStub() }
+    });
+
+    //Act
+    var processor = new lib1.sample.CopyProcessor(typemap);
+    processor.Copy();
+
+
+    //Assert
+    //Asserts on stubs...
+  }
+}
+```

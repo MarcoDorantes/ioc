@@ -2,6 +2,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Data;
+using System.Collections;
+using lib1.sample;
 
 #region Types & Classes used by the test cases in this TestClass
 
@@ -637,6 +639,93 @@ namespace aDesignUseCase
 
       //Assert
       Assert.AreEqual<decimal>(102, response.RiskAmount);
+    }
+  }
+
+  #region test classes
+  namespace libx
+  {
+    class SourceStub : lib1.sample.ISource, IEnumerator
+    {
+      public string Name
+      {
+        get
+        {
+          throw new NotImplementedException();
+        }
+      }
+
+      IEnumerator IEnumerable.GetEnumerator() => this;
+
+      #region IEnumerator
+      public object Current
+      {
+        get
+        {
+          throw new NotImplementedException();
+        }
+      }
+
+      public bool MoveNext()
+      {
+        throw new NotImplementedException();
+      }
+
+      public void Reset()
+      {
+        throw new NotImplementedException();
+      }
+
+      #endregion
+    }
+
+    class TargetStub : lib1.sample.ITarget
+    {
+      public string Name
+      {
+        get
+        {
+          throw new NotImplementedException();
+        }
+      }
+
+      public string Write(object value)
+      {
+        throw new NotImplementedException();
+      }
+    }
+    class LogBookStub : lib1.sample.ILogBook
+    {
+      public void Log(string line)
+      {
+        throw new NotImplementedException();
+      }
+    }
+
+  }
+  #endregion
+
+  [TestClass]
+  public class SampleCase1
+  {
+    [TestMethod, ExpectedException(typeof(NotImplementedException))]
+    public void Unit_testable()
+    {
+      //Arrange
+      var typemap = new nutility.TypeClassMapper(new Dictionary<Type, object>
+      {
+        { typeof(lib1.sample.ISource), new libx.SourceStub() },
+        { typeof(lib1.sample.ITarget), new libx.TargetStub() },
+        { typeof(lib1.sample.ILogBook), new libx.LogBookStub() }
+      });
+
+      //Act
+      var processor = new lib1.sample.CopyProcessor(typemap);
+      processor.Copy();
+
+
+      //Assert
+      //Asserts on stubs...
     }
   }
 }
