@@ -80,7 +80,6 @@ public class SampleCase1
     var processor = new lib1.CopyProcessor(typemap);
     processor.Copy();
 
-
     //Assert
     //Asserts on stubs...
   }
