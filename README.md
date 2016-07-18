@@ -1,7 +1,7 @@
 # ioc
 ##Basic .NET runtime dependency Type-Class mapping.
 
-TypeClassMapper class - Given the runtime dependency management tradition of early design patterns, e.g., Microsoft COM IUnknown::QueryInterface method, this class follows such design tradition and relies on basic equivalent mechanisms from .NET Framework (System.IServiceProvider interface).
+`TypeClassMapper` class - Given the runtime dependency management tradition of early design patterns, e.g., Microsoft COM `IUnknown::QueryInterface` method, this class follows such design tradition and relies on basic equivalent mechanisms from .NET Framework (`System.IServiceProvider` interface).
 
 Latest released version at: http://www.nuget.org/packages/TypeClassMapper/
 
@@ -18,10 +18,35 @@ The custom support in this case is the mapping between requested types, mainly i
 'Mapper' as associative array, map, symbol table, hash table, or dictionary.
 
 ##Why do I need TypeClassMapper?
-The actual need is to properly manage the dependencies on a large-scale software design and to manage the level of technical debt of its codebase. The key goal is to prevent the ever increasing costs of a Big ball of mud anti-pattern.
+The actual need is to properly manage the dependencies on a large-scale software design and to manage the level of technical debt of its codebase. The key goal is to prevent the ever increasing costs of a Big ball of mud anti-pattern:
 
 http://www.laputan.org/mud/
 
 https://en.wikipedia.org/wiki/Big_ball_of_mud
 
-There are multiple ways to properly manage the dependencies on a large-scale software design. Among the preferred approaches are those that help to keep only the mandatory number of dependencies for a given design. `TypeClassMapper` tries to be one of those preferred approaches by relying on an already defined mechanism in the .NET Framework: the `System.IServiceProvider` interface. This way the core components in a given design do not need to add any extra dependency other than .NET Framework in order to benefit from a decoupled way between their types and their classes.
+There are multiple ways to properly manage the dependencies on a large-scale software design. Among the preferred approaches are those that help to keep only the mandatory number of dependencies for a given design. `TypeClassMapper` tries to be one of those preferred approaches by relying on an already defined mechanism in the .NET Framework: the `System.IServiceProvider` interface. This way the core components in a given design do not need to add any extra dependency other than .NET Framework in order to benefit from a decoupled way of mapping their requested types to their related classes.
+
+##How does it work?
+For example, the following `CopyProcessor` class only depends on its required abstractions and on the `System.IServiceProvider` interface. That is, it does not depend on concrete implementation details:
+
+`  public class CopyProcessor
+  {
+    private ISource source;
+    private ITarget target;
+    private ILogBook logger;
+    public CopyProcessor(IServiceProvider typemap)
+    {
+      source = (ISource)typemap.GetService(typeof(ISource));
+      target = (ITarget)typemap.GetService(typeof(ITarget));
+      logger = (ILogBook)typemap.GetService(typeof(ILogBook));
+    }
+    public void Copy()
+    {
+      int count = 0;
+      foreach (var value in source)
+      {
+        string result = target.Write(value);
+        logger.Log($"Value#{++count} from {source.Name} to {target.Name}: {result}");
+      }
+    }
+  }`
