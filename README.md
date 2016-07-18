@@ -54,4 +54,4 @@ For example, the following `CopyProcessor` class only depends on its required ab
     }
   }
 ```
-A particular instance of `TypeClassMapper` is passed to `CopyProcessor`'s constructor based on the kind of host for a particular execution context host. For example, a unit testing host, an integration testing host, the actual host at a productive enviroment, etc.
+A particular instance of `TypeClassMapper` is passed to `CopyProcessor`'s constructor based on the kind of host for a particular execution context. For example, a unit testing host, an integration testing host, the actual host at a productive enviroment, etc.
