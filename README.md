@@ -11,11 +11,11 @@ The `TypeClassMapper` class provides a simple implementation for the .NET Framew
 The custom support in this case is the mapping between requested types, mainly interfaces, and their related implementation class instances. The custom support also includes instance activation, i.e., object construction.
 
 ##Key concepts
-'Type' as abstract data type, interface, protocol, public or published contract, or application programming interface (API).
+«Type» as abstract data type, interface, protocol, public or published contract, or application programming interface (API).
 
-'Class' as concrete class, module, implementation, usually hidden or private programmed executable artifact.
+«Class» as concrete class, module, implementation, usually hidden or private programmed executable artifact.
 
-'Mapper' as associative array, map, symbol table, hash table, or dictionary.
+«Mapper» as associative array, map, symbol table, hash table, or dictionary.
 
 ##Why do I need TypeClassMapper?
 The actual need is to properly manage the dependencies on a large-scale software design and to manage the level of technical debt of its codebase. The key goal is to prevent the ever increasing costs of a Big ball of mud anti-pattern:
@@ -54,4 +54,4 @@ For example, the following `CopyProcessor` class only depends on its required ab
     }
   }
 ```
-A particular instance of `TypeClassMapper` is passed to `CopyProcessor`'s constructor based on the kind of host for a particular execution context. For example, a unit testing host, an integration testing host, the actual host at a productive enviroment, etc.
+A particular instance of `TypeClassMapper` must be passed to `CopyProcessor`'s constructor based on the kind of host for a particular execution context. For example, a unit testing host, an integration testing host, the actual host at a productive enviroment, etc.
