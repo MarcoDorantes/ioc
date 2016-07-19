@@ -86,7 +86,7 @@ public class SampleCase1
 }
 ```
 
-Or, in the context of a host at a productive enviroment, where the type-class mappings will be taken from the configuration file:
+Or, in the context of a host at a productive enviroment, where the type-class mappings will be taken from the application configuration file:
 
 ```
   var processor = new lib1.CopyProcessor(new nutility.TypeClassMapper());
