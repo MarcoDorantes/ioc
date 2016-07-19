@@ -59,7 +59,7 @@ namespace lib1
 ```
 A particular instance of `TypeClassMapper` must be passed to `CopyProcessor`'s constructor based on the kind of host for a particular execution context. For example, a unit testing host, an integration testing host, the actual host at a productive enviroment, etc.
 
-For example, in the context of a unit test as part of a Visual Studio Test Project host:
+A different case, in the context of a unit test as part of a Visual Studio Test Project host:
 
 ```
 [TestClass]
