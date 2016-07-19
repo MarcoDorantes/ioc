@@ -13,7 +13,7 @@ The custom support in this case is the mapping between requested types, mainly i
 ##Key concepts
 «Type» as abstract data type, interface, protocol, published contract, or application programming interface (API).
 
-«Class» as concrete class, module with implementation details, usually hidden state and private behavior, separate-compiled executable artifact.
+«Class» as concrete class, module with implementation details, usually hidden state and private behavior, or separate-compiled executable artifact.
 
 «Mapper» as associative array, map, symbol table, hash table, or dictionary.
 
