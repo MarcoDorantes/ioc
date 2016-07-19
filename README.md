@@ -27,7 +27,7 @@ https://en.wikipedia.org/wiki/Big_ball_of_mud
 There are multiple ways to properly manage the dependencies on a large-scale software design. Among the preferred approaches are those that help to keep only the mandatory number of dependencies for a given design. `TypeClassMapper` tries to be one of those preferred approaches by relying on an already defined mechanism in the .NET Framework: the `System.IServiceProvider` interface. This way the core components in a given design do not need to add any extra dependency other than .NET Framework in order to benefit from a decoupled way of mapping their requested types to their related classes.
 
 ##How does it work?
-For example, the following `CopyProcessor` class only depends on its required abstractions and on the `System.IServiceProvider` interface. That is, it does not depend on concrete implementation details:
+For instance, the following `CopyProcessor` class only depends on its required abstractions and on the `System.IServiceProvider` interface. That is, it does not depend on concrete external implementation details:
 
 ```
 namespace lib1
@@ -84,4 +84,11 @@ public class SampleCase1
     //Asserts on stubs...
   }
 }
+```
+
+Or, in the context of a host at a productive enviroment, where the type-class mappings will be taken from the configuration file:
+
+```
+  var processor = new lib1.sample.CopyProcessor(new nutility.TypeClassMapper());
+  processor.Copy();
 ```
