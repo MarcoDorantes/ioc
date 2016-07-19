@@ -89,6 +89,6 @@ public class SampleCase1
 Or, in the context of a host at a productive enviroment, where the type-class mappings will be taken from the configuration file:
 
 ```
-  var processor = new lib1.sample.CopyProcessor(new nutility.TypeClassMapper());
+  var processor = new lib1.CopyProcessor(new nutility.TypeClassMapper());
   processor.Copy();
 ```
