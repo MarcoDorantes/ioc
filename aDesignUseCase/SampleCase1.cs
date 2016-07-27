@@ -88,7 +88,7 @@ namespace aDesignUseCase
       var source_stub = new libx.SourceStub("source1", new string[] { "one", "two" });
       var target_stub = new libx.TargetStub("target1");
       var log_stub = new libx.LogBookStub();
-      var typemap = new nutility.TypeClassMapper(new Dictionary<Type, object>
+      var typemap = new nutility.TypeClassMapper(typeobjectmap: new Dictionary<Type, object>
       {
         { typeof(lib1.sample.ISource), source_stub },
         { typeof(lib1.sample.ITarget), target_stub },
@@ -153,15 +153,17 @@ namespace aDesignUseCase
       {
         { typeof(lib1.ISource), typeof(liby.B) }
       });
-      typemap.AddMapping(typeof(int), 123);
-      typemap.AddMapping(typeof(string), "name123");
+      //typemap.AddMapping(typeof(int), 123);
+      //typemap.AddMapping(typeof(string), (object)"name123");
+      typemap.AddMapping<int>(123);
+      typemap.AddMapping<string>("name123");
 
       //Act
       var b = typemap.GetService<lib1.ISource>();
 
       //Assert
       Assert.AreEqual<string>("name123", b.Name);
-      Assert.AreEqual<int>(123, ((liby.A)b).ID);
+      Assert.AreEqual<int>(123, ((liby.B)b).ID);
     }
   }
 }

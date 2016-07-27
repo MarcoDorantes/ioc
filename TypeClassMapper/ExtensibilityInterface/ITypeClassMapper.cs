@@ -21,9 +21,11 @@ namespace nutility
     /// <returns>Mapped Class</returns>
     T GetService<T>();
 
-    void AddMapping(Type type, TypeClassName name);
-    void AddMapping(Type type, object value);
-    
+    //void AddMapping(Type type, TypeClassName name);
+    //void AddMapping(Type type, object value);
+    void AddMapping<T>(T value);
+//    void AddMapping(Type type, object value);
+
 
     void SetValue<T>(string name, T value);
     T GetValue<T>(string name);

@@ -27,6 +27,8 @@ namespace nutility
     /// </summary>
     private IDictionary<string, TypeClassName> typemap;
 
+    private IDictionary<string, object> typeobjectmap;
+
     /// <summary>
     /// Type-Creator mapping.
     /// </summary>
@@ -55,6 +57,7 @@ namespace nutility
       this.section = section;
       TypeClassMapperConfigurationSection configSection = GetConfiguration(section);
       InitAndLoadMappings(configSection, scope);
+      this.typeobjectmap = new Dictionary<string, object>();
       this.typecreatormap = new Dictionary<string, Func<object>>();
       this.values = new Dictionary<string, object>();
     }
@@ -72,10 +75,46 @@ namespace nutility
       this.scope = "<explicit>";
       this.section = "<explicit>";
       this.typemap = new Dictionary<string, TypeClassName>(typeclassmap);
+      this.typeobjectmap = new Dictionary<string, object>();
       this.typecreatormap = new Dictionary<string, Func<object>>();
       this.values = new Dictionary<string, object>();
     }
 
+    /// <summary>
+    /// For explicit type-class mappings.
+    /// </summary>
+    /// <param name="typeobjectmap">Type-Object map</param>
+    public TypeClassMapper(IDictionary<string, object> typeobjectmap)
+    {
+      if (typeobjectmap == null)
+      {
+        throw new TypeClassMapperException($"Parameter cannot be null: {nameof(typeobjectmap)}", new ArgumentNullException(nameof(typeobjectmap)));
+      }
+      this.scope = "<explicit>";
+      this.section = "<explicit>";
+      this.typemap = new Dictionary<string, TypeClassName>();
+      this.typeobjectmap = new Dictionary<string, object>(typeobjectmap);
+      this.typecreatormap = new Dictionary<string, Func<object>>();
+      this.values = new Dictionary<string, object>();
+    }
+
+    /// <summary>
+    /// For explicit type-class mappings.
+    /// </summary>
+    /// <param name="typeobjectmap">Type-Object map</param>
+    public TypeClassMapper(IDictionary<Type, object> typeobjectmap)
+    {
+      if (typeobjectmap == null)
+      {
+        throw new TypeClassMapperException($"Parameter cannot be null: {nameof(typeobjectmap)}", new ArgumentNullException(nameof(typeobjectmap)));
+      }
+      this.scope = "<explicit>";
+      this.section = "<explicit>";
+      this.typemap = new Dictionary<string, TypeClassName>();
+      this.typeobjectmap = typeobjectmap.Aggregate(new Dictionary<string, object>(), (whole, next) => { whole.Add(next.Key.FullName, next); return whole; });
+      this.typecreatormap = new Dictionary<string, Func<object>>();
+      this.values = new Dictionary<string, object>();
+    }
     /// <summary>
     /// For explicit type-class mappings.
     /// </summary>
@@ -89,6 +128,7 @@ namespace nutility
       this.scope = "<explicit>";
       this.section = "<explicit>";
       this.typemap = typeclassmap.Aggregate(new Dictionary<string, TypeClassName>(), (whole, next) => { whole.Add(next.Key.FullName, next.Value); return whole; });
+      this.typeobjectmap = new Dictionary<string, object>();
       this.typecreatormap = new Dictionary<string, Func<object>>();
       this.values = new Dictionary<string, object>();
     }
@@ -106,6 +146,7 @@ namespace nutility
       this.scope = "<explicit>";
       this.section = "<explicit>";
       this.typemap = typeclassmap.Aggregate(new Dictionary<string, TypeClassName>(), (whole, next) => { whole.Add(next.Key.FullName, next.Value.AssemblyQualifiedName); return whole; });
+      this.typeobjectmap = new Dictionary<string, object>();
       this.typecreatormap = new Dictionary<string, Func<object>>();
       this.values = new Dictionary<string, object>();
     }
@@ -166,17 +207,19 @@ namespace nutility
           }
         }
       }
+      else if (typeobjectmap.ContainsKey(requiredType.FullName))
+      {
+        mapped_value = typeobjectmap[requiredType.FullName];
+      }
       else
       {
         if (!typemap.ContainsKey(requiredType.FullName))
         {
           throw new TypeClassMapperException($"Type not found: [{requiredType.FullName}] at configured scope [{scope ?? "<default>"}] and section [{section ?? "<default>"}]");
         }
-        mapped_value = typemap[requiredType.FullName];
-        if (mapped_value is string)
-        {
-          mapped_value = CreateInstanceOfMappedClass(mapped_value as string, requiredType);
-        }
+        TypeClassName mapped_classname = typemap[requiredType.FullName];
+        //TypeClassName mapped_classname = typemap.ContainsKey(requiredType.FullName) ? typemap[requiredType.FullName] : requiredType.FullName;
+        mapped_value = CreateInstanceOfMappedClass(mapped_classname.Name, requiredType);
       }
       return mapped_value;
     }
@@ -188,29 +231,69 @@ namespace nutility
     /// <returns>Mapped Class</returns>
     public T GetService<T>() => (T)this.GetService(typeof(T));
 
+    /*
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="name"></param>
     public void AddMapping(Type type, TypeClassName name)
     {
       if (type == null)
       {
         throw new TypeClassMapperException($"Parameter cannot be null: {nameof(type)}", new ArgumentNullException(nameof(type)));
       }
-      this.typemap.Add(type.FullName, name);
+        this.typemap.Add(type.FullName, name);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="value"></param>
     public void AddMapping(Type type, object value)
     {
       if (type == null)
       {
         throw new TypeClassMapperException($"Parameter cannot be null: {nameof(type)}", new ArgumentNullException(nameof(type)));
       }
-      this.values.Add(type.FullName, value);
+      this.typeobjectmap.Add(type.FullName, value);
+    }*/
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="value"></param>
+    public void AddMapping<T>(T value)
+    {
+      if (typeof(T) == typeof(TypeClassName))
+      {
+        this.typemap.Add(typeof(TypeClassName).FullName, (TypeClassName)Convert.ChangeType(value, typeof(TypeClassName)));
+      }
+      else
+      {
+        this.typeobjectmap.Add(typeof(T).FullName, value);
+      }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="name"></param>
+    /// <param name="value"></param>
     public void SetValue<T>(string name, T value)
     {
       this.values.Add(name, value);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="name"></param>
+    /// <returns></returns>
     public T GetValue<T>(string name)
     {
       T result = default(T);

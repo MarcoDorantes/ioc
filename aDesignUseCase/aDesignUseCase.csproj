@@ -53,9 +53,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="StaticProcessorCase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StaticProcessorCaseWithStructs.cs" />
     <Compile Include="SampleCase1.cs" />
   </ItemGroup>
   <ItemGroup>
