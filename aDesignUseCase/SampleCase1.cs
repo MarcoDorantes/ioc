@@ -65,6 +65,16 @@ namespace aDesignUseCase
       public int ID { get; private set; }
       public string Name { get; private set; }
     }
+    class B : lib1.ISource
+    {
+      public B(nutility.ITypeClassMapper typemap)
+      {
+        ID = typemap.GetService<int>();
+        Name = typemap.GetService<string>();
+      }
+      public int ID { get; private set; }
+      public string Name { get; private set; }
+    }
   }
   #endregion
 
@@ -133,6 +143,25 @@ namespace aDesignUseCase
       //Assert
       Assert.AreEqual<string>("name123", a.Name);
       Assert.AreEqual<int>(123, ((liby.A)a).ID);
+    }
+
+    [TestMethod]
+    public void AddMappingsAndGetAsValues()
+    {
+      //Arrange
+      nutility.ITypeClassMapper typemap = new nutility.TypeClassMapper(new Dictionary<Type, Type>
+      {
+        { typeof(lib1.ISource), typeof(liby.B) }
+      });
+      typemap.AddMapping(typeof(int), 123);
+      typemap.AddMapping(typeof(string), "name123");
+
+      //Act
+      var b = typemap.GetService<lib1.ISource>();
+
+      //Assert
+      Assert.AreEqual<string>("name123", b.Name);
+      Assert.AreEqual<int>(123, ((liby.A)b).ID);
     }
   }
 }

@@ -4,6 +4,18 @@ using System.Collections.Generic;
 
 namespace nutility
 {
+  public class TypeClassName
+  {
+    public TypeClassName(string name)
+    {
+      Name = name;
+    }
+
+    public string Name { get; private set; }
+
+    public static implicit operator TypeClassName(string name) => new TypeClassName(name);
+  }
+
   /// <summary>
   /// Given the runtime dependency management tradition of early design patterns, e.g., Microsoft COM IUnknown::QueryInterface method, this class follows
   /// such design tradition and relies on basic equivalent mechanisms from .NET Framework (System.IServiceProvider interface).
@@ -13,7 +25,7 @@ namespace nutility
     /// <summary>
     /// Keep basic Type - Class mapping.
     /// </summary>
-    private IDictionary<string, object> typemap;
+    private IDictionary<string, TypeClassName> typemap;
 
     /// <summary>
     /// Type-Creator mapping.
@@ -51,7 +63,7 @@ namespace nutility
     /// For explicit type-class mappings.
     /// </summary>
     /// <param name="typeclassmap">Type-Class map</param>
-    public TypeClassMapper(IDictionary<string, object> typeclassmap)
+    public TypeClassMapper(IDictionary<string, TypeClassName> typeclassmap)
     {
       if (typeclassmap == null)
       {
@@ -59,7 +71,7 @@ namespace nutility
       }
       this.scope = "<explicit>";
       this.section = "<explicit>";
-      this.typemap = typeclassmap;
+      this.typemap = new Dictionary<string, TypeClassName>(typeclassmap);
       this.typecreatormap = new Dictionary<string, Func<object>>();
       this.values = new Dictionary<string, object>();
     }
@@ -68,7 +80,7 @@ namespace nutility
     /// For explicit type-class mappings.
     /// </summary>
     /// <param name="typeclassmap">Type-Class map</param>
-    public TypeClassMapper(IDictionary<Type, object> typeclassmap)
+    public TypeClassMapper(IDictionary<Type, TypeClassName> typeclassmap)
     {
       if (typeclassmap == null)
       {
@@ -76,7 +88,7 @@ namespace nutility
       }
       this.scope = "<explicit>";
       this.section = "<explicit>";
-      this.typemap = typeclassmap.Aggregate(new Dictionary<string, object>(), (whole, next) => { whole.Add(next.Key.FullName, next.Value); return whole; });
+      this.typemap = typeclassmap.Aggregate(new Dictionary<string, TypeClassName>(), (whole, next) => { whole.Add(next.Key.FullName, next.Value); return whole; });
       this.typecreatormap = new Dictionary<string, Func<object>>();
       this.values = new Dictionary<string, object>();
     }
@@ -93,7 +105,7 @@ namespace nutility
       }
       this.scope = "<explicit>";
       this.section = "<explicit>";
-      this.typemap = typeclassmap.Aggregate(new Dictionary<string, object>(), (whole, next) => { whole.Add(next.Key.FullName, next.Value.AssemblyQualifiedName); return whole; });
+      this.typemap = typeclassmap.Aggregate(new Dictionary<string, TypeClassName>(), (whole, next) => { whole.Add(next.Key.FullName, next.Value.AssemblyQualifiedName); return whole; });
       this.typecreatormap = new Dictionary<string, Func<object>>();
       this.values = new Dictionary<string, object>();
     }
@@ -126,7 +138,7 @@ namespace nutility
     /// <summary>
     /// Existing type-class mappings.
     /// </summary>
-    public IEnumerable<KeyValuePair<string, object>> Mappings { get { return typemap; } }
+    public IEnumerable<KeyValuePair<string, TypeClassName>> Mappings { get { return typemap; } }
 
     /// <summary>
     /// Given a Type, it returns its configured/mapped Class.
@@ -175,6 +187,24 @@ namespace nutility
     /// <typeparam name="T">Required Type</typeparam>
     /// <returns>Mapped Class</returns>
     public T GetService<T>() => (T)this.GetService(typeof(T));
+
+    public void AddMapping(Type type, TypeClassName name)
+    {
+      if (type == null)
+      {
+        throw new TypeClassMapperException($"Parameter cannot be null: {nameof(type)}", new ArgumentNullException(nameof(type)));
+      }
+      this.typemap.Add(type.FullName, name);
+    }
+
+    public void AddMapping(Type type, object value)
+    {
+      if (type == null)
+      {
+        throw new TypeClassMapperException($"Parameter cannot be null: {nameof(type)}", new ArgumentNullException(nameof(type)));
+      }
+      this.values.Add(type.FullName, value);
+    }
 
     public void SetValue<T>(string name, T value)
     {
@@ -265,7 +295,7 @@ namespace nutility
 
     private void InitAndLoadMappings(TypeClassMapperConfigurationSection configSection, string scope = null)
     {
-      typemap = new Dictionary<string, object>();
+      typemap = new Dictionary<string, TypeClassName>();
       if (string.IsNullOrWhiteSpace(scope))
       {
         foreach (MappingCollectionElement mapping in configSection.Mappings)

@@ -353,7 +353,7 @@ namespace TypeClassMapperSpec
     public void BadTypeLoad()
     {
       //Arrange
-      var typemap = new nutility.TypeClassMapper(new Dictionary<string, object> { { "app1.ISource", "module3.Source, TypeClassMapperSpec" } });
+      var typemap = new nutility.TypeClassMapper(new Dictionary<string, nutility.TypeClassName> { { "app1.ISource", "module3.Source, TypeClassMapperSpec" } });
 
       //Act
       Exception exception = null;
