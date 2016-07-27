@@ -44,6 +44,7 @@ namespace nutility
       TypeClassMapperConfigurationSection configSection = GetConfiguration(section);
       InitAndLoadMappings(configSection, scope);
       this.typecreatormap = new Dictionary<string, Func<object>>();
+      this.values = new Dictionary<string, object>();
     }
 
     /// <summary>
@@ -60,6 +61,7 @@ namespace nutility
       this.section = "<explicit>";
       this.typemap = typeclassmap;
       this.typecreatormap = new Dictionary<string, Func<object>>();
+      this.values = new Dictionary<string, object>();
     }
 
     /// <summary>
@@ -76,6 +78,7 @@ namespace nutility
       this.section = "<explicit>";
       this.typemap = typeclassmap.Aggregate(new Dictionary<string, object>(), (whole, next) => { whole.Add(next.Key.FullName, next.Value); return whole; });
       this.typecreatormap = new Dictionary<string, Func<object>>();
+      this.values = new Dictionary<string, object>();
     }
 
     /// <summary>
@@ -92,6 +95,7 @@ namespace nutility
       this.section = "<explicit>";
       this.typemap = typeclassmap.Aggregate(new Dictionary<string, object>(), (whole, next) => { whole.Add(next.Key.FullName, next.Value.AssemblyQualifiedName); return whole; });
       this.typecreatormap = new Dictionary<string, Func<object>>();
+      this.values = new Dictionary<string, object>();
     }
 
     /// <summary>
@@ -171,6 +175,11 @@ namespace nutility
     /// <typeparam name="T">Required Type</typeparam>
     /// <returns>Mapped Class</returns>
     public T GetService<T>() => (T)this.GetService(typeof(T));
+
+    public void SetValue<T>(string name, T value)
+    {
+      this.values.Add(name, value);
+    }
 
     public T GetValue<T>(string name)
     {

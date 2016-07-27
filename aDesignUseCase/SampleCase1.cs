@@ -57,7 +57,7 @@ namespace aDesignUseCase
   {
     class A : lib1.ISource
     {
-      public A(nutility.TypeClassMapper typemap)
+      public A(nutility.ITypeClassMapper typemap)
       {
         ID = typemap.GetValue<int>(nameof(ID));
         Name = typemap.GetValue<string>(nameof(Name));
@@ -95,7 +95,7 @@ namespace aDesignUseCase
     }
 
     [TestMethod]
-    public void Get_values()
+    public void Get_values1()
     {
       //Arrange
       var typemap = new nutility.TypeClassMapper(new Dictionary<Type, Type>
@@ -107,6 +107,25 @@ namespace aDesignUseCase
         { "ID", 123 },
         { "Name", "name123" }
       });
+
+      //Act
+      var a = typemap.GetService<lib1.ISource>();
+
+      //Assert
+      Assert.AreEqual<string>("name123", a.Name);
+      Assert.AreEqual<int>(123, ((liby.A)a).ID);
+    }
+
+    [TestMethod]
+    public void Get_values2()
+    {
+      //Arrange
+      nutility.ITypeClassMapper typemap = new nutility.TypeClassMapper(new Dictionary<Type, Type>
+      {
+        { typeof(lib1.ISource), typeof(liby.A) }
+      });
+      typemap.SetValue<int>("ID", 123);
+      typemap.SetValue<string>("Name", "name123");
 
       //Act
       var a = typemap.GetService<lib1.ISource>();

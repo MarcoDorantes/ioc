@@ -20,5 +20,8 @@ namespace nutility
     /// <typeparam name="T">Required Type</typeparam>
     /// <returns>Mapped Class</returns>
     T GetService<T>();
+
+    void SetValue<T>(string name, T value);
+    T GetValue<T>(string name);
   }
 }
