@@ -12,7 +12,7 @@ namespace nutility
     /// <summary>
     /// Existing type-class mappings.
     /// </summary>
-    IEnumerable<KeyValuePair<string, TypeClassName>> Mappings { get; }
+    IEnumerable<KeyValuePair<string, object>> Mappings { get; }
 
     /// <summary>
     /// For a given tradeoff between little syntactic sugar and the dependency to this ITypeClassMapper interface, this method would be the generic version of System.IServiceProvider.GetService method.
@@ -20,10 +20,6 @@ namespace nutility
     /// <typeparam name="T">Required Type</typeparam>
     /// <returns>Mapped Class</returns>
     T GetService<T>();
-
-    void AddMapping(Type type, TypeClassName name);
-    void AddMapping(Type type, object value);
-    
 
     void SetValue<T>(string name, T value);
     T GetValue<T>(string name);
