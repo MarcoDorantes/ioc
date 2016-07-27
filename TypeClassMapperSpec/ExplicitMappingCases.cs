@@ -38,6 +38,23 @@ namespace module3
   {
     public abstract string Name { get; }
   }
+  public class Source1 : app1.ISource
+  {
+    private string typemap_ctor;
+    public Source1(System.IServiceProvider typemap)
+    {
+      this.typemap_ctor = "System.IServiceProvider";
+    }
+    public Source1(nutility.ITypeClassMapper typemap)
+    {
+      this.typemap_ctor = "nutility.ITypeClassMapper";
+    }
+    public Source1(nutility.TypeClassMapper typemap)
+    {
+      this.typemap_ctor = "nutility.TypeClassMapper";
+    }
+    public string Name => typemap_ctor;
+  }
 }
 
 #endregion

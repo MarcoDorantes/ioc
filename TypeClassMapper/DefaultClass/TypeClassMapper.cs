@@ -184,7 +184,14 @@ namespace nutility
       }
       try
       {
-        return System.Activator.CreateInstance(mappedClass);
+        if (HasTypeClassMapConstructor(mappedClass))
+        {
+          return System.Activator.CreateInstance(mappedClass, this);
+        }
+        else
+        {
+          return System.Activator.CreateInstance(mappedClass);
+        }
       }
       catch (System.Reflection.TargetInvocationException exception)
       {
@@ -205,6 +212,13 @@ namespace nutility
     {
       return System.Type.GetType(classname);
     }
+
+    /// <summary>
+    /// True if the mapped class has a constructor with a single parameter of type System.IServiceProvider, ITypeClassMapper or TypeClassMapper.
+    /// </summary>
+    /// <param name="type">Class of object to be constructed.</param>
+    /// <returns>True if the mapped class has a constructor with a single parameter of type System.IServiceProvider, ITypeClassMapper or TypeClassMapper.</returns>
+    private bool HasTypeClassMapConstructor(Type type) => type.GetConstructor(new Type[] { typeof(System.IServiceProvider) }) != null || type.GetConstructor(new Type[] { typeof(nutility.ITypeClassMapper) }) != null || type.GetConstructor(new Type[] { typeof(nutility.TypeClassMapper) }) != null;
 
     private TypeClassMapperConfigurationSection GetConfiguration(string section = null)
     {

@@ -166,5 +166,18 @@ namespace TypeClassMapperSpec
       Assert.AreEqual<string>("Mapped class for type [app1.ISource] cannot be empty: [] at configured scope [F] and section [<default>]", exception.Message);
       Assert.IsNull(exception.InnerException);
     }
+
+    [TestMethod]
+    public void WithTypeClassConstructor()
+    {
+      //Arrange
+      var typemap = new nutility.TypeClassMapper(section: "sectionC");
+
+      //Act
+      var instance = typemap.GetService<app1.ISource>();
+
+      //Assert
+      Assert.AreEqual(typemap.GetType().FullName, instance.Name);
+    }
   }
 }
