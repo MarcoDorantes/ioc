@@ -18,8 +18,10 @@ namespace nutility
     /// <summary>
     /// Type-Creator mapping.
     /// </summary>
-    IDictionary<string, Func<object>> typecreatormap;
-    
+    private IDictionary<string, Func<object>> typecreatormap;
+
+    private Dictionary<string, object> values;
+
     /// <summary>
     /// Name of the configured Scope.
     /// </summary>
@@ -112,6 +114,11 @@ namespace nutility
       this.typecreatormap = new Dictionary<string, Func<object>>(typecreatormap);
     }
 
+    public TypeClassMapper(IDictionary<Type, Type> typeclassmap, IDictionary<string, object> values) : this(typeclassmap)
+    {
+      this.values = new Dictionary<string, object>(values);
+    }
+
     /// <summary>
     /// Existing type-class mappings.
     /// </summary>
@@ -164,6 +171,16 @@ namespace nutility
     /// <typeparam name="T">Required Type</typeparam>
     /// <returns>Mapped Class</returns>
     public T GetService<T>() => (T)this.GetService(typeof(T));
+
+    public T GetValue<T>(string name)
+    {
+      T result = default(T);
+      if (this.values.ContainsKey(name))
+      {
+        result = (T)this.values[name];
+      }
+      return result;
+    }
 
     /// <summary>
     /// A new instance is created from the mapped class.

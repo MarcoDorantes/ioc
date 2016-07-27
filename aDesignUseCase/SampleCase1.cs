@@ -52,7 +52,19 @@ namespace aDesignUseCase
         lines.Add(line);
       }
     }
-
+  }
+  namespace liby
+  {
+    class A : lib1.ISource
+    {
+      public A(nutility.TypeClassMapper typemap)
+      {
+        ID = typemap.GetValue<int>(nameof(ID));
+        Name = typemap.GetValue<string>(nameof(Name));
+      }
+      public int ID { get; private set; }
+      public string Name { get; private set; }
+    }
   }
   #endregion
 
@@ -80,6 +92,28 @@ namespace aDesignUseCase
       //Assert
       Assert.AreEqual<int>(2, target_stub.values.Count);
       Assert.IsTrue(log_stub.lines.All(line => line.EndsWith("ACK")));
+    }
+
+    [TestMethod]
+    public void Get_values()
+    {
+      //Arrange
+      var typemap = new nutility.TypeClassMapper(new Dictionary<Type, Type>
+      {
+        { typeof(lib1.ISource), typeof(liby.A) }
+      },
+      new Dictionary<string, object>
+      {
+        { "ID", 123 },
+        { "Name", "name123" }
+      });
+
+      //Act
+      var a = typemap.GetService<lib1.ISource>();
+
+      //Assert
+      Assert.AreEqual<string>("name123", a.Name);
+      Assert.AreEqual<int>(123, ((liby.A)a).ID);
     }
   }
 }
