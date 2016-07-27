@@ -103,6 +103,16 @@ namespace nutility
     }
 
     /// <summary>
+    /// For explicit type-class mappings.
+    /// </summary>
+    /// <param name="typeclassmap">Type-Class map</param>
+    /// <param name="typecreatormap">Type-Creator map</param>
+    public TypeClassMapper(IDictionary<Type, Type> typeclassmap, IDictionary<string, Func<object>> typecreatormap) : this(typeclassmap)
+    {
+      this.typecreatormap = new Dictionary<string, Func<object>>(typecreatormap);
+    }
+
+    /// <summary>
     /// Existing type-class mappings.
     /// </summary>
     public IEnumerable<KeyValuePair<string, object>> Mappings { get { return typemap; } }
@@ -123,7 +133,14 @@ namespace nutility
       {
         if (typecreatormap[requiredType.FullName] != null)
         {
-          mapped_value = typecreatormap[requiredType.FullName]();
+          try
+          {
+            mapped_value = typecreatormap[requiredType.FullName]();
+          }
+          catch (Exception exception)
+          {
+            throw new TypeClassMapperException($"Class creator throws for Type [{requiredType}] at configured scope [{scope ?? "<default>"}] and section [{section ?? "<default>"}]. Check InnerException.", exception);
+          }
         }
       }
       else

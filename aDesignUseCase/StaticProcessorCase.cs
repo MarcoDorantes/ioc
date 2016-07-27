@@ -638,5 +638,62 @@ namespace aDesignUseCase
       //Assert
       Assert.AreEqual<decimal>(102, response.RiskAmount);
     }
+
+    [TestMethod]
+    public void ProcessorStaticOperation1WithInstances_D()
+    {
+      //Arrange
+      var typemap = new nutility.TypeClassMapper(new Dictionary<Type, Type>
+      {
+        { typeof(App2.BusinessLayer.IProfile), typeof(App2.DataAccess.Profile) }
+      },
+      new Dictionary<string, Func<object>>
+      {
+        { "App2.BusinessLayer.ITransit", new Func<object>(App2.DataAccess.Factory1.CreateInstance) },
+        { "App2.BusinessLayer.IThreshold", new Func<object>((new App2.DataAccess.Factory2()).CreateInstance) }
+      });
+      var request = new App2.Contract.RiskRequest() { Threshold = 501 };
+
+      //Act
+      App2.Contract.RiskResponse response = App2.BusinessLayer.ProcessorA.GetRisk(request, typemap);
+
+      //Assert
+      Assert.AreEqual<decimal>(102, response.RiskAmount);
+    }
+
+    [TestMethod]
+    public void ProcessorStaticOperation1WithInstances_D_WithException()
+    {
+      //Arrange
+      var typemap = new nutility.TypeClassMapper(new Dictionary<Type, Type>
+      {
+        { typeof(App2.BusinessLayer.IProfile), typeof(App2.DataAccess.Profile) }
+      },
+      new Dictionary<string, Func<object>>
+      {
+        { "App2.BusinessLayer.ITransit", new Func<object>(()=> { throw new Exception("creation exception"); } ) },
+        { "App2.BusinessLayer.IThreshold", new Func<object>((new App2.DataAccess.Factory2()).CreateInstance) }
+      });
+      var request = new App2.Contract.RiskRequest() { Threshold = 501 };
+
+      //Act
+      Exception exception = null;
+      try
+      {
+        App2.Contract.RiskResponse response = App2.BusinessLayer.ProcessorA.GetRisk(request, typemap);
+      }
+      catch (Exception ex)
+      {
+        exception = ex;
+      }
+
+      //Assert
+      Assert.IsNotNull(exception);
+      Assert.AreEqual<Type>(typeof(nutility.TypeClassMapperException), exception.GetType());
+      Assert.AreEqual<string>("Class creator throws for Type [App2.BusinessLayer.ITransit] at configured scope [<explicit>] and section [<explicit>]. Check InnerException.", exception.Message);
+      Assert.IsNotNull(exception.InnerException);
+      Assert.IsInstanceOfType(exception.InnerException, typeof(System.Exception));
+      Assert.AreEqual<string>("creation exception", exception.InnerException.Message);
+    }
   }
 }
