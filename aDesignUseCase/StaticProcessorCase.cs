@@ -508,7 +508,7 @@ namespace aDesignUseCase
     public void ProcessorStaticOperation1_A()
     {
       //Arrange
-      var typemap = new nutility.TypeClassMapper(new Dictionary<string, object>
+      var typemap = new nutility.TypeClassMapper(new Dictionary<string, nutility.TypeClassName>
       {
         { "App2.BusinessLayer.ITransit", "App2.DataAccess.Transit, aDesignUseCase" },
         { "App2.BusinessLayer.IProfile", "App2.DataAccess.Profile, aDesignUseCase" },
@@ -527,7 +527,7 @@ namespace aDesignUseCase
     public void ProcessorStaticOperation1_B()
     {
       //Arrange
-      var typemap = new nutility.TypeClassMapper(new Dictionary<Type, object>
+      var typemap = new nutility.TypeClassMapper(new Dictionary<Type, nutility.TypeClassName>
       {
         { typeof(App2.BusinessLayer.ITransit), typeof(App2.DataAccess.Transit).AssemblyQualifiedName },
         { typeof(App2.BusinessLayer.IProfile), "App2.DataAccess.Profile, aDesignUseCase" },
@@ -565,11 +565,16 @@ namespace aDesignUseCase
     public void ProcessorStaticOperation2_B()
     {
       //Arrange
-      var typemap = new nutility.TypeClassMapper(new Dictionary<Type, object>
-      {
-        { typeof(App2.BusinessLayer.IProfile), "App2.DataAccess.Profile, aDesignUseCase" },
-        { typeof(App2.BusinessLayer.IThreshold), new App2.DataAccess.Threshold() { data=new App2.DataAccess.TestDataReader(new Dictionary<string, object> { { "Field3", 200M }, { "Field4", 300M } }) } }
-      });
+      var typemap = new nutility.TypeClassMapper(
+        new Dictionary<Type, object>
+        {
+          { typeof(App2.BusinessLayer.IProfile), "App2.DataAccess.Profile, aDesignUseCase" }
+        },
+        new Dictionary<Type, object>
+        {
+          typeof(App2.BusinessLayer.IThreshold), new App2.DataAccess.Threshold() { data=new App2.DataAccess.TestDataReader(new Dictionary<string, object> { { "Field3", 200M }, { "Field4", 300M } }) } }
+        }
+      );
       var request = new App2.Contract.RiskRequest() { Threshold = 105 };
 
       //Act

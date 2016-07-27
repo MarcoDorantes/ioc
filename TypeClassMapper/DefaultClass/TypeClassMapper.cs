@@ -111,7 +111,7 @@ namespace nutility
       this.scope = "<explicit>";
       this.section = "<explicit>";
       this.typemap = new Dictionary<string, TypeClassName>();
-      this.typeobjectmap = typeobjectmap.Aggregate(new Dictionary<string, object>(), (whole, next) => { whole.Add(next.Key.FullName, next); return whole; });
+      this.typeobjectmap = typeobjectmap.Aggregate(new Dictionary<string, object>(), (whole, next) => { whole.Add(next.Key.FullName, next.Value); return whole; });
       this.typecreatormap = new Dictionary<string, Func<object>>();
       this.values = new Dictionary<string, object>();
     }
@@ -209,6 +209,7 @@ namespace nutility
       }
       else if (typeobjectmap.ContainsKey(requiredType.FullName))
       {
+System.Diagnostics.Trace.WriteLine("typeobjectmap.ContainsKey");
         mapped_value = typeobjectmap[requiredType.FullName];
       }
       else

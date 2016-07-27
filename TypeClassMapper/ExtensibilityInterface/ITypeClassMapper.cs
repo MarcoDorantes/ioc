@@ -23,11 +23,28 @@ namespace nutility
 
     //void AddMapping(Type type, TypeClassName name);
     //void AddMapping(Type type, object value);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="value"></param>
     void AddMapping<T>(T value);
-//    void AddMapping(Type type, object value);
 
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="name"></param>
+    /// <param name="value"></param>
     void SetValue<T>(string name, T value);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="name"></param>
+    /// <returns></returns>
     T GetValue<T>(string name);
   }
 }

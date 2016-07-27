@@ -96,9 +96,12 @@ namespace aDesignUseCase
       });
 
       //Act
-      var processor = new lib1.sample.CopyProcessor(typemap);
-      processor.Copy();
-
+try
+{
+        var processor = new lib1.sample.CopyProcessor(typemap);
+        processor.Copy();
+}
+catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex.ToString()); }
       //Assert
       Assert.AreEqual<int>(2, target_stub.values.Count);
       Assert.IsTrue(log_stub.lines.All(line => line.EndsWith("ACK")));
@@ -153,8 +156,6 @@ namespace aDesignUseCase
       {
         { typeof(lib1.ISource), typeof(liby.B) }
       });
-      //typemap.AddMapping(typeof(int), 123);
-      //typemap.AddMapping(typeof(string), (object)"name123");
       typemap.AddMapping<int>(123);
       typemap.AddMapping<string>("name123");
 
