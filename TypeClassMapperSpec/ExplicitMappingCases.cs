@@ -68,7 +68,7 @@ namespace TypeClassMapperSpec
     public void VeryBasicUseCase()
     {
       //Arrange
-      var typemap = new nutility.TypeClassMapper(new Dictionary<string, nutility.TypeClassID> { { "app1.ISource", "module1.Source, TypeClassMapperSpec" } });
+      var typemap = new nutility.TypeClassMapper(new Dictionary<nutility.TypeClassID, nutility.TypeClassID> { { "app1.ISource", "module1.Source, TypeClassMapperSpec" } });
 
       //Act
       var instance = (app1.ISource)typemap.GetService(typeof(app1.ISource));
@@ -81,7 +81,7 @@ namespace TypeClassMapperSpec
     public void BadMappings()
     {
       //Arrange
-      IDictionary<string, nutility.TypeClassID> mappings = null;
+      IDictionary<nutility.TypeClassID, nutility.TypeClassID> mappings = null;
 
       //Act
       Exception exception = null;
@@ -105,7 +105,7 @@ namespace TypeClassMapperSpec
     public void BadRequiredType()
     {
       //Arrange
-      var typemap = new nutility.TypeClassMapper(new Dictionary<string, object> { { "app1.ISource", "bad.Source, TypeClassMapperSpec" } });
+      var typemap = new nutility.TypeClassMapper(new Dictionary<nutility.TypeClassID, object> { { "app1.ISource", "bad.Source, TypeClassMapperSpec" } });
 
       //Act
       Exception exception = null;
@@ -129,7 +129,7 @@ namespace TypeClassMapperSpec
     public void BadTypeName()
     {
       //Arrange
-      var typemap = new nutility.TypeClassMapper(new Dictionary<string, nutility.TypeClassID> { { "bad.ISource", "module1.Source, TypeClassMapperSpec" } });
+      var typemap = new nutility.TypeClassMapper(new Dictionary<nutility.TypeClassID, nutility.TypeClassID> { { "bad.ISource", "module1.Source, TypeClassMapperSpec" } });
 
       //Act
       Exception exception = null;
@@ -153,7 +153,7 @@ namespace TypeClassMapperSpec
     public void BadClassName()
     {
       //Arrange
-      var typemap = new nutility.TypeClassMapper(new Dictionary<string, nutility.TypeClassID> { { "app1.ISource", "bad.Source, TypeClassMapperSpec" } });
+      var typemap = new nutility.TypeClassMapper(new Dictionary<nutility.TypeClassID, nutility.TypeClassID> { { "app1.ISource", "bad.Source, TypeClassMapperSpec" } });
 
       //Act
       Exception exception = null;
@@ -201,7 +201,7 @@ namespace TypeClassMapperSpec
     public void BadEmptyClassName()
     {
       //Arrange
-      var typemap = new nutility.TypeClassMapper(new Dictionary<string, nutility.TypeClassID> { { "app1.ISource", "" } });
+      var typemap = new nutility.TypeClassMapper(new Dictionary<nutility.TypeClassID, nutility.TypeClassID> { { "app1.ISource", "" } });
 
       //Act
       Exception exception = null;
@@ -273,7 +273,7 @@ namespace TypeClassMapperSpec
     public void NullMappedInstance()
     {
       //Arrange
-      var typemap = new nutility.TypeClassMapper(new Dictionary<string, object> { { "app1.ISource", null } });
+      var typemap = new nutility.TypeClassMapper(new Dictionary<nutility.TypeClassID, object> { { "app1.ISource", null } });
 
       //Act
       var instance = (app1.ISource)typemap.GetService(typeof(app1.ISource));
@@ -299,7 +299,7 @@ namespace TypeClassMapperSpec
     public void BadTypeInit()
     {
       //Arrange
-      var typemap = new nutility.TypeClassMapper(new Dictionary<string, nutility.TypeClassID> { { "app1.ISource", "module2.Source, TypeClassMapperSpec" } });
+      var typemap = new nutility.TypeClassMapper(new Dictionary<nutility.TypeClassID, nutility.TypeClassID> { { "app1.ISource", "module2.Source, TypeClassMapperSpec" } });
 
       //Act
       Exception exception = null;
@@ -377,7 +377,7 @@ namespace TypeClassMapperSpec
     public void BadTypeLoad()
     {
       //Arrange
-      var typemap = new nutility.TypeClassMapper(new Dictionary<string, nutility.TypeClassID> { { "app1.ISource", "module3.Source, TypeClassMapperSpec" } });
+      var typemap = new nutility.TypeClassMapper(new Dictionary<nutility.TypeClassID, nutility.TypeClassID> { { "app1.ISource", "module3.Source, TypeClassMapperSpec" } });
 
       //Act
       Exception exception = null;

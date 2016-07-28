@@ -115,7 +115,7 @@ catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex.ToString()); }
       {
         { typeof(lib1.ISource), typeof(liby.A) }
       },
-      new Dictionary<string, object>
+      new Dictionary<nutility.TypeClassID, object>
       {
         { "ID", 123 },
         { "Name", "name123" }
@@ -152,10 +152,13 @@ catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex.ToString()); }
     public void AddMappingsAndGetAsValues()
     {
       //Arrange
-      nutility.ITypeClassMapper typemap = new nutility.TypeClassMapper(new Dictionary<Type, Type>
-      {
-        { typeof(lib1.ISource), typeof(liby.B) }
-      });
+      nutility.ITypeClassMapper typemap = new nutility.TypeClassMapper
+      (
+        new Dictionary<Type, Type>
+        {
+          { typeof(lib1.ISource), typeof(liby.B) }
+        }
+      );
       typemap.AddMapping<int>(123);
       typemap.AddMapping<string>("name123");
 

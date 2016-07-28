@@ -508,7 +508,7 @@ namespace aDesignUseCase
     public void ProcessorStaticOperation1_A()
     {
       //Arrange
-      var typemap = new nutility.TypeClassMapper(new Dictionary<string, nutility.TypeClassID>
+      var typemap = new nutility.TypeClassMapper(new Dictionary<nutility.TypeClassID, nutility.TypeClassID>
       {
         { "App2.BusinessLayer.ITransit", "App2.DataAccess.Transit, aDesignUseCase" },
         { "App2.BusinessLayer.IProfile", "App2.DataAccess.Profile, aDesignUseCase" },
@@ -658,7 +658,7 @@ namespace aDesignUseCase
       {
         { typeof(App2.BusinessLayer.IProfile), typeof(App2.DataAccess.Profile) }
       },
-      new Dictionary<string, Func<object>>
+      new Dictionary<nutility.TypeClassID, Func<object>>
       {
         { "App2.BusinessLayer.ITransit", new Func<object>(App2.DataAccess.Factory1.CreateInstance) },
         { "App2.BusinessLayer.IThreshold", new Func<object>((new App2.DataAccess.Factory2()).CreateInstance) }
@@ -680,7 +680,7 @@ namespace aDesignUseCase
       {
         { typeof(App2.BusinessLayer.IProfile), typeof(App2.DataAccess.Profile) }
       },
-      new Dictionary<string, Func<object>>
+      new Dictionary<nutility.TypeClassID, Func<object>>
       {
         { "App2.BusinessLayer.ITransit", new Func<object>(()=> { throw new Exception("creation exception"); } ) },
         { "App2.BusinessLayer.IThreshold", new Func<object>((new App2.DataAccess.Factory2()).CreateInstance) }

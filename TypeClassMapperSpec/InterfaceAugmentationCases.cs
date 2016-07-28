@@ -18,7 +18,7 @@ namespace TypeClassMapperSpec
         {
           { typeof(app1.ISource), "module1.Source, TypeClassMapperSpec" },
         },
-        new Dictionary<string, object>
+        new Dictionary<nutility.TypeClassID, object>
         {
           { "app1.ITarget", new object() },
           { "app1.ILog", null }
@@ -28,10 +28,10 @@ namespace TypeClassMapperSpec
       //Act
       var count = typemap.Mappings.Count();
       //bool found = typemap.Mappings.Any(mapping => mapping.Key == "app1.ISource" && mapping.Value.ToString().StartsWith("module1.Source"));
-      bool notfound = typemap.Mappings.Any(mapping => mapping.Key == "someother.ITarget");
-      string mapped_found = typemap.Mappings.FirstOrDefault(mapping => mapping.Key == "app1.ISource").Value.ToString();
-      nutility.TypeClassID mapped_notfound = typemap.Mappings.FirstOrDefault(mapping => mapping.Key == "none.ISome").Value;
-      object target = typemap.Mappings.FirstOrDefault(mapping => mapping.Key == "app1.ISource").Value;
+      bool notfound = typemap.Mappings.Any(mapping => mapping.Key.ID == "someother.ITarget");
+      string mapped_found = typemap.Mappings.FirstOrDefault(mapping => mapping.Key.ID == "app1.ISource").Value.ToString();
+      nutility.TypeClassID mapped_notfound = typemap.Mappings.FirstOrDefault(mapping => mapping.Key.ID == "none.ISome").Value;
+      object target = typemap.Mappings.FirstOrDefault(mapping => mapping.Key.ID == "app1.ISource").Value;
       int null_instances = typemap.Mappings.Count(mapping => mapping.Value == null);
 
       //Assert
@@ -48,7 +48,7 @@ namespace TypeClassMapperSpec
     public void GenericExpresionForGetService()
     {
       //Arrange
-      nutility.ITypeClassMapper typemap = new nutility.TypeClassMapper(new Dictionary<string, nutility.TypeClassID>
+      nutility.ITypeClassMapper typemap = new nutility.TypeClassMapper(new Dictionary<nutility.TypeClassID, nutility.TypeClassID>
       {
         { "app1.ISource", "module1.Source, TypeClassMapperSpec" }
       });
