@@ -68,7 +68,7 @@ namespace TypeClassMapperSpec
     public void VeryBasicUseCase()
     {
       //Arrange
-      var typemap = new nutility.TypeClassMapper(new Dictionary<string, nutility.TypeClassName> { { "app1.ISource", "module1.Source, TypeClassMapperSpec" } });
+      var typemap = new nutility.TypeClassMapper(new Dictionary<string, nutility.TypeClassID> { { "app1.ISource", "module1.Source, TypeClassMapperSpec" } });
 
       //Act
       var instance = (app1.ISource)typemap.GetService(typeof(app1.ISource));
@@ -81,7 +81,7 @@ namespace TypeClassMapperSpec
     public void BadMappings()
     {
       //Arrange
-      IDictionary<string, nutility.TypeClassName> mappings = null;
+      IDictionary<string, nutility.TypeClassID> mappings = null;
 
       //Act
       Exception exception = null;
@@ -129,7 +129,7 @@ namespace TypeClassMapperSpec
     public void BadTypeName()
     {
       //Arrange
-      var typemap = new nutility.TypeClassMapper(new Dictionary<string, nutility.TypeClassName> { { "bad.ISource", "module1.Source, TypeClassMapperSpec" } });
+      var typemap = new nutility.TypeClassMapper(new Dictionary<string, nutility.TypeClassID> { { "bad.ISource", "module1.Source, TypeClassMapperSpec" } });
 
       //Act
       Exception exception = null;
@@ -153,7 +153,7 @@ namespace TypeClassMapperSpec
     public void BadClassName()
     {
       //Arrange
-      var typemap = new nutility.TypeClassMapper(new Dictionary<string, nutility.TypeClassName> { { "app1.ISource", "bad.Source, TypeClassMapperSpec" } });
+      var typemap = new nutility.TypeClassMapper(new Dictionary<string, nutility.TypeClassID> { { "app1.ISource", "bad.Source, TypeClassMapperSpec" } });
 
       //Act
       Exception exception = null;
@@ -177,7 +177,7 @@ namespace TypeClassMapperSpec
     public void BadClassName2()
     {
       //Arrange
-      var typemap = new nutility.TypeClassMapper(new Dictionary<Type, nutility.TypeClassName> { { typeof(app1.ISource), "bad.Source, TypeClassMapperSpec" } });
+      var typemap = new nutility.TypeClassMapper(new Dictionary<Type, nutility.TypeClassID> { { typeof(app1.ISource), "bad.Source, TypeClassMapperSpec" } });
 
       //Act
       Exception exception = null;
@@ -201,7 +201,7 @@ namespace TypeClassMapperSpec
     public void BadEmptyClassName()
     {
       //Arrange
-      var typemap = new nutility.TypeClassMapper(new Dictionary<string, nutility.TypeClassName> { { "app1.ISource", "" } });
+      var typemap = new nutility.TypeClassMapper(new Dictionary<string, nutility.TypeClassID> { { "app1.ISource", "" } });
 
       //Act
       Exception exception = null;
@@ -225,7 +225,7 @@ namespace TypeClassMapperSpec
     public void BadEmptyClassName2()
     {
       //Arrange
-      var typemap = new nutility.TypeClassMapper(new Dictionary<Type, nutility.TypeClassName> { { typeof(app1.ISource), "" } });
+      var typemap = new nutility.TypeClassMapper(new Dictionary<Type, nutility.TypeClassID> { { typeof(app1.ISource), "" } });
 
       //Act
       Exception exception = null;
@@ -242,6 +242,30 @@ namespace TypeClassMapperSpec
       Assert.IsNotNull(exception);
       Assert.AreEqual<Type>(typeof(nutility.TypeClassMapperException), exception.GetType());
       Assert.AreEqual<string>("Mapped class for type [app1.ISource] cannot be empty: [] at configured scope [<explicit>] and section [<explicit>]", exception.Message);
+      Assert.IsNull(exception.InnerException);
+    }
+
+    [TestMethod]
+    public void BadNullClassName()
+    {
+      //Arrange
+      var typemap = new nutility.TypeClassMapper(new Dictionary<Type, nutility.TypeClassID> { { typeof(app1.ISource), null } });
+
+      //Act
+      Exception exception = null;
+      try
+      {
+        var instance = (app1.ISource)typemap.GetService(typeof(app1.ISource));
+      }
+      catch (Exception ex)
+      {
+        exception = ex;
+      }
+
+      //Assert
+      Assert.IsNotNull(exception);
+      Assert.AreEqual<Type>(typeof(nutility.TypeClassMapperException), exception.GetType());
+      Assert.AreEqual<string>("Mapped class for type [app1.ISource] cannot be null: at configured scope [<explicit>] and section [<explicit>]", exception.Message);
       Assert.IsNull(exception.InnerException);
     }
 
@@ -275,7 +299,7 @@ namespace TypeClassMapperSpec
     public void BadTypeInit()
     {
       //Arrange
-      var typemap = new nutility.TypeClassMapper(new Dictionary<string, nutility.TypeClassName> { { "app1.ISource", "module2.Source, TypeClassMapperSpec" } });
+      var typemap = new nutility.TypeClassMapper(new Dictionary<string, nutility.TypeClassID> { { "app1.ISource", "module2.Source, TypeClassMapperSpec" } });
 
       //Act
       Exception exception = null;
@@ -327,7 +351,7 @@ namespace TypeClassMapperSpec
     public void BadTypeInit3()
     {
       //Arrange
-      var typemap = new nutility.TypeClassMapper(new Dictionary<Type, nutility.TypeClassName> { { typeof(app1.ISource), "module2.Source, TypeClassMapperSpec" } });
+      var typemap = new nutility.TypeClassMapper(new Dictionary<Type, nutility.TypeClassID> { { typeof(app1.ISource), "module2.Source, TypeClassMapperSpec" } });
 
       //Act
       Exception exception = null;
@@ -353,7 +377,7 @@ namespace TypeClassMapperSpec
     public void BadTypeLoad()
     {
       //Arrange
-      var typemap = new nutility.TypeClassMapper(new Dictionary<string, nutility.TypeClassName> { { "app1.ISource", "module3.Source, TypeClassMapperSpec" } });
+      var typemap = new nutility.TypeClassMapper(new Dictionary<string, nutility.TypeClassID> { { "app1.ISource", "module3.Source, TypeClassMapperSpec" } });
 
       //Act
       Exception exception = null;
@@ -405,7 +429,7 @@ namespace TypeClassMapperSpec
     public void BadTypeLoad3()
     {
       //Arrange
-      var typemap = new nutility.TypeClassMapper(new Dictionary<Type, nutility.TypeClassName> { { typeof(app1.ISource), "module3.Source, TypeClassMapperSpec" } });
+      var typemap = new nutility.TypeClassMapper(new Dictionary<Type, nutility.TypeClassID> { { typeof(app1.ISource), "module3.Source, TypeClassMapperSpec" } });
 
       //Act
       Exception exception = null;

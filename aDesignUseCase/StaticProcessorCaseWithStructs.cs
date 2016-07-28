@@ -93,7 +93,7 @@ namespace aDesignUseCase
     public void ProcessorStaticOperation1()
     {
       //Arrange
-      var typemap = new nutility.TypeClassMapper(new Dictionary<string, nutility.TypeClassName>
+      var typemap = new nutility.TypeClassMapper(new Dictionary<string, nutility.TypeClassID>
       {
         { "App3.BusinessLayer.ITransit", "App3.DataAccess.Transit, aDesignUseCase" },
         { "App3.BusinessLayer.IProfile", "App3.DataAccess.Profile, aDesignUseCase" },
@@ -113,7 +113,7 @@ namespace aDesignUseCase
     {
       //Arrange
       var typemap = new nutility.TypeClassMapper(
-        new Dictionary<Type, nutility.TypeClassName>
+        new Dictionary<Type, nutility.TypeClassID>
         {
           { typeof(App3.BusinessLayer.IProfile), "App3.DataAccess.Profile, aDesignUseCase" },
         },

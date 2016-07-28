@@ -14,7 +14,7 @@ namespace TypeClassMapperSpec
       //Arrange
       var typemap = new nutility.TypeClassMapper
       (
-        new Dictionary<Type, nutility.TypeClassName>
+        new Dictionary<Type, nutility.TypeClassID>
         {
           { typeof(app1.ISource), "module1.Source, TypeClassMapperSpec" },
         },
@@ -30,7 +30,7 @@ namespace TypeClassMapperSpec
       //bool found = typemap.Mappings.Any(mapping => mapping.Key == "app1.ISource" && mapping.Value.ToString().StartsWith("module1.Source"));
       bool notfound = typemap.Mappings.Any(mapping => mapping.Key == "someother.ITarget");
       string mapped_found = typemap.Mappings.FirstOrDefault(mapping => mapping.Key == "app1.ISource").Value.ToString();
-      nutility.TypeClassName mapped_notfound = typemap.Mappings.FirstOrDefault(mapping => mapping.Key == "none.ISome").Value;
+      nutility.TypeClassID mapped_notfound = typemap.Mappings.FirstOrDefault(mapping => mapping.Key == "none.ISome").Value;
       object target = typemap.Mappings.FirstOrDefault(mapping => mapping.Key == "app1.ISource").Value;
       int null_instances = typemap.Mappings.Count(mapping => mapping.Value == null);
 
@@ -48,7 +48,7 @@ namespace TypeClassMapperSpec
     public void GenericExpresionForGetService()
     {
       //Arrange
-      nutility.ITypeClassMapper typemap = new nutility.TypeClassMapper(new Dictionary<string, nutility.TypeClassName>
+      nutility.ITypeClassMapper typemap = new nutility.TypeClassMapper(new Dictionary<string, nutility.TypeClassID>
       {
         { "app1.ISource", "module1.Source, TypeClassMapperSpec" }
       });

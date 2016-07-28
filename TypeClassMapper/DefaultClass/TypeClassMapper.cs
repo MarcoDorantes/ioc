@@ -4,19 +4,19 @@ using System.Collections.Generic;
 
 namespace nutility
 {
-  public class TypeClassName
+  public class TypeClassID
   {
-    public TypeClassName(string name)
+    public TypeClassID(string id)
     {
-      Name = name;
+      ID = id;
     }
 
-    public string Name { get; private set; }
+    public string ID { get; private set; }
     public override string ToString()
     {
-      return Name;
+      return ID;
     }
-    public static implicit operator TypeClassName(string name) => new TypeClassName(name);
+    public static implicit operator TypeClassID(string name) => new TypeClassID(name);
   }
 
   /// <summary>
@@ -28,7 +28,7 @@ namespace nutility
     /// <summary>
     /// Keep basic Type - Class mapping.
     /// </summary>
-    private IDictionary<string, TypeClassName> typemap;
+    private IDictionary<string, TypeClassID> typemap;
 
     private IDictionary<string, object> typeobjectmap;
 
@@ -116,7 +116,7 @@ namespace nutility
     /// For explicit type-class mappings.
     /// </summary>
     /// <param name="typeclassmap">Type-Class map</param>
-    public TypeClassMapper(IDictionary<string, TypeClassName> typeclassmap)
+    public TypeClassMapper(IDictionary<string, TypeClassID> typeclassmap)
     {
       if (typeclassmap == null)
       {
@@ -124,7 +124,7 @@ namespace nutility
       }
       this.scope = "<explicit>";
       this.section = "<explicit>";
-      this.typemap = new Dictionary<string, TypeClassName>(typeclassmap);
+      this.typemap = new Dictionary<string, TypeClassID>(typeclassmap);
       this.typeobjectmap = new Dictionary<string, object>();
       this.typecreatormap = new Dictionary<string, Func<object>>();
       this.values = new Dictionary<string, object>();
@@ -134,7 +134,7 @@ namespace nutility
     /// For explicit type-class mappings.
     /// </summary>
     /// <param name="typeclassmap">Type-Class map</param>
-    public TypeClassMapper(IDictionary<Type, TypeClassName> typeclassmap)
+    public TypeClassMapper(IDictionary<Type, TypeClassID> typeclassmap)
     {
       if (typeclassmap == null)
       {
@@ -142,7 +142,7 @@ namespace nutility
       }
       this.scope = "<explicit>";
       this.section = "<explicit>";
-      this.typemap = typeclassmap.Aggregate(new Dictionary<string, TypeClassName>(), (whole, next) => { whole.Add(next.Key.FullName, next.Value); return whole; });
+      this.typemap = typeclassmap.Aggregate(new Dictionary<string, TypeClassID>(), (whole, next) => { whole.Add(next.Key.FullName, next.Value); return whole; });
       this.typeobjectmap = new Dictionary<string, object>();
       this.typecreatormap = new Dictionary<string, Func<object>>();
       this.values = new Dictionary<string, object>();
@@ -160,7 +160,7 @@ namespace nutility
       }
       this.scope = "<explicit>";
       this.section = "<explicit>";
-      this.typemap = typeclassmap.Aggregate(new Dictionary<string, TypeClassName>(), (whole, next) => { whole.Add(next.Key.FullName, next.Value.AssemblyQualifiedName); return whole; });
+      this.typemap = typeclassmap.Aggregate(new Dictionary<string, TypeClassID>(), (whole, next) => { whole.Add(next.Key.FullName, next.Value.AssemblyQualifiedName); return whole; });
       this.typeobjectmap = new Dictionary<string, object>();
       this.typecreatormap = new Dictionary<string, Func<object>>();
       this.values = new Dictionary<string, object>();
@@ -178,7 +178,7 @@ namespace nutility
       }
       this.scope = "<explicit>";
       this.section = "<explicit>";
-      this.typemap = new Dictionary<string, TypeClassName>();
+      this.typemap = new Dictionary<string, TypeClassID>();
       this.typeobjectmap = new Dictionary<string, object>(typeobjectmap);
       this.typecreatormap = new Dictionary<string, Func<object>>();
       this.values = new Dictionary<string, object>();
@@ -196,13 +196,13 @@ namespace nutility
       }
       this.scope = "<explicit>";
       this.section = "<explicit>";
-      this.typemap = new Dictionary<string, TypeClassName>();
+      this.typemap = new Dictionary<string, TypeClassID>();
       this.typeobjectmap = typeobjectmap.Aggregate(new Dictionary<string, object>(), (whole, next) => { whole.Add(next.Key.FullName, next.Value); return whole; });
       this.typecreatormap = new Dictionary<string, Func<object>>();
       this.values = new Dictionary<string, object>();
     }
 
-    public TypeClassMapper(IDictionary<Type, TypeClassName> typeclassmap, IEnumerable<KeyValuePair<Type, object>> typeobjectmap) : this(typeclassmap)
+    public TypeClassMapper(IDictionary<Type, TypeClassID> typeclassmap, IEnumerable<KeyValuePair<Type, object>> typeobjectmap) : this(typeclassmap)
     {
       this.typeobjectmap = typeobjectmap.Aggregate(new Dictionary<string, object>(), (whole, next) => { whole.Add(next.Key.FullName, next.Value); return whole; });
     }
@@ -232,12 +232,12 @@ namespace nutility
       this.typecreatormap = new Dictionary<string, Func<object>>(typecreatormap);
     }
 
-    public TypeClassMapper(IDictionary<string, TypeClassName> typeclassmap, IDictionary<string, object> values) : this(typeclassmap)
+    public TypeClassMapper(IDictionary<string, TypeClassID> typeclassmap, IDictionary<string, object> values) : this(typeclassmap)
     {
       this.values = new Dictionary<string, object>(values);
     }
 
-    public TypeClassMapper(IDictionary<Type, TypeClassName> typeclassmap, IDictionary<string, object> values) : this(typeclassmap)
+    public TypeClassMapper(IDictionary<Type, TypeClassID> typeclassmap, IDictionary<string, object> values) : this(typeclassmap)
     {
       this.values = new Dictionary<string, object>(values);
     }
@@ -250,7 +250,7 @@ namespace nutility
     /// <summary>
     /// Existing type-class mappings.
     /// </summary>
-    public IEnumerable<KeyValuePair<string, TypeClassName>> Mappings { get { return typemap; } }
+    public IEnumerable<KeyValuePair<string, TypeClassID>> Mappings { get { return typemap; } }
 
     /// <summary>
     /// Given a Type, it returns its configured/mapped Class.
@@ -280,7 +280,6 @@ namespace nutility
       }
       else if (typeobjectmap.ContainsKey(requiredType.FullName))
       {
-System.Diagnostics.Trace.WriteLine("typeobjectmap.ContainsKey");
         mapped_value = typeobjectmap[requiredType.FullName];
       }
       else
@@ -289,9 +288,8 @@ System.Diagnostics.Trace.WriteLine("typeobjectmap.ContainsKey");
         {
           throw new TypeClassMapperException($"Type not found: [{requiredType.FullName}] at configured scope [{scope ?? "<default>"}] and section [{section ?? "<default>"}]");
         }
-        TypeClassName mapped_classname = typemap[requiredType.FullName];
-        //TypeClassName mapped_classname = typemap.ContainsKey(requiredType.FullName) ? typemap[requiredType.FullName] : requiredType.FullName;
-        mapped_value = CreateInstanceOfMappedClass(mapped_classname.Name, requiredType);
+        TypeClassID mapped_classname = typemap[requiredType.FullName];
+        mapped_value = CreateInstanceOfMappedClass(mapped_classname, requiredType);
       }
       return mapped_value;
     }
@@ -339,9 +337,9 @@ System.Diagnostics.Trace.WriteLine("typeobjectmap.ContainsKey");
     /// <param name="value"></param>
     public void AddMapping<T>(T value)
     {
-      if (typeof(T) == typeof(TypeClassName))
+      if (typeof(T) == typeof(TypeClassID))
       {
-        this.typemap.Add(typeof(TypeClassName).FullName, (TypeClassName)Convert.ChangeType(value, typeof(TypeClassName)));
+        this.typemap.Add(typeof(TypeClassID).FullName, (TypeClassID)Convert.ChangeType(value, typeof(TypeClassID)));
       }
       else
       {
@@ -382,16 +380,20 @@ System.Diagnostics.Trace.WriteLine("typeobjectmap.ContainsKey");
     /// <param name="classname">Name of the mapped class</param>
     /// <param name="requiredType">Required type</param>
     /// <returns></returns>
-    private object CreateInstanceOfMappedClass(string classname, Type requiredType)
+    private object CreateInstanceOfMappedClass(TypeClassID classname, Type requiredType)
     {
-      if (string.IsNullOrWhiteSpace(classname))
+      if (classname == null)
       {
-        throw new TypeClassMapperException($"Mapped class for type [{requiredType.FullName}] cannot be empty: [{classname}] at configured scope [{scope ?? "<default>"}] and section [{section ?? "<default>"}]");
+        throw new TypeClassMapperException($"Mapped class for type [{requiredType.FullName}] cannot be null: at configured scope [{scope ?? "<default>"}] and section [{section ?? "<default>"}]");
       }
-      Type mappedClass = GetClass(classname);
+      if (string.IsNullOrWhiteSpace(classname.ID))
+      {
+        throw new TypeClassMapperException($"Mapped class for type [{requiredType.FullName}] cannot be empty: [{classname.ID}] at configured scope [{scope ?? "<default>"}] and section [{section ?? "<default>"}]");
+      }
+      Type mappedClass = GetClass(classname.ID);
       if (mappedClass == null)
       {
-        throw new TypeClassMapperException($"Mapped class for type [{requiredType.FullName}] not found: [{classname}] at configured scope [{scope ?? "<default>"}] and section [{section ?? "<default>"}]");
+        throw new TypeClassMapperException($"Mapped class for type [{requiredType.FullName}] not found: [{classname.ID}] at configured scope [{scope ?? "<default>"}] and section [{section ?? "<default>"}]");
       }
       try
       {
@@ -450,7 +452,7 @@ System.Diagnostics.Trace.WriteLine("typeobjectmap.ContainsKey");
 
     private void InitAndLoadMappings(TypeClassMapperConfigurationSection configSection, string scope = null)
     {
-      typemap = new Dictionary<string, TypeClassName>();
+      typemap = new Dictionary<string, TypeClassID>();
       if (string.IsNullOrWhiteSpace(scope))
       {
         foreach (MappingCollectionElement mapping in configSection.Mappings)
