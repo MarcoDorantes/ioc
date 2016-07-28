@@ -12,7 +12,10 @@ namespace nutility
     }
 
     public string Name { get; private set; }
-
+    public override string ToString()
+    {
+      return Name;
+    }
     public static implicit operator TypeClassName(string name) => new TypeClassName(name);
   }
 
@@ -46,6 +49,53 @@ namespace nutility
     /// </summary>
     private string section;
 
+    #region ctors
+    /*
+        public TypeClassMapper(string scope = null, string section = null)
+
+
+        public TypeClassMapper(IDictionary<string, TypeClassName> typeclassmap)
+
+        public TypeClassMapper(IDictionary<Type, TypeClassName> typeclassmap)
+
+        public TypeClassMapper(IDictionary<Type, Type> typeclassmap)
+
+
+        public TypeClassMapper(IDictionary<string, object> typeobjectmap)
+
+        public TypeClassMapper(IDictionary<Type, object> typeobjectmap)
+
+
+        public TypeClassMapper(IDictionary<Type, TypeClassName> typeclassmap, IEnumerable<KeyValuePair<Type, object>> typeobjectmap)
+
+    -
+        public TypeClassMapper(IDictionary<string, TypeClassName> typeclassmap, IEnumerable<KeyValuePair<string, object>> typeobjectmap)
+
+        public TypeClassMapper(IDictionary<string, TypeClassName> typeclassmap, IEnumerable<KeyValuePair<Type, object>> typeobjectmap)
+
+
+        public TypeClassMapper(IDictionary<Type, TypeClassName> typeclassmap, IEnumerable<KeyValuePair<string, object>> typeobjectmap)
+
+
+        public TypeClassMapper(IDictionary<Type, Type> typeclassmap, IDictionary<string, object> typeobjectmap)
+
+        public TypeClassMapper(IDictionary<Type, Type> typeclassmap, IDictionary<Type, object> typeobjectmap)
+
+    -
+
+        public TypeClassMapper(IDictionary<Type, Type> typeclassmap, IDictionary<Type, Func<object>> typecreatormap) : this(typeclassmap)
+
+        public TypeClassMapper(IDictionary<Type, Type> typeclassmap, IDictionary<string, Func<object>> typecreatormap) : this(typeclassmap)
+
+
+        public TypeClassMapper(IDictionary<string, TypeClassName> typeclassmap, IDictionary<string, object> values) : this(typeclassmap)
+
+        public TypeClassMapper(IDictionary<Type, TypeClassName> typeclassmap, IDictionary<string, object> values) : this(typeclassmap)
+
+        public TypeClassMapper(IDictionary<Type, Type> typeclassmap, IDictionary<string, object> values) : this(typeclassmap)
+    */
+    #endregion
+
     /// <summary>
     /// For implicit, config-based, type-class mappings.
     /// </summary>
@@ -75,6 +125,42 @@ namespace nutility
       this.scope = "<explicit>";
       this.section = "<explicit>";
       this.typemap = new Dictionary<string, TypeClassName>(typeclassmap);
+      this.typeobjectmap = new Dictionary<string, object>();
+      this.typecreatormap = new Dictionary<string, Func<object>>();
+      this.values = new Dictionary<string, object>();
+    }
+
+    /// <summary>
+    /// For explicit type-class mappings.
+    /// </summary>
+    /// <param name="typeclassmap">Type-Class map</param>
+    public TypeClassMapper(IDictionary<Type, TypeClassName> typeclassmap)
+    {
+      if (typeclassmap == null)
+      {
+        throw new TypeClassMapperException($"Parameter cannot be null: {nameof(typeclassmap)}", new ArgumentNullException(nameof(typeclassmap)));
+      }
+      this.scope = "<explicit>";
+      this.section = "<explicit>";
+      this.typemap = typeclassmap.Aggregate(new Dictionary<string, TypeClassName>(), (whole, next) => { whole.Add(next.Key.FullName, next.Value); return whole; });
+      this.typeobjectmap = new Dictionary<string, object>();
+      this.typecreatormap = new Dictionary<string, Func<object>>();
+      this.values = new Dictionary<string, object>();
+    }
+
+    /// <summary>
+    /// For explicit type-class mappings.
+    /// </summary>
+    /// <param name="typeclassmap">Type-Class map</param>
+    public TypeClassMapper(IDictionary<Type, Type> typeclassmap)
+    {
+      if (typeclassmap == null)
+      {
+        throw new TypeClassMapperException($"Parameter cannot be null: {nameof(typeclassmap)}", new ArgumentNullException(nameof(typeclassmap)));
+      }
+      this.scope = "<explicit>";
+      this.section = "<explicit>";
+      this.typemap = typeclassmap.Aggregate(new Dictionary<string, TypeClassName>(), (whole, next) => { whole.Add(next.Key.FullName, next.Value.AssemblyQualifiedName); return whole; });
       this.typeobjectmap = new Dictionary<string, object>();
       this.typecreatormap = new Dictionary<string, Func<object>>();
       this.values = new Dictionary<string, object>();
@@ -115,40 +201,15 @@ namespace nutility
       this.typecreatormap = new Dictionary<string, Func<object>>();
       this.values = new Dictionary<string, object>();
     }
-    /// <summary>
-    /// For explicit type-class mappings.
-    /// </summary>
-    /// <param name="typeclassmap">Type-Class map</param>
-    public TypeClassMapper(IDictionary<Type, TypeClassName> typeclassmap)
+
+    public TypeClassMapper(IDictionary<Type, TypeClassName> typeclassmap, IEnumerable<KeyValuePair<Type, object>> typeobjectmap) : this(typeclassmap)
     {
-      if (typeclassmap == null)
-      {
-        throw new TypeClassMapperException($"Parameter cannot be null: {nameof(typeclassmap)}", new ArgumentNullException(nameof(typeclassmap)));
-      }
-      this.scope = "<explicit>";
-      this.section = "<explicit>";
-      this.typemap = typeclassmap.Aggregate(new Dictionary<string, TypeClassName>(), (whole, next) => { whole.Add(next.Key.FullName, next.Value); return whole; });
-      this.typeobjectmap = new Dictionary<string, object>();
-      this.typecreatormap = new Dictionary<string, Func<object>>();
-      this.values = new Dictionary<string, object>();
+      this.typeobjectmap = typeobjectmap.Aggregate(new Dictionary<string, object>(), (whole, next) => { whole.Add(next.Key.FullName, next.Value); return whole; });
     }
 
-    /// <summary>
-    /// For explicit type-class mappings.
-    /// </summary>
-    /// <param name="typeclassmap">Type-Class map</param>
-    public TypeClassMapper(IDictionary<Type, Type> typeclassmap)
+    public TypeClassMapper(IDictionary<Type, Type> typeclassmap, IEnumerable<KeyValuePair<Type, object>> typeobjectmap) : this(typeclassmap)
     {
-      if (typeclassmap == null)
-      {
-        throw new TypeClassMapperException($"Parameter cannot be null: {nameof(typeclassmap)}", new ArgumentNullException(nameof(typeclassmap)));
-      }
-      this.scope = "<explicit>";
-      this.section = "<explicit>";
-      this.typemap = typeclassmap.Aggregate(new Dictionary<string, TypeClassName>(), (whole, next) => { whole.Add(next.Key.FullName, next.Value.AssemblyQualifiedName); return whole; });
-      this.typeobjectmap = new Dictionary<string, object>();
-      this.typecreatormap = new Dictionary<string, Func<object>>();
-      this.values = new Dictionary<string, object>();
+      this.typeobjectmap = typeobjectmap.Aggregate(new Dictionary<string, object>(), (whole, next) => { whole.Add(next.Key.FullName, next.Value); return whole; });
     }
 
     /// <summary>
@@ -169,6 +230,16 @@ namespace nutility
     public TypeClassMapper(IDictionary<Type, Type> typeclassmap, IDictionary<string, Func<object>> typecreatormap) : this(typeclassmap)
     {
       this.typecreatormap = new Dictionary<string, Func<object>>(typecreatormap);
+    }
+
+    public TypeClassMapper(IDictionary<string, TypeClassName> typeclassmap, IDictionary<string, object> values) : this(typeclassmap)
+    {
+      this.values = new Dictionary<string, object>(values);
+    }
+
+    public TypeClassMapper(IDictionary<Type, TypeClassName> typeclassmap, IDictionary<string, object> values) : this(typeclassmap)
+    {
+      this.values = new Dictionary<string, object>(values);
     }
 
     public TypeClassMapper(IDictionary<Type, Type> typeclassmap, IDictionary<string, object> values) : this(typeclassmap)
