@@ -49,6 +49,7 @@
     <Compile Include="ConfigurationSection\TypeClassMapperConfigurationSection.cs" />
     <Compile Include="DefaultClass\TypeClassMapper.cs" />
     <Compile Include="ExtensibilityInterface\ITypeClassMapper.cs" />
+    <Compile Include="ExtensibilityInterface\TypeClassID.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Exceptions\TypeClassMapperException.cs" />
   </ItemGroup>
