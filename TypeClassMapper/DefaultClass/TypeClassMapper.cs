@@ -4,6 +4,20 @@ using System.Collections.Generic;
 
 namespace nutility
 {
+  public class Mapping
+  {
+    public TypeClassID RequiredType;
+    public TypeClassID ClientType;
+    public TypeClassID MappedClass;
+  }
+
+  public class MappedTypes
+  {
+    public Type RequiredType;
+    public Type ClientType;
+    public Type MappedClass;
+  }
+
   /// <summary>
   /// Given the runtime dependency management tradition of early design patterns, e.g., Microsoft COM IUnknown::QueryInterface method, this class follows
   /// such design tradition and relies on basic equivalent mechanisms from .NET Framework (System.IServiceProvider interface).
@@ -16,6 +30,8 @@ namespace nutility
     private IDictionary<TypeClassID, TypeClassID> typemap;
 
     private IDictionary<TypeClassID, object> typeobjectmap;
+
+    private List<Mapping> typeclass_catalog;
 
     /// <summary>
     /// Type-Creator mapping.
@@ -232,6 +248,18 @@ namespace nutility
       this.values = new Dictionary<TypeClassID, object>(values);
     }
 
+    public TypeClassMapper(IEnumerable<MappedTypes> mapped)// : this(typeclassmap)
+    {
+      this.typeclass_catalog = mapped.Aggregate(new List<Mapping>(), (whole, next) => { whole.Add(new Mapping { RequiredType = next.RequiredType.FullName, ClientType = next.ClientType?.FullName, MappedClass = next.MappedClass.AssemblyQualifiedName }); return whole; });
+      //this.values = new Dictionary<TypeClassID, object>(values);
+    }
+
+    public TypeClassMapper(IEnumerable<Mapping> mappings)// : this(typeclassmap)
+    {
+      this.typeclass_catalog = new List<Mapping>(mappings);
+      //this.values = new Dictionary<TypeClassID, object>(values);
+    }
+
     /// <summary>
     /// Existing type-class mappings.
     /// </summary>
@@ -285,6 +313,17 @@ namespace nutility
     /// <typeparam name="T">Required Type</typeparam>
     /// <returns>Mapped Class</returns>
     public T GetService<T>() => (T)this.GetService(typeof(T));
+
+    public T GetService<T>(Type client_type)
+    {
+      T mapped_instance = default(T);
+      var mapping = typeclass_catalog.FirstOrDefault(m => m.RequiredType.ID == typeof(T).FullName && m.ClientType?.ID == client_type?.FullName);
+      if (mapping != null)
+      {
+        mapped_instance = (T)CreateInstanceOfMappedClass(mapping.MappedClass, typeof(T));
+      }
+      return mapped_instance;
+    }
 
     /*
     /// <summary>

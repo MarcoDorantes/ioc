@@ -450,5 +450,26 @@ namespace TypeClassMapperSpec
       Assert.IsInstanceOfType(exception.InnerException, typeof(System.MissingMethodException));
       Assert.AreEqual<string>("Cannot create an abstract class.", exception.InnerException.Message);
     }
+
+    [TestMethod]
+    public void theTypeForMyCase()
+    {
+      //Arrange
+      var typemap = new nutility.TypeClassMapper
+      (
+        new List<nutility.MappedTypes>
+        {
+          new nutility.MappedTypes { RequiredType = typeof(app1.ISource), ClientType = typeof(ExplicitMappingCases), MappedClass = typeof(module3.Source1) }
+        }
+      );
+
+      //Act
+      //app1.ISource source1 = typemap.GetService<app1.ISource>(System.Reflection.MethodBase.GetCurrentMethod().Name);
+      app1.ISource source2 = typemap.GetService<app1.ISource>(client_type: typeof(ExplicitMappingCases));
+
+      //Assert
+//      Assert.AreEqual<string>("1", source1.Name);
+      Assert.AreEqual<string>("nutility.TypeClassMapper", source2.Name);
+    }
   }
 }
