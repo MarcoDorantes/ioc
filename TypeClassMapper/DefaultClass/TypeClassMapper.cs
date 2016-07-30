@@ -31,7 +31,7 @@ namespace nutility
 
     private IDictionary<TypeClassID, object> typeobjectmap;
 
-    private List<Mapping> typeclass_catalog;
+    private IList<Mapping> typeclass_catalog;
 
     /// <summary>
     /// Type-Creator mapping.
@@ -125,6 +125,7 @@ namespace nutility
       }
       this.scope = "<explicit>";
       this.section = "<explicit>";
+      this.typeclass_catalog = new List<Mapping>();
       this.typemap = new Dictionary<TypeClassID, TypeClassID>(typeclassmap);
       this.typeobjectmap = new Dictionary<TypeClassID, object>();
       this.typecreatormap = new Dictionary<TypeClassID, Func<object>>();
@@ -297,11 +298,12 @@ namespace nutility
       }
       else
       {
-        if (!typemap.ContainsKey(requiredType.FullName))
+        if (!(typemap.ContainsKey(requiredType.FullName) || typeclass_catalog.Any(m => m.RequiredType.ID == requiredType.FullName)))
         {
           throw new TypeClassMapperException($"Type not found: [{requiredType.FullName}] at configured scope [{scope ?? "<default>"}] and section [{section ?? "<default>"}]");
         }
-        TypeClassID mapped_classname = typemap[requiredType.FullName];
+
+        TypeClassID mapped_classname = typemap.ContainsKey(requiredType.FullName) ? typemap[requiredType.FullName] : (typeclass_catalog.First(m => m.RequiredType.ID == requiredType.FullName).MappedClass);
         mapped_instance = CreateInstanceOfMappedClass(mapped_classname, requiredType);
       }
       return mapped_instance;
@@ -459,21 +461,22 @@ namespace nutility
 
     private void InitAndLoadMappings(TypeClassMapperConfigurationSection configSection, string scope = null)
     {
-      typemap = new Dictionary<TypeClassID, TypeClassID>();
+      typeclass_catalog = new List<Mapping>();
       if (string.IsNullOrWhiteSpace(scope))
       {
         foreach (MappingCollectionElement mapping in configSection.Mappings)
         {
-          typemap.Add(mapping.Type, mapping.Class);
+          typeclass_catalog.Add(new Mapping() { RequiredType = mapping.Type, ClientType = null, MappedClass = mapping.Class });
         }
       }
       else
       {
         foreach (MappingCollectionElement mapping in configSection.Scopes.GetScopeMappings(scope))
         {
-          typemap.Add(mapping.Type, mapping.Class);
+          typeclass_catalog.Add(new Mapping() { RequiredType = mapping.Type, ClientType = null, MappedClass = mapping.Class });
         }
       }
+      typemap = new Dictionary<TypeClassID, TypeClassID>();
     }
   }
 }
