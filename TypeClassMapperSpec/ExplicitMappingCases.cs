@@ -473,6 +473,8 @@ namespace TypeClassMapperSpec
       //Assert.AreEqual<string>("1", source1.Name); //For later
       Assert.AreEqual<string>("nutility.TypeClassMapper", source2.Name);
       Assert.AreEqual<string>("module1.Source", source3.Name);
+
+      Assert.AreEqual<string>("theTypeForMyCase", System.Reflection.MethodBase.GetCurrentMethod().Name);
     }
   }
 }

@@ -6,12 +6,13 @@ namespace nutility
 {
   public class Mapping
   {
+    //public TypeClassID ProgID;?
     public TypeClassID RequiredType;
     public TypeClassID ClientType;
     public TypeClassID MappedClass;
   }
 
-  public class MappedTypes
+  public class MappedTypes //MappedTuple? MappingTuple?
   {
     public Type RequiredType;
     public Type ClientType;
