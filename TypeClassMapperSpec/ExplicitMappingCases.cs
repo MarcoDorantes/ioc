@@ -459,17 +459,20 @@ namespace TypeClassMapperSpec
       (
         new List<nutility.MappedTypes>
         {
-          new nutility.MappedTypes { RequiredType = typeof(app1.ISource), ClientType = typeof(ExplicitMappingCases), MappedClass = typeof(module3.Source1) }
+          new nutility.MappedTypes { RequiredType = typeof(app1.ISource), ClientType = typeof(ExplicitMappingCases), MappedClass = typeof(module3.Source1) },
+          new nutility.MappedTypes { RequiredType = typeof(app1.ISource), ClientType = typeof(ImplicitMappingCases), MappedClass = typeof(module1.Source) }
         }
       );
 
       //Act
-      //app1.ISource source1 = typemap.GetService<app1.ISource>(System.Reflection.MethodBase.GetCurrentMethod().Name);
+      //app1.ISource source1 = typemap.GetService<app1.ISource>(System.Reflection.MethodBase.GetCurrentMethod().Name); //For later
       app1.ISource source2 = typemap.GetService<app1.ISource>(client_type: typeof(ExplicitMappingCases));
+      app1.ISource source3 = typemap.GetService<app1.ISource>(client_type: typeof(ImplicitMappingCases));
 
       //Assert
-//      Assert.AreEqual<string>("1", source1.Name);
+      //Assert.AreEqual<string>("1", source1.Name); //For later
       Assert.AreEqual<string>("nutility.TypeClassMapper", source2.Name);
+      Assert.AreEqual<string>("module1.Source", source3.Name);
     }
   }
 }
