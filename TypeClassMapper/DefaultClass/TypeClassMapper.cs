@@ -254,6 +254,8 @@ namespace nutility
 
     public TypeClassMapper(IEnumerable<MappedTypes> Type_Class_Catalog)// : this(typeclassmap)
     {
+      //TODO cannot do: this(typeclassmap) && this(typeobjectmap) -so, design a common init logic accordingly.
+
       this.typeclass_catalog = Type_Class_Catalog.Aggregate(new List<Mapping>(), (whole, next) => { whole.Add(new Mapping { RequiredType = next.RequiredType.FullName, ClientType = next.ClientType?.FullName, MappedClass = next.MappedClass.AssemblyQualifiedName }); return whole; });
 //      this.values = new Dictionary<TypeClassID, object>(values);
     }
@@ -272,41 +274,41 @@ namespace nutility
     /// <summary>
     /// Given a Type, it returns its configured/mapped Class.
     /// </summary>
-    /// <param name="requiredType">Required Type</param>
+    /// <param name="Required_Type">Required Type</param>
     /// <returns>Mapped Class</returns>
-    public virtual object GetService(Type requiredType)
+    public virtual object GetService(Type Required_Type)
     {
-      if (requiredType == null)
+      if (Required_Type == null)
       {
-        throw new TypeClassMapperException($"Parameter cannot be null: {nameof(requiredType)}", new ArgumentNullException(nameof(requiredType)));
+        throw new TypeClassMapperException($"Parameter cannot be null: {nameof(Required_Type)}", new ArgumentNullException(nameof(Required_Type)));
       }
       object mapped_instance = null;
-      if (typecreatormap.ContainsKey(requiredType.FullName))
+      if (typecreatormap.ContainsKey(Required_Type.FullName))
       {
-        if (typecreatormap[requiredType.FullName] != null)
+        if (typecreatormap[Required_Type.FullName] != null)
         {
           try
           {
-            mapped_instance = typecreatormap[requiredType.FullName]();
+            mapped_instance = typecreatormap[Required_Type.FullName]();
           }
           catch (Exception exception)
           {
-            throw new TypeClassMapperException($"Class creator throws for Type [{requiredType}] at configured scope [{scope ?? "<default>"}] and section [{section ?? "<default>"}]. Check InnerException.", exception);
+            throw new TypeClassMapperException($"Class creator throws for Type [{Required_Type}] at configured scope [{scope ?? "<default>"}] and section [{section ?? "<default>"}]. Check InnerException.", exception);
           }
         }
       }
-      else if (typeobjectmap.ContainsKey(requiredType.FullName))
+      else if (typeobjectmap.ContainsKey(Required_Type.FullName))
       {
-        mapped_instance = typeobjectmap[requiredType.FullName];
+        mapped_instance = typeobjectmap[Required_Type.FullName];
       }
       else
       {
-        if (!typeclass_catalog.Any(m => m.RequiredType.ID == requiredType.FullName))
+        if (!typeclass_catalog.Any(m => m.RequiredType.ID == Required_Type.FullName))
         {
-          throw new TypeClassMapperException($"Type not found: [{requiredType.FullName}] at configured scope [{scope ?? "<default>"}] and section [{section ?? "<default>"}]");
+          throw new TypeClassMapperException($"Type not found: [{Required_Type.FullName}] at configured scope [{scope ?? "<default>"}] and section [{section ?? "<default>"}]");
         }
-        TypeClassID mapped_classname = typeclass_catalog.First(m => m.RequiredType.ID == requiredType.FullName).MappedClass;
-        mapped_instance = CreateInstanceOfMappedClass(mapped_classname, requiredType);
+        TypeClassID mapped_classname = typeclass_catalog.First(m => m.RequiredType.ID == Required_Type.FullName).MappedClass;
+        mapped_instance = CreateInstanceOfMappedClass(mapped_classname, Required_Type);
       }
       return mapped_instance;
     }
@@ -318,10 +320,10 @@ namespace nutility
     /// <returns>Mapped Class</returns>
     public T GetService<T>() => (T)this.GetService(typeof(T));
 
-    public T GetService<T>(Type client_type)
+    public T GetService<T>(Type Client_Type)
     {
       T mapped_instance = default(T);
-      var mapping = typeclass_catalog.FirstOrDefault(m => m.RequiredType.ID == typeof(T).FullName && m.ClientType?.ID == client_type?.FullName);
+      var mapping = typeclass_catalog.FirstOrDefault(m => m.RequiredType.ID == typeof(T).FullName && m.ClientType?.ID == Client_Type?.FullName);
       if (mapping != null)
       {
         mapped_instance = (T)CreateInstanceOfMappedClass(mapping.MappedClass, typeof(T));
@@ -329,10 +331,10 @@ namespace nutility
       return mapped_instance;
     }
 
-    public T GetService<T>(TypeClassID client_type)
+    public T GetService<T>(TypeClassID Client_Type)
     {
       T mapped_instance = default(T);
-      var mapping = typeclass_catalog.FirstOrDefault(m => m.RequiredType.ID == typeof(T).FullName && m.ClientType?.ID == client_type?.ID);
+      var mapping = typeclass_catalog.FirstOrDefault(m => m.RequiredType.ID == typeof(T).FullName && m.ClientType?.ID == Client_Type?.ID);
       if (mapping != null)
       {
         mapped_instance = (T)CreateInstanceOfMappedClass(mapping.MappedClass, typeof(T));
