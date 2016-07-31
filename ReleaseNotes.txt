@@ -1,4 +1,4 @@
-﻿Jul 31, 2016: v1.3.0
+﻿Pending release: Jul 31, 2016: v1.3.0
 -breaking changes
 -not compile string, not TypeClassID
 -not compile ctors, new separated
