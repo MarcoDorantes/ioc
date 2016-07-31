@@ -6,7 +6,7 @@ namespace nutility
 {
   public class Mapping
   {
-    //public TypeClassID ProgID;?
+    //public TypeClassID RequiredProgID;? Versioning? Trying to bring a bad past pattern to a already superior present solution?
     public TypeClassID RequiredType;
     public TypeClassID ClientType;
     public TypeClassID MappedClass;
@@ -322,6 +322,17 @@ namespace nutility
     {
       T mapped_instance = default(T);
       var mapping = typeclass_catalog.FirstOrDefault(m => m.RequiredType.ID == typeof(T).FullName && m.ClientType?.ID == client_type?.FullName);
+      if (mapping != null)
+      {
+        mapped_instance = (T)CreateInstanceOfMappedClass(mapping.MappedClass, typeof(T));
+      }
+      return mapped_instance;
+    }
+
+    public T GetService<T>(TypeClassID client_type)
+    {
+      T mapped_instance = default(T);
+      var mapping = typeclass_catalog.FirstOrDefault(m => m.RequiredType.ID == typeof(T).FullName && m.ClientType?.ID == client_type?.ID);
       if (mapping != null)
       {
         mapped_instance = (T)CreateInstanceOfMappedClass(mapping.MappedClass, typeof(T));

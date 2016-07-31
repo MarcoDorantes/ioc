@@ -452,7 +452,7 @@ namespace TypeClassMapperSpec
     }
 
     [TestMethod]
-    public void theTypeForMyCase()
+    public void theTypeForMyCase1()
     {
       //Arrange
       var typemap = new nutility.TypeClassMapper
@@ -465,16 +465,56 @@ namespace TypeClassMapperSpec
       );
 
       //Act
-      //app1.ISource source1 = typemap.GetService<app1.ISource>(System.Reflection.MethodBase.GetCurrentMethod().Name); //For later
-      app1.ISource source2 = typemap.GetService<app1.ISource>(client_type: typeof(ExplicitMappingCases));
-      app1.ISource source3 = typemap.GetService<app1.ISource>(client_type: typeof(ImplicitMappingCases));
+      app1.ISource source1 = typemap.GetService<app1.ISource>(client_type: typeof(ExplicitMappingCases));
+      app1.ISource source2 = typemap.GetService<app1.ISource>(client_type: typeof(ImplicitMappingCases));
 
       //Assert
-      //Assert.AreEqual<string>("1", source1.Name); //For later
-      Assert.AreEqual<string>("nutility.TypeClassMapper", source2.Name);
-      Assert.AreEqual<string>("module1.Source", source3.Name);
+      Assert.AreEqual<string>("nutility.TypeClassMapper", source1.Name);
+      Assert.AreEqual<string>("module1.Source", source2.Name);
+    }
 
-      Assert.AreEqual<string>("theTypeForMyCase", System.Reflection.MethodBase.GetCurrentMethod().Name);
+    [TestMethod]
+    public void theTypeForMyCase2()
+    {
+      //Arrange
+      var typemap = new nutility.TypeClassMapper
+      (
+        new List<nutility.Mapping>
+        {
+          new nutility.Mapping { RequiredType = "app1.ISource", ClientType = "TypeClassMapperSpec.ExplicitMappingCases", MappedClass = "module3.Source1, TypeClassMapperSpec" },
+          new nutility.Mapping { RequiredType = "app1.ISource", ClientType = "TypeClassMapperSpec.ImplicitMappingCases", MappedClass = "module1.Source, TypeClassMapperSpec" }
+        }
+      );
+
+      //Act
+      app1.ISource source1 = typemap.GetService<app1.ISource>(client_type: typeof(ExplicitMappingCases));
+      app1.ISource source2 = typemap.GetService<app1.ISource>(client_type: typeof(ImplicitMappingCases));
+
+      //Assert
+      Assert.AreEqual<string>("nutility.TypeClassMapper", source1.Name);
+      Assert.AreEqual<string>("module1.Source", source2.Name);
+    }
+
+    [TestMethod]
+    public void theTypeForMyCase3()
+    {
+      //Arrange
+      var typemap = new nutility.TypeClassMapper
+      (
+        new List<nutility.Mapping>
+        {
+          new nutility.Mapping { RequiredType = "app1.ISource", ClientType = "theTypeForMyCase3", MappedClass = "module3.Source1, TypeClassMapperSpec" },
+          new nutility.Mapping { RequiredType = "app1.ISource", ClientType = "ImplicitMappingCases", MappedClass = "module1.Source, TypeClassMapperSpec" }
+        }
+      );
+
+      //Act
+      app1.ISource source1 = typemap.GetService<app1.ISource>(System.Reflection.MethodBase.GetCurrentMethod().Name);
+      app1.ISource source2 = typemap.GetService<app1.ISource>(client_type: "ImplicitMappingCases");
+
+      //Assert
+      Assert.AreEqual<string>("nutility.TypeClassMapper", source1.Name);
+      Assert.AreEqual<string>("module1.Source", source2.Name);
     }
   }
 }
