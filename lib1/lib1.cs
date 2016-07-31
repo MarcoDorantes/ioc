@@ -43,7 +43,7 @@ namespace lib1.sample
       int count = 0;
       foreach (var value in source)
       {
-        string result = target.Write(value);
+        var result = target.Write(value);
         logger.Log($"Value #{++count} from {source.Name} to {target.Name}: {result}");
       }
     }

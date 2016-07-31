@@ -15,7 +15,7 @@ The custom support in this case is the mapping between requested types, mainly i
 
 «Class» as concrete class, module with implementation details, usually hidden state and private behavior, or separate-compiled executable artifact.
 
-«Mapper» as associative array, map, symbol table, hash table, or dictionary.
+«Mapper» as associative array, map, symbol table, hash table, dictionary, or associative catalog.
 
 ##Why do I need TypeClassMapper?
 The actual need is to properly manage the dependencies on a large-scale software design and to manage the level of technical debt of its codebase. The key goal is to prevent the ever increasing costs of a Big ball of mud anti-pattern:
@@ -50,7 +50,7 @@ namespace lib1
       int count = 0;
       foreach (var value in source)
       {
-        string result = target.Write(value);
+        var result = target.Write(value);
         logger.Log($"Value #{++count} from {source.Name} to {target.Name}: {result}");
       }
     }
@@ -69,12 +69,15 @@ public class SampleCase1
   public void Unit_testable()
   {
     //Arrange
-    var typemap = new nutility.TypeClassMapper(new Dictionary<Type, object>
-    {
-      { typeof(lib1.ISource), new SourceStub() },
-      { typeof(lib1.ITarget), new TargetStub() },
-      { typeof(lib1.ILogBook), new LogBookStub() }
-    });
+    var typemap = new nutility.TypeClassMapper
+    (
+      new Dictionary<Type, object>
+      {
+        { typeof(lib1.ISource), new SourceStub() },
+        { typeof(lib1.ITarget), new TargetStub() },
+        { typeof(lib1.ILogBook), new LogBookStub() }
+      }
+    );
 
     //Act
     var processor = new lib1.CopyProcessor(typemap);
@@ -86,7 +89,7 @@ public class SampleCase1
 }
 ```
 
-Or, in the context of a host at a productive enviroment, where the type-class mappings will be taken from the application configuration file:
+Or, in the context of a host at a productive environment, where the type-class mappings are taken from a custom configuration section at the application configuration file:
 
 ```
   var processor = new lib1.CopyProcessor(new nutility.TypeClassMapper());
