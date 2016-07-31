@@ -99,9 +99,10 @@ namespace nutility
       this.section = section;
       TypeClassMapperConfigurationSection configSection = GetConfiguration(section);
       InitAndLoadMappings(configSection, scope);
-      this.typeobjectmap = new Dictionary<TypeClassID, object>();
-      this.typecreatormap = new Dictionary<TypeClassID, Func<object>>();
-      this.nameobjectmap = new Dictionary<string, object>();
+
+      InitializeTypeCreatorMap<Type>(null, null, new Dictionary<TypeClassID, Func<object>>());
+      InitializeTypeObjectMap<TypeClassID>(null, null, new Dictionary<TypeClassID, object>());
+      InitializeNameObjectMap(null, new Dictionary<string, object>());
     }
 
     /// <summary>
@@ -125,9 +126,10 @@ namespace nutility
       this.scope = "<explicit>";
       this.section = "<explicit>";
       this.typeclass_catalog = Type_Class_Map.Aggregate(new List<Mapping>(), (whole, next) => { whole.Add(new Mapping() { RequiredType = next.Key, ClientType = null, MappedClass = next.Value }); return whole; });
-      this.typeobjectmap = new Dictionary<TypeClassID, object>();
-      this.typecreatormap = new Dictionary<TypeClassID, Func<object>>();
-      this.nameobjectmap = new Dictionary<string, object>();
+
+      InitializeTypeCreatorMap<Type>(null, null, new Dictionary<TypeClassID, Func<object>>());
+      InitializeTypeObjectMap<TypeClassID>(null, null, new Dictionary<TypeClassID, object>());
+      InitializeNameObjectMap(null, new Dictionary<string, object>());
     }
 
     /// <summary>
@@ -151,9 +153,10 @@ namespace nutility
       this.scope = "<explicit>";
       this.section = "<explicit>";
       this.typeclass_catalog = Type_Class_Map.Aggregate(new List<Mapping>(), (whole, next) => { whole.Add(new Mapping() { RequiredType = next.Key, ClientType = null, MappedClass = next.Value.AssemblyQualifiedName }); return whole; });
-      this.typeobjectmap = new Dictionary<TypeClassID, object>();
-      this.typecreatormap = new Dictionary<TypeClassID, Func<object>>();
-      this.nameobjectmap = new Dictionary<string, object>();
+
+      InitializeTypeCreatorMap<Type>(null, null, new Dictionary<TypeClassID, Func<object>>());
+      InitializeTypeObjectMap<TypeClassID>(null, null, new Dictionary<TypeClassID, object>());
+      InitializeNameObjectMap(null, new Dictionary<string, object>());
     }
 
     /// <summary>
@@ -169,9 +172,10 @@ namespace nutility
       this.scope = "<explicit>";
       this.section = "<explicit>";
       this.typeclass_catalog = Type_Class_Map.Aggregate(new List<Mapping>(), (whole, next) => { whole.Add(new Mapping() { RequiredType = next.Key.FullName, ClientType = null, MappedClass = next.Value.AssemblyQualifiedName }); return whole; });
-      this.typeobjectmap = new Dictionary<TypeClassID, object>();
-      this.typecreatormap = new Dictionary<TypeClassID, Func<object>>();
-      this.nameobjectmap = new Dictionary<string, object>();
+
+      InitializeTypeCreatorMap<Type>(null, null, new Dictionary<TypeClassID, Func<object>>());
+      InitializeTypeObjectMap<TypeClassID>(null, null, new Dictionary<TypeClassID, object>());
+      InitializeNameObjectMap(null, new Dictionary<string, object>());
     }
 
     /// <summary>
@@ -187,9 +191,10 @@ namespace nutility
       this.scope = "<explicit>";
       this.section = "<explicit>";
       this.typeclass_catalog = Type_Class_Map.Aggregate(new List<Mapping>(), (whole, next) => { whole.Add(new Mapping() { RequiredType = next.Key.FullName, ClientType = null, MappedClass = next.Value }); return whole; });
-      this.typeobjectmap = new Dictionary<TypeClassID, object>();
-      this.typecreatormap = new Dictionary<TypeClassID, Func<object>>();
-      this.nameobjectmap = new Dictionary<string, object>();
+
+      InitializeTypeCreatorMap<Type>(null, null, new Dictionary<TypeClassID, Func<object>>());
+      InitializeTypeObjectMap<TypeClassID>(null, null, new Dictionary<TypeClassID, object>());
+      InitializeNameObjectMap(null, new Dictionary<string, object>());
     }
 
     /// <summary>
@@ -205,9 +210,10 @@ namespace nutility
       this.scope = "<explicit>";
       this.section = "<explicit>";
       this.typeclass_catalog = new List<Mapping>();
-      this.typeobjectmap = Type_Object_Map.Aggregate(new Dictionary<TypeClassID, object>(), (whole, next) => { whole.Add(next.Key, next.Value); return whole; });
-      this.typecreatormap = new Dictionary<TypeClassID, Func<object>>();
-      this.nameobjectmap = new Dictionary<string, object>();
+
+      InitializeTypeCreatorMap<Type>(null, null, new Dictionary<TypeClassID, Func<object>>());
+      InitializeTypeObjectMap<TypeClassID>(Type_Object_Map, (whole, next) => { whole.Add(next.Key, next.Value); });
+      InitializeNameObjectMap(null, new Dictionary<string, object>());
     }
 
     /// <summary>
@@ -223,17 +229,10 @@ namespace nutility
       this.scope = "<explicit>";
       this.section = "<explicit>";
       this.typeclass_catalog = new List<Mapping>();
-      this.typeobjectmap = Type_Object_Map.Aggregate(new Dictionary<TypeClassID, object>(), (whole, next) => { whole.Add(next.Key.FullName, next.Value); return whole; });
-      this.typecreatormap = new Dictionary<TypeClassID, Func<object>>();
-      this.nameobjectmap = new Dictionary<string, object>();
-    }
-    private void InitializeTypeObjectMap<T>(IEnumerable<KeyValuePair<T, object>> Type_Object_Map, Action<IDictionary<TypeClassID, object>, KeyValuePair<T, object>> adder)
-    {
-      if (Type_Object_Map == null)
-      {
-        throw new TypeClassMapperException($"Parameter cannot be null: {nameof(Type_Object_Map)}", new ArgumentNullException(nameof(Type_Object_Map)));
-      }
-      this.typeobjectmap = Type_Object_Map.Aggregate(new Dictionary<TypeClassID, object>(), (whole, next) => { adder(whole, next); return whole; });
+
+      InitializeTypeCreatorMap<Type>(null, null, new Dictionary<TypeClassID, Func<object>>());
+      InitializeTypeObjectMap<Type>(Type_Object_Map, (whole, next) => { whole.Add(next.Key.FullName, next.Value); });
+      InitializeNameObjectMap(null, new Dictionary<string, object>());
     }
 
     public TypeClassMapper(IEnumerable<KeyValuePair<TypeClassID, TypeClassID>> Type_Class_Map, IEnumerable<KeyValuePair<TypeClassID, object>> Type_Object_Map) : this(Type_Class_Map)
@@ -284,11 +283,7 @@ namespace nutility
     /// <param name="Type_Creator_Map">Type-Creator map</param>
     public TypeClassMapper(IEnumerable<KeyValuePair<Type, Type>> Type_Class_Map, IEnumerable<KeyValuePair<Type, Func<object>>> Type_Creator_Map) : this(Type_Class_Map)
     {
-      if (Type_Creator_Map == null)
-      {
-        throw new TypeClassMapperException($"Parameter cannot be null: {nameof(Type_Creator_Map)}", new ArgumentNullException(nameof(Type_Creator_Map)));
-      }
-      this.typecreatormap = Type_Creator_Map.Aggregate(new Dictionary<TypeClassID, Func<object>>(), (whole, next) => { whole.Add(next.Key.FullName, next.Value); return whole; });
+      InitializeTypeCreatorMap<Type>(Type_Creator_Map, (whole, next) => { whole.Add(next.Key.FullName, next.Value); });
     }
 
     /// <summary>
@@ -298,12 +293,7 @@ namespace nutility
     /// <param name="Type_Creator_Map">Type-Creator map</param>
     public TypeClassMapper(IEnumerable<KeyValuePair<Type, Type>> Type_Class_Map, IEnumerable<KeyValuePair<TypeClassID, Func<object>>> Type_Creator_Map) : this(Type_Class_Map)
     {
-      //this.typecreatormap = new Dictionary<TypeClassID, Func<object>>(Type_Creator_Map);
-      if (Type_Creator_Map == null)
-      {
-        throw new TypeClassMapperException($"Parameter cannot be null: {nameof(Type_Creator_Map)}", new ArgumentNullException(nameof(Type_Creator_Map)));
-      }
-      this.typecreatormap = Type_Creator_Map.Aggregate(new Dictionary<TypeClassID, Func<object>>(), (whole, next) => { whole.Add(next.Key, next.Value); return whole; });
+      InitializeTypeCreatorMap<TypeClassID>(Type_Creator_Map, (whole, next) => { whole.Add(next.Key, next.Value); });
     }
 
     public TypeClassMapper(IDictionary<TypeClassID, TypeClassID> Type_Class_Map, IDictionary<string, object> Name_Object_Map) : this(Type_Class_Map)
@@ -321,20 +311,39 @@ namespace nutility
       InitializeNameObjectMap(Name_Object_Map);
     }
 
-    public TypeClassMapper(IEnumerable<MappedTypes> Type_Class_Catalog)// : this(typeclassmap)
-    {
-      //TODO cannot do: this(typeclassmap) && this(typeobjectmap) -so, design a common init logic accordingly.
-
-      this.typeclass_catalog = Type_Class_Catalog.Aggregate(new List<Mapping>(), (whole, next) => { whole.Add(new Mapping { RequiredType = next.RequiredType.FullName, ClientType = next.ClientType?.FullName, MappedClass = next.MappedClass.AssemblyQualifiedName }); return whole; });
-//      this.values = new Dictionary<TypeClassID, object>(values);
-    }
 
     public TypeClassMapper(IEnumerable<Mapping> Type_Class_Catalog)// : this(typeclassmap)
     {
       //new nutility.Mapping { RequiredType = null
 
       this.typeclass_catalog = new List<Mapping>(Type_Class_Catalog);
-//      this.values = new Dictionary<TypeClassID, object>(values);
+      //      this.values = new Dictionary<TypeClassID, object>(values);
+    }
+
+    public TypeClassMapper(IEnumerable<MappedTypes> Type_Class_Catalog)// : this(typeclassmap)
+    {
+      //TODO cannot do: this(typeclassmap) && this(typeobjectmap) -so, design a common init logic accordingly.
+
+      this.typeclass_catalog = Type_Class_Catalog.Aggregate(new List<Mapping>(), (whole, next) => { whole.Add(new Mapping { RequiredType = next.RequiredType.FullName, ClientType = next.ClientType?.FullName, MappedClass = next.MappedClass.AssemblyQualifiedName }); return whole; });
+      //      this.values = new Dictionary<TypeClassID, object>(values);
+
+      InitializeTypeCreatorMap<Type>(null, null, new Dictionary<TypeClassID, Func<object>>());
+      InitializeTypeObjectMap<TypeClassID>(null, null, new Dictionary<TypeClassID, object>());
+      InitializeNameObjectMap(null, new Dictionary<string, object>());
+    }
+
+    public TypeClassMapper(IEnumerable<MappedTypes> Type_Class_Catalog, IEnumerable<KeyValuePair<TypeClassID, object>> Type_Object_Map) : this(Type_Class_Catalog)
+    {
+      InitializeTypeCreatorMap<Type>(null, null, new Dictionary<TypeClassID, Func<object>>());
+      InitializeTypeObjectMap<TypeClassID>(Type_Object_Map, (whole, next) => { whole.Add(next.Key, next.Value); });
+      InitializeNameObjectMap(null, new Dictionary<string, object>());
+    }
+
+    public TypeClassMapper(IEnumerable<Mapping> Type_Class_Catalog, IEnumerable<KeyValuePair<TypeClassID, object>> Type_Object_Map) : this(Type_Class_Catalog)
+    {
+      InitializeTypeCreatorMap<Type>(null, null, new Dictionary<TypeClassID, Func<object>>());
+      InitializeTypeObjectMap<TypeClassID>(Type_Object_Map, (whole, next) => { whole.Add(next.Key, next.Value); });
+      InitializeNameObjectMap(null, new Dictionary<string, object>());
     }
 
     /// <summary>
@@ -345,7 +354,7 @@ namespace nutility
     /// <summary>
     /// A copy of the existing type-class catalog.
     /// </summary>
-    public IEnumerable<Mapping> Catalog => typeclass_catalog.Aggregate(new List<Mapping>(),(whole,next)=> { whole.Add(new Mapping(next)); return whole; });
+    public IEnumerable<Mapping> Catalog => typeclass_catalog.Aggregate(new List<Mapping>(), (whole, next) => { whole.Add(new Mapping(next)); return whole; });
 
     /// <summary>
     /// A copy of the existing name-object values.
@@ -545,13 +554,52 @@ namespace nutility
       }
     }
 
-    private void InitializeNameObjectMap(IDictionary<string, object> values)
+    private void InitializeTypeObjectMap<T>(IEnumerable<KeyValuePair<T, object>> Type_Object_Map, Action<IDictionary<TypeClassID, object>, KeyValuePair<T, object>> adder, IDictionary<TypeClassID, object> @new = null)
     {
-      if (values == null)
+      if (@new != null)
       {
-        throw new TypeClassMapperException($"Parameter cannot be null: {nameof(values)}", new ArgumentNullException(nameof(values)));
+        this.typeobjectmap = @new;
       }
-      this.nameobjectmap = new Dictionary<string, object>(values);
+      else
+      {
+        if (Type_Object_Map == null)
+        {
+          throw new TypeClassMapperException($"Parameter cannot be null: {nameof(Type_Object_Map)}", new ArgumentNullException(nameof(Type_Object_Map)));
+        }
+        this.typeobjectmap = Type_Object_Map.Aggregate(new Dictionary<TypeClassID, object>(), (whole, next) => { adder(whole, next); return whole; });
+      }
+    }
+
+    private void InitializeTypeCreatorMap<T>(IEnumerable<KeyValuePair<T, Func<object>>> Type_Creator_Map, Action<IDictionary<TypeClassID, Func<object>>, KeyValuePair<T, Func<object>>> adder, IDictionary<TypeClassID, Func<object>> @new = null)
+    {
+      if (@new != null)
+      {
+        this.typecreatormap = @new;
+      }
+      else
+      {
+        if (Type_Creator_Map == null)
+        {
+          throw new TypeClassMapperException($"Parameter cannot be null: {nameof(Type_Creator_Map)}", new ArgumentNullException(nameof(Type_Creator_Map)));
+        }
+        this.typecreatormap = Type_Creator_Map.Aggregate(new Dictionary<TypeClassID, Func<object>>(), (whole, next) => { adder(whole, next); return whole; });
+      }
+    }
+
+    private void InitializeNameObjectMap(IDictionary<string, object> values, IDictionary<string, object> @new = null)
+    {
+      if (@new != null)
+      {
+        this.nameobjectmap = @new;
+      }
+      else
+      {
+        if (values == null)
+        {
+          throw new TypeClassMapperException($"Parameter cannot be null: {nameof(values)}", new ArgumentNullException(nameof(values)));
+        }
+        this.nameobjectmap = new Dictionary<string, object>(values);
+      }
     }
   }
 }

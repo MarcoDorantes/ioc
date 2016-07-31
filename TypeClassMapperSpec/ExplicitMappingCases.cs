@@ -10,6 +10,10 @@ namespace app1
   {
     string Name { get; }
   }
+  public interface IOrder
+  {
+    string Name { get; }
+  }
 }
 
 namespace module1
@@ -17,6 +21,10 @@ namespace module1
   public class Source : app1.ISource
   {
     public string Name { get { return GetType().FullName; } }
+  }
+  public class Order : app1.IOrder
+  {
+    public string Name { get; set; }
   }
 }
 
@@ -515,6 +523,50 @@ namespace TypeClassMapperSpec
       //Assert
       Assert.AreEqual<string>("nutility.TypeClassMapper", source1.Name);
       Assert.AreEqual<string>("module1.Source", source2.Name);
+    }
+
+    [TestMethod]
+    public void TheTypeForMyCase1_WithInstance()
+    {
+      //Arrange
+      var typemap = new nutility.TypeClassMapper
+      (
+        new List<nutility.MappedTypes>
+        {
+          new nutility.MappedTypes { RequiredType = typeof(app1.ISource), ClientType = typeof(ExplicitMappingCases), MappedClass = typeof(module3.Source1) }
+        },
+        new Dictionary<nutility.TypeClassID, object> { { "app1.IOrder", new module1.Order { Name = "name1" } } }
+      );
+
+      //Act
+      app1.ISource source1 = typemap.GetService<app1.ISource>(Client_Type: typeof(ExplicitMappingCases));
+      app1.IOrder order1 = typemap.GetService<app1.IOrder>();
+
+      //Assert
+      Assert.AreEqual<string>("nutility.TypeClassMapper", source1.Name);
+      Assert.AreEqual<string>("name1", order1.Name);
+    }
+
+    [TestMethod]
+    public void TheTypeForMyCase2_WithInstance()
+    {
+      //Arrange
+      var typemap = new nutility.TypeClassMapper
+      (
+        new List<nutility.Mapping>
+        {
+          new nutility.Mapping { RequiredType = "app1.ISource", ClientType = "TypeClassMapperSpec.ExplicitMappingCases", MappedClass = "module3.Source1, TypeClassMapperSpec" }
+        },
+        new Dictionary<nutility.TypeClassID, object> { { "app1.IOrder", new module1.Order { Name = "name1" } } }
+      );
+
+      //Act
+      app1.ISource source1 = typemap.GetService<app1.ISource>(Client_Type: typeof(ExplicitMappingCases));
+      app1.IOrder order1 = typemap.GetService<app1.IOrder>();
+
+      //Assert
+      Assert.AreEqual<string>("nutility.TypeClassMapper", source1.Name);
+      Assert.AreEqual<string>("name1", order1.Name);
     }
   }
 }
