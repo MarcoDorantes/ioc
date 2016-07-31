@@ -86,7 +86,7 @@ namespace TypeClassMapperSpec
     }
 
     [TestMethod]
-    public void BadMappings()
+    public void BadNullMappings()
     {
       //Arrange
       IDictionary<nutility.TypeClassID, nutility.TypeClassID> mappings = null;
@@ -254,7 +254,65 @@ namespace TypeClassMapperSpec
     }
 
     [TestMethod]
-    public void BadNullClassName()
+    public void AddMapping1()
+    {
+      //Arrange
+      var typemap = new nutility.TypeClassMapper(new Dictionary<nutility.TypeClassID, nutility.TypeClassID> { { "app1.ISource", "module1.Source, TypeClassMapperSpec" } });
+      typemap.AddMapping(new nutility.MappedTypes { RequiredType = typeof(app1.IOrder), MappedClass = typeof(module1.Order) });
+
+      //Act
+      var source = (app1.ISource)typemap.GetService(typeof(app1.ISource));
+      var order = (app1.IOrder)typemap.GetService(typeof(app1.IOrder));
+
+      //Assert
+      Assert.IsNotNull(source);
+      Assert.AreEqual(typeof(module1.Source).FullName, source.Name);
+      Assert.IsNull(order.Name);
+    }
+
+    [TestMethod]
+    public void AddMapping2()
+    {
+      //Arrange
+      var typemap = new nutility.TypeClassMapper(new Dictionary<nutility.TypeClassID, nutility.TypeClassID> { { "app1.ISource", "module1.Source, TypeClassMapperSpec" } });
+      typemap.AddMapping(new nutility.Mapping { RequiredType = "app1.IOrder", MappedClass = "module1.Order, TypeClassMapperSpec" });
+
+      //Act
+      var source = (app1.ISource)typemap.GetService(typeof(app1.ISource));
+      var order = (app1.IOrder)typemap.GetService(typeof(app1.IOrder));
+
+      //Assert
+      Assert.IsNotNull(source);
+      Assert.AreEqual(typeof(module1.Source).FullName, source.Name);
+      Assert.IsNull(order.Name);
+    }
+
+    [TestMethod]
+    public void BadAddMapping()
+    {
+      //Arrange
+      var typemap = new nutility.TypeClassMapper(new Dictionary<nutility.TypeClassID, nutility.TypeClassID> { { "app1.ISource", "module1.Source, TypeClassMapperSpec" } });
+
+      //Act
+      Exception exception = null;
+      try
+      {
+        typemap.AddMapping(new nutility.Mapping());
+      }
+      catch (Exception ex)
+      {
+        exception = ex;
+      }
+
+      //Assert
+      Assert.IsNotNull(exception);
+      Assert.AreEqual<Type>(typeof(nutility.TypeClassMapperException), exception.GetType());
+      Assert.AreEqual<string>("RequiredType in Mapping cannot be null.", exception.Message);
+      Assert.IsNull(exception.InnerException);
+    }
+
+    [TestMethod]
+    public void BadNullClassName2()
     {
       //Arrange
       var Type_Class_Map = new Dictionary<Type, nutility.TypeClassID> { { typeof(app1.ISource), null } };

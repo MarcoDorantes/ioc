@@ -75,6 +75,14 @@ namespace aDesignUseCase
       public int ID { get; private set; }
       public string Name { get; private set; }
     }
+    class C : lib1.ITarget
+    {
+      public C(nutility.ITypeClassMapper typemap)
+      {
+        Name = typemap.GetService<string>();
+      }
+      public string Name { get; set; }
+    }
   }
   #endregion
 
@@ -158,13 +166,38 @@ namespace aDesignUseCase
       );
       typemap.AddMapping<int>(123);
       typemap.AddMapping<string>("name123");
+      typemap.AddMapping(new nutility.Mapping { RequiredType = "lib1.ITarget", MappedClass = "aDesignUseCase.liby.C, aDesignUseCase" });
+
+      //Act
+      var b = typemap.GetService<lib1.ISource>();
+      var s = typemap.GetService<lib1.ITarget>();
+
+      //Assert
+      Assert.AreEqual<string>("name123", b.Name);
+      Assert.AreEqual<int>(123, ((liby.B)b).ID);
+      Assert.AreEqual<string>("name123", s.Name);
+    }
+
+    [TestMethod]
+    public void AddMappingsAndGetAsValues2()
+    {
+      //Arrange
+      nutility.ITypeClassMapper typemap = new nutility.TypeClassMapper
+      (
+        new Dictionary<Type, Type>
+        {
+          { typeof(lib1.ISource), typeof(liby.B) }
+        }
+      );
+      typemap.AddMapping<int>(321);
+      typemap.AddMapping<string>(null);
 
       //Act
       var b = typemap.GetService<lib1.ISource>();
 
       //Assert
-      Assert.AreEqual<string>("name123", b.Name);
-      Assert.AreEqual<int>(123, ((liby.B)b).ID);
+      Assert.AreEqual<string>(null, b.Name);
+      Assert.AreEqual<int>(321, ((liby.B)b).ID);
     }
   }
 }
