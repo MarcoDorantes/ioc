@@ -88,7 +88,7 @@ namespace aDesignUseCase
       var source_stub = new libx.SourceStub("source1", new string[] { "one", "two" });
       var target_stub = new libx.TargetStub("target1");
       var log_stub = new libx.LogBookStub();
-      var typemap = new nutility.TypeClassMapper(typeobjectmap: new Dictionary<Type, object>
+      var typemap = new nutility.TypeClassMapper(Type_Object_Map: new Dictionary<Type, object>
       {
         { typeof(lib1.sample.ISource), source_stub },
         { typeof(lib1.sample.ITarget), target_stub },
@@ -96,12 +96,9 @@ namespace aDesignUseCase
       });
 
       //Act
-try
-{
         var processor = new lib1.sample.CopyProcessor(typemap);
         processor.Copy();
-}
-catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex.ToString()); }
+
       //Assert
       Assert.AreEqual<int>(2, target_stub.values.Count);
       Assert.IsTrue(log_stub.lines.All(line => line.EndsWith("ACK")));

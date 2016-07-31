@@ -71,7 +71,7 @@ public class SampleCase1
     //Arrange
     var typemap = new nutility.TypeClassMapper
     (
-      new Dictionary<Type, object>
+      Type_Object_Map: new Dictionary<Type, object>
       {
         { typeof(lib1.ISource), new SourceStub() },
         { typeof(lib1.ITarget), new TargetStub() },
