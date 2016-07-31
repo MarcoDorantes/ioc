@@ -257,13 +257,13 @@ namespace TypeClassMapperSpec
     public void BadNullClassName()
     {
       //Arrange
-      var typemap = new nutility.TypeClassMapper(new Dictionary<Type, nutility.TypeClassID> { { typeof(app1.ISource), null } });
+      var Type_Class_Map = new Dictionary<Type, nutility.TypeClassID> { { typeof(app1.ISource), null } };
 
       //Act
       Exception exception = null;
       try
       {
-        var instance = (app1.ISource)typemap.GetService(typeof(app1.ISource));
+        var typemap = new nutility.TypeClassMapper(Type_Class_Map);
       }
       catch (Exception ex)
       {
@@ -273,7 +273,7 @@ namespace TypeClassMapperSpec
       //Assert
       Assert.IsNotNull(exception);
       Assert.AreEqual<Type>(typeof(nutility.TypeClassMapperException), exception.GetType());
-      Assert.AreEqual<string>("Mapped class for type [app1.ISource] cannot be null: at configured scope [<explicit>] and section [<explicit>]", exception.Message);
+      Assert.AreEqual<string>("Mapped TypeClassID in mapping cannot be null.", exception.Message);
       Assert.IsNull(exception.InnerException);
     }
 
@@ -526,7 +526,7 @@ namespace TypeClassMapperSpec
     }
 
     [TestMethod]
-    public void TheTypeForMyCase1_WithInstance()
+    public void TheTypeForMyCase1_WithTypeObjectMap()
     {
       //Arrange
       var typemap = new nutility.TypeClassMapper
@@ -548,7 +548,7 @@ namespace TypeClassMapperSpec
     }
 
     [TestMethod]
-    public void TheTypeForMyCase2_WithInstance()
+    public void TheTypeForMyCase2_WithTypeObjectMap()
     {
       //Arrange
       var typemap = new nutility.TypeClassMapper
@@ -567,6 +567,31 @@ namespace TypeClassMapperSpec
       //Assert
       Assert.AreEqual<string>("nutility.TypeClassMapper", source1.Name);
       Assert.AreEqual<string>("name1", order1.Name);
+    }
+
+    [TestMethod]
+    public void TheTypeForMyCase2_WithNameObjectMap()
+    {
+      //Arrange
+      var typemap = new nutility.TypeClassMapper
+      (
+        new List<nutility.Mapping>
+        {
+          new nutility.Mapping { RequiredType = "app1.ISource", ClientType = "TypeClassMapperSpec.ImplicitMappingCases", MappedClass = "module1.Source, TypeClassMapperSpec" }
+        },
+        new Dictionary<string, object>
+        {
+          { "amount", 123M }
+        }
+      );
+
+      //Act
+      app1.ISource source1 = typemap.GetService<app1.ISource>(Client_Type: typeof(ImplicitMappingCases));
+      decimal amount = typemap.GetValue<decimal>("amount");
+
+      //Assert
+      Assert.AreEqual<string>("module1.Source", source1.Name);
+      Assert.AreEqual<decimal>(123M, amount);
     }
   }
 }
