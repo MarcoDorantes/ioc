@@ -504,13 +504,13 @@ namespace TypeClassMapperSpec
         new List<nutility.Mapping>
         {
           new nutility.Mapping { RequiredType = "app1.ISource", ClientType = "TheTypeForMyCase3", MappedClass = "module3.Source1, TypeClassMapperSpec" },
-          new nutility.Mapping { RequiredType = "app1.ISource", ClientType = "ImplicitMappingCases", MappedClass = "module1.Source, TypeClassMapperSpec" }
+          new nutility.Mapping { RequiredType = "app1.ISource", ClientType = "app1.ISource.2", MappedClass = "module1.Source, TypeClassMapperSpec" }
         }
       );
 
       //Act
-      app1.ISource source1 = typemap.GetService<app1.ISource>(System.Reflection.MethodBase.GetCurrentMethod().Name);
-      app1.ISource source2 = typemap.GetService<app1.ISource>(Client_Type: "ImplicitMappingCases");
+      app1.ISource source1 = typemap.GetService<app1.ISource>(Client_Type: System.Reflection.MethodBase.GetCurrentMethod().Name);
+      app1.ISource source2 = typemap.GetService<app1.ISource>(Client_Type: "app1.ISource.2"); //a la COM ProgID, but not necessarily a machine-wide ProgID, only for the very specific context of an application.
 
       //Assert
       Assert.AreEqual<string>("nutility.TypeClassMapper", source1.Name);

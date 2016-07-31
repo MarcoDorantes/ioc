@@ -17,7 +17,7 @@ The custom support in this case is the mapping between requested types, mainly i
 
 «Mapper» as associative array, map, symbol table, hash table, dictionary, or associative catalog.
 
-«Object» &#9755; an instance of a class.
+«Object» an instance of a «Class».
 
 ##Why do I need TypeClassMapper?
 The actual need is to properly manage the dependencies on a large-scale software design and to manage the level of technical debt of its codebase. The key goal is to prevent the ever increasing costs of a Big ball of mud anti-pattern:

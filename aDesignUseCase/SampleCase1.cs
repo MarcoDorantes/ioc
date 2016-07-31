@@ -112,7 +112,7 @@ namespace aDesignUseCase
       {
         { typeof(lib1.ISource), typeof(liby.A) }
       },
-      new Dictionary<nutility.TypeClassID, object>
+      new Dictionary<string, object>
       {
         { "ID", 123 },
         { "Name", "name123" }
