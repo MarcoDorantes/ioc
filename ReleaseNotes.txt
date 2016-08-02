@@ -3,7 +3,7 @@
 	-not compile string, not TypeClassID
 	-not compile ctors, new separated
 
-	Also, please note the following new features in this version:
+	Also, please take note of the following new features in this version:
 	-Type_Class_Catalog
 	-a la COM ProgID, but not necessarily a machine-wide ProgID, only for the very specific context of an application.
 

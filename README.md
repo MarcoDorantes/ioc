@@ -100,4 +100,6 @@ Or, in the context of a host at a productive environment, where the type-class m
   processor.Copy();
 ```
 ##Which other use cases are supported?
-The unit test cases in `TypeClassMapperSpec` Test Project could be of help to check the supported use cases.
+The unit test cases in `TypeClassMapperSpec` Test Project could be of help to check other supported use cases. Next are a few examples:
+
+##Which other use cases are supported?
