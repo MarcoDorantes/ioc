@@ -4,6 +4,7 @@
 `TypeClassMapper` class - Given the runtime dependency management tradition of early design patterns, e.g., Microsoft COM `IUnknown::QueryInterface` method, this class follows such design tradition and relies on basic equivalent mechanisms from .NET Framework (`System.IServiceProvider` interface).
 
 Latest released version at: http://www.nuget.org/packages/TypeClassMapper/
+
 Please check notes before install the latest released version: https://github.com/MarcoDorantes/ioc/blob/master/ReleaseNotes.txt
 
 ##What is TypeClassMapper?
@@ -99,4 +100,4 @@ Or, in the context of a host at a productive environment, where the type-class m
   processor.Copy();
 ```
 ##Which other use cases are supported?
-The unit test cases in ^TypeClassMapperSpec^ Test Project could be of help to check the supported use cases.
+The unit test cases in `TypeClassMapperSpec` Test Project could be of help to check the supported use cases.
