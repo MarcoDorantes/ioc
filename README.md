@@ -4,6 +4,7 @@
 `TypeClassMapper` class - Given the runtime dependency management tradition of early design patterns, e.g., Microsoft COM `IUnknown::QueryInterface` method, this class follows such design tradition and relies on basic equivalent mechanisms from .NET Framework (`System.IServiceProvider` interface).
 
 Latest released version at: http://www.nuget.org/packages/TypeClassMapper/
+Please check notes before install the latest released version: https://github.com/MarcoDorantes/ioc/blob/master/ReleaseNotes.txt
 
 ##What is TypeClassMapper?
 The `TypeClassMapper` class provides a simple implementation for the .NET Framework `System.IServiceProvider` interface; namely, it implements the defined .NET mechanism for retrieving a service object; that is, an object that provides custom support to other objects.
@@ -97,3 +98,5 @@ Or, in the context of a host at a productive environment, where the type-class m
   var processor = new lib1.CopyProcessor(new nutility.TypeClassMapper());
   processor.Copy();
 ```
+##Which other use cases are supported?
+The unit test cases in ^TypeClassMapperSpec^ Test Project could be of help to check the supported use cases.
