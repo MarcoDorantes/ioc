@@ -1,10 +1,10 @@
 ﻿using System;
 namespace nutility
 {
-  public class MappedTypes
+  public class MappedTypes<T>
   {
     public Type RequiredType;
-    public Type ClientType;
+    public T ClientType;
     public Type MappedClass;
   }
 }

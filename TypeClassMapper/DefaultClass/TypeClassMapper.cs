@@ -280,7 +280,15 @@ namespace nutility
       InitializeNameObjectMap(null, new Dictionary<string, object>());
     }
 
-    public TypeClassMapper(IEnumerable<MappedTypes> Type_Class_Catalog)
+    public TypeClassMapper(IEnumerable<Mapping2<Type, TypeClassID>> Type_Class_Catalog)
+    {
+      InitializeTypeClassCatalog<Type, TypeClassID>(null, null, Type_Class_Catalog.Aggregate(new List<Mapping>(), (whole, next) => { whole.Add(new Mapping { RequiredType = next.RequiredType.FullName, ClientType = next.ClientType, MappedClass = next.MappedClass.AssemblyQualifiedName }); return whole; }));
+      InitializeTypeCreatorMap<Type>(null, null, new Dictionary<TypeClassID, Func<object>>());
+      InitializeTypeObjectMap<TypeClassID>(null, null, new Dictionary<TypeClassID, object>());
+      InitializeNameObjectMap(null, new Dictionary<string, object>());
+    }
+
+    public TypeClassMapper(IEnumerable<MappedTypes<Type>> Type_Class_Catalog)
     {
       InitializeTypeClassCatalog<Type, TypeClassID>(null, null, Type_Class_Catalog.Aggregate(new List<Mapping>(), (whole, next) => { whole.Add(new Mapping { RequiredType = next.RequiredType.FullName, ClientType = next.ClientType?.FullName, MappedClass = next.MappedClass.AssemblyQualifiedName }); return whole; }));
       InitializeTypeCreatorMap<Type>(null, null, new Dictionary<TypeClassID, Func<object>>());
@@ -288,7 +296,7 @@ namespace nutility
       InitializeNameObjectMap(null, new Dictionary<string, object>());
     }
 
-    public TypeClassMapper(IEnumerable<MappedTypes> Type_Class_Catalog, IEnumerable<KeyValuePair<TypeClassID, object>> Type_Object_Map) : this(Type_Class_Catalog)
+    public TypeClassMapper(IEnumerable<MappedTypes<Type>> Type_Class_Catalog, IEnumerable<KeyValuePair<TypeClassID, object>> Type_Object_Map) : this(Type_Class_Catalog)
     {
       InitializeTypeObjectMap<TypeClassID>(Type_Object_Map, (whole, next) => { whole.Add(next.Key, next.Value); });
     }
@@ -391,16 +399,16 @@ namespace nutility
 
     public void AddMapping<T>(T value)
     {
-      var mapped_types = value as MappedTypes;
+      var mapped_types = value as MappedTypes<Type>;
       if (mapped_types != null)
       {
         if (mapped_types.RequiredType == null)
         {
-          throw new TypeClassMapperException($"RequiredType in {nameof(MappedTypes)} cannot be null.");
+          throw new TypeClassMapperException($"RequiredType in {nameof(MappedTypes<Type>)} cannot be null.");
         }
         if (mapped_types.MappedClass == null)
         {
-          throw new TypeClassMapperException($"MappedClass in {nameof(MappedTypes)} cannot be null.");
+          throw new TypeClassMapperException($"MappedClass in {nameof(MappedTypes<Type>)} cannot be null.");
         }
         this.typeclass_catalog.Add(new Mapping { RequiredType = mapped_types?.RequiredType.FullName, ClientType = mapped_types?.ClientType?.FullName, MappedClass = mapped_types?.MappedClass.AssemblyQualifiedName });
         return;

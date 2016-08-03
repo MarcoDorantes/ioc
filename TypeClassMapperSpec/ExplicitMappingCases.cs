@@ -258,7 +258,7 @@ namespace TypeClassMapperSpec
     {
       //Arrange
       var typemap = new nutility.TypeClassMapper(new Dictionary<nutility.TypeClassID, nutility.TypeClassID> { { "app1.ISource", "module1.Source, TypeClassMapperSpec" } });
-      typemap.AddMapping(new nutility.MappedTypes { RequiredType = typeof(app1.IOrder), MappedClass = typeof(module1.Order) });
+      typemap.AddMapping(new nutility.MappedTypes<Type> { RequiredType = typeof(app1.IOrder), MappedClass = typeof(module1.Order) });
 
       //Act
       var source = (app1.ISource)typemap.GetService(typeof(app1.ISource));
@@ -523,10 +523,10 @@ namespace TypeClassMapperSpec
       //Arrange
       var typemap = new nutility.TypeClassMapper
       (
-        new List<nutility.MappedTypes>
+        new List<nutility.MappedTypes<Type>>
         {
-          new nutility.MappedTypes { RequiredType = typeof(app1.ISource), ClientType = typeof(ExplicitMappingCases), MappedClass = typeof(module3.Source1) },
-          new nutility.MappedTypes { RequiredType = typeof(app1.ISource), ClientType = typeof(ImplicitMappingCases), MappedClass = typeof(module1.Source) }
+          new nutility.MappedTypes<Type> { RequiredType = typeof(app1.ISource), ClientType = typeof(ExplicitMappingCases), MappedClass = typeof(module3.Source1) },
+          new nutility.MappedTypes<Type> { RequiredType = typeof(app1.ISource), ClientType = typeof(ImplicitMappingCases), MappedClass = typeof(module1.Source) }
         }
       );
 
@@ -584,14 +584,36 @@ namespace TypeClassMapperSpec
     }
 
     [TestMethod]
+    public void TheTypeForMyCase4()
+    {
+      //Arrange
+      var typemap = new nutility.TypeClassMapper
+      (
+        new List<nutility.Mapping2<Type, nutility.TypeClassID>>
+        {
+          new nutility.Mapping2<Type, nutility.TypeClassID> { RequiredType = typeof(app1.ISource), ClientType = "ProgID.1", MappedClass = typeof(module3.Source1) },
+          new nutility.Mapping2<Type, nutility.TypeClassID> { RequiredType = typeof(app1.ISource), ClientType = "ProgID.2", MappedClass = typeof(module1.Source) }
+        }
+      );
+
+      //Act
+      app1.ISource source1 = typemap.GetService<app1.ISource>(Client_Type: "ProgID.1");
+      app1.ISource source2 = typemap.GetService<app1.ISource>(Client_Type: "ProgID.2");
+
+      //Assert
+      Assert.AreEqual<string>("nutility.TypeClassMapper", source1.Name);
+      Assert.AreEqual<string>("module1.Source", source2.Name);
+    }
+
+    [TestMethod]
     public void TheTypeForMyCase1_WithTypeObjectMap()
     {
       //Arrange
       var typemap = new nutility.TypeClassMapper
       (
-        new List<nutility.MappedTypes>
+        new List<nutility.MappedTypes<Type>>
         {
-          new nutility.MappedTypes { RequiredType = typeof(app1.ISource), ClientType = typeof(ExplicitMappingCases), MappedClass = typeof(module3.Source1) }
+          new nutility.MappedTypes<Type> { RequiredType = typeof(app1.ISource), ClientType = typeof(ExplicitMappingCases), MappedClass = typeof(module3.Source1) }
         },
         new Dictionary<nutility.TypeClassID, object> { { "app1.IOrder", new module1.Order { Name = "name1" } } }
       );
