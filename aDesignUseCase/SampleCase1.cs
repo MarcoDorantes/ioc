@@ -166,7 +166,7 @@ namespace aDesignUseCase
       );
       typemap.AddMapping<int>(123);
       typemap.AddMapping<string>("name123");
-      typemap.AddMapping(new nutility.Mapping { RequiredType = "lib1.ITarget", MappedClass = "aDesignUseCase.liby.C, aDesignUseCase" });
+      typemap.AddMapping(new nutility.Mapping<nutility.TypeClassID, nutility.TypeClassID> { RequiredType = "lib1.ITarget", MappedClass = "aDesignUseCase.liby.C, aDesignUseCase" });
 
       //Act
       var b = typemap.GetService<lib1.ISource>();

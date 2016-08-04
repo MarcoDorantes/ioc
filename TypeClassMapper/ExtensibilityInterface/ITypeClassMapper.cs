@@ -16,7 +16,7 @@ namespace nutility
     /// <summary>
     /// A copy of the existing type-class catalog.
     /// </summary>
-    IEnumerable<Mapping> Catalog { get; }
+    IEnumerable<Mapping<TypeClassID, TypeClassID>> Catalog { get; }
 
     /// <summary>
     /// A copy of the existing type-object values.

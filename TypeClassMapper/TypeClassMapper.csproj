@@ -47,7 +47,6 @@
     <Compile Include="ConfigurationSection\ScopeCollection.cs" />
     <Compile Include="ConfigurationSection\ScopeCollectionElement.cs" />
     <Compile Include="ConfigurationSection\TypeClassMapperConfigurationSection.cs" />
-    <Compile Include="DefaultClass\MappedTypes.cs" />
     <Compile Include="DefaultClass\Mapping.cs" />
     <Compile Include="DefaultClass\TypeClassMapper.cs" />
     <Compile Include="ExtensibilityInterface\ITypeClassMapper.cs" />
