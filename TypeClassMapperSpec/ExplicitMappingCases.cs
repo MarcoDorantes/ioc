@@ -15,6 +15,10 @@ namespace app1
   {
     string Name { get; }
   }
+  public interface ITarget
+  {
+    string Name { get; }
+  }
 }
 
 namespace module1
@@ -63,6 +67,18 @@ namespace module3
       this.typemap_ctor = "nutility.TypeClassMapper";
     }
     public string Name => typemap_ctor;
+  }
+}
+
+namespace module4
+{
+  public class Target : app1.ITarget
+  {
+    public string Name { get { return GetType().FullName; } }
+  }
+  public class Order : app1.IOrder
+  {
+    public string Name { get { return GetType().FullName; } }
   }
 }
 
@@ -676,30 +692,36 @@ namespace TypeClassMapperSpec
     }
 
     [TestMethod]
-    public void _repro2()
+    public void TheTypeForMyCase5()
     {
+      //Arrange
       var typemap = new nutility.TypeClassMapper
       (
-        new List<nutility.Mapping<nutility.TypeClassID, nutility.TypeClassID>>
-        {
-//          new nutility.Mapping { RequiredType = "app1.ISource", ClientType = "TypeClassMapperSpec.ImplicitMappingCases", MappedClass = "module1.Source, TypeClassMapperSpec" }
-
-          new nutility.Mapping<nutility.TypeClassID, nutility.TypeClassID> { RequiredType = "app1.ISource", /*ClientType = "TypeClassMapperSpec.ImplicitMappingCases",*/ MappedClass = "module1.Source, TypeClassMapperSpec" },
-          //new nutility.Mapping { RequiredType = "app1.ISource", ClientType = "TypeClassMapperSpec.ImplicitMappingCases", MappedClass = "module1.Source, TypeClassMapperSpec" },
-          new nutility.Mapping<nutility.TypeClassID, nutility.TypeClassID> { RequiredType= "app1.IOrder", ClientType="id1", MappedClass="module1.Order, TypeClassMapperSpec" }
-        }
+          new List<nutility.Mapping<Type, nutility.TypeClassID>>
+          {
+            new nutility.Mapping<Type, nutility.TypeClassID> { RequiredType = typeof(app1.ISource), MappedClass = typeof(module1.Source) },
+            new nutility.Mapping<Type, nutility.TypeClassID> { RequiredType = typeof(app1.IOrder), MappedClass = typeof(module1.Order) },
+            new nutility.Mapping<Type, nutility.TypeClassID> { RequiredType = typeof(app1.ITarget), MappedClass = typeof(module4.Target) },
+            new nutility.Mapping<Type, nutility.TypeClassID> { RequiredType = typeof(app1.ISource), ClientType = "DMQListener", MappedClass = typeof(module3.Source1) }
+          },
+          new List<nutility.Mapping<Type, Type>>
+          {
+            new nutility.Mapping<Type, Type> { RequiredType = typeof(app1.IOrder), ClientType = typeof(ExplicitMappingCases), MappedClass = typeof(module4.Order) },
+            new nutility.Mapping<Type, Type> { RequiredType = typeof(app1.ITarget), ClientType = typeof(ExplicitMappingCases), MappedClass = typeof(module4.Target) }
+          }
       );
-      string ProgID = null;
-      string ProgID2 = "id1";
 
-      //Act
-      app1.ISource source1 = typemap.GetService<app1.ISource>(ProgID);
-      app1.IOrder order1 = typemap.GetService<app1.IOrder>(ProgID2);
-      //typemap.GetService<app1.ISource>(Client_Type: typeof(ImplicitMappingCases));
+      //Ack
+      app1.ISource source = typemap.GetService<app1.ISource>();
+      app1.ISource source1 = typemap.GetService<app1.ISource>("DMQListener");
+      app1.IOrder order = typemap.GetService<app1.IOrder>(typeof(ExplicitMappingCases));
+      app1.ITarget target = typemap.GetService<app1.ITarget>(typeof(ExplicitMappingCases));
 
       //Assert
-      Assert.AreEqual<string>("module1.Source", source1.Name);
-      Assert.IsNotNull(order1);
+      Assert.AreEqual<string>("module1.Source", source.Name);
+      Assert.AreEqual<string>("nutility.TypeClassMapper", source1.Name);
+      Assert.AreEqual<string>("module4.Order", order.Name);
+      Assert.AreEqual<string>("module4.Target", target.Name);
     }
   }
 }
