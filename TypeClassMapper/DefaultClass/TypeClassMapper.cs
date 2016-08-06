@@ -41,53 +41,6 @@ namespace nutility
     /// </summary>
     private string section;
 
-    #region ctors
-    /*
-        public TypeClassMapper(string scope = null, string section = null)
-
-
-        public TypeClassMapper(IDictionary<string, TypeClassName> typeclassmap)
-
-        public TypeClassMapper(IDictionary<Type, TypeClassName> typeclassmap)
-
-        public TypeClassMapper(IDictionary<Type, Type> typeclassmap)
-
-
-        public TypeClassMapper(IDictionary<string, object> typeobjectmap)
-
-        public TypeClassMapper(IDictionary<Type, object> typeobjectmap)
-
-
-        public TypeClassMapper(IDictionary<Type, TypeClassName> typeclassmap, IEnumerable<KeyValuePair<Type, object>> typeobjectmap)
-
-    -
-        public TypeClassMapper(IDictionary<string, TypeClassName> typeclassmap, IEnumerable<KeyValuePair<string, object>> typeobjectmap)
-
-        public TypeClassMapper(IDictionary<string, TypeClassName> typeclassmap, IEnumerable<KeyValuePair<Type, object>> typeobjectmap)
-
-
-        public TypeClassMapper(IDictionary<Type, TypeClassName> typeclassmap, IEnumerable<KeyValuePair<string, object>> typeobjectmap)
-
-
-        public TypeClassMapper(IDictionary<Type, Type> typeclassmap, IDictionary<string, object> typeobjectmap)
-
-        public TypeClassMapper(IDictionary<Type, Type> typeclassmap, IDictionary<Type, object> typeobjectmap)
-
-    -
-
-        public TypeClassMapper(IDictionary<Type, Type> typeclassmap, IDictionary<Type, Func<object>> typecreatormap) : this(typeclassmap)
-
-        public TypeClassMapper(IDictionary<Type, Type> typeclassmap, IDictionary<string, Func<object>> typecreatormap) : this(typeclassmap)
-
-
-        public TypeClassMapper(IDictionary<string, TypeClassName> typeclassmap, IDictionary<string, object> values) : this(typeclassmap)
-
-        public TypeClassMapper(IDictionary<Type, TypeClassName> typeclassmap, IDictionary<string, object> values) : this(typeclassmap)
-
-        public TypeClassMapper(IDictionary<Type, Type> typeclassmap, IDictionary<string, object> values) : this(typeclassmap)
-    */
-    #endregion
-
     /// <summary>
     /// For implicit, config-based, type-class mappings.
     /// </summary>
@@ -166,7 +119,7 @@ namespace nutility
     }
 
     /// <summary>
-    /// For explicit type-class mappings.
+    /// For explicit type-instance mappings.
     /// </summary>
     /// <param name="Type_Object_Map">Type-Object map</param>
     public TypeClassMapper(IEnumerable<KeyValuePair<TypeClassID, object>> Type_Object_Map)
@@ -185,7 +138,7 @@ namespace nutility
     }
 
     /// <summary>
-    /// For explicit type-class mappings.
+    /// For explicit type-instance mappings.
     /// </summary>
     /// <param name="Type_Object_Map">Type-Object map</param>
     public TypeClassMapper(IEnumerable<KeyValuePair<Type, object>> Type_Object_Map)
@@ -203,41 +156,88 @@ namespace nutility
       InitializeNameObjectMap(null, new Dictionary<string, object>());
     }
 
+    /// <summary>
+    /// For explicit type-class and type-instance mappings.
+    /// </summary>
+    /// <param name="Type_Class_Map">Type-Class map</param>
+    /// <param name="Type_Object_Map">Type-Object map</param>
     public TypeClassMapper(IEnumerable<KeyValuePair<TypeClassID, TypeClassID>> Type_Class_Map, IEnumerable<KeyValuePair<TypeClassID, object>> Type_Object_Map) : this(Type_Class_Map)
     {
       InitializeTypeObjectMap<TypeClassID>(Type_Object_Map, (whole, next) => { whole.Add(next.Key, next.Value); });
     }
+
+    /// <summary>
+    /// For explicit type-class and type-instance mappings.
+    /// </summary>
+    /// <param name="Type_Class_Map">Type-Class map</param>
+    /// <param name="Type_Object_Map">Type-Object map</param>
     public TypeClassMapper(IEnumerable<KeyValuePair<TypeClassID, TypeClassID>> Type_Class_Map, IEnumerable<KeyValuePair<Type, object>> Type_Object_Map) : this(Type_Class_Map)
     {
       InitializeTypeObjectMap<Type>(Type_Object_Map, (whole, next) => { whole.Add(next.Key.FullName, next.Value); });
     }
+
+    /// <summary>
+    /// For explicit type-class and type-instance mappings.
+    /// </summary>
+    /// <param name="Type_Class_Map">Type-Class map</param>
+    /// <param name="Type_Object_Map">Type-Object map</param>
     public TypeClassMapper(IEnumerable<KeyValuePair<TypeClassID, Type>> Type_Class_Map, IEnumerable<KeyValuePair<TypeClassID, object>> Type_Object_Map) : this(Type_Class_Map)
     {
       InitializeTypeObjectMap<TypeClassID>(Type_Object_Map, (whole, next) => { whole.Add(next.Key, next.Value); });
     }
+
+    /// <summary>
+    /// For explicit type-class and type-instance mappings.
+    /// </summary>
+    /// <param name="Type_Class_Map">Type-Class map</param>
+    /// <param name="Type_Object_Map">Type-Object map</param>
     public TypeClassMapper(IEnumerable<KeyValuePair<TypeClassID, Type>> Type_Class_Map, IEnumerable<KeyValuePair<Type, object>> Type_Object_Map) : this(Type_Class_Map)
     {
       InitializeTypeObjectMap<Type>(Type_Object_Map, (whole, next) => { whole.Add(next.Key.FullName, next.Value); });
     }
+
+    /// <summary>
+    /// For explicit type-class and type-instance mappings.
+    /// </summary>
+    /// <param name="Type_Class_Map">Type-Class map</param>
+    /// <param name="Type_Object_Map">Type-Object map</param>
     public TypeClassMapper(IEnumerable<KeyValuePair<Type, TypeClassID>> Type_Class_Map, IEnumerable<KeyValuePair<TypeClassID, object>> Type_Object_Map) : this(Type_Class_Map)
     {
       InitializeTypeObjectMap<TypeClassID>(Type_Object_Map, (whole, next) => { whole.Add(next.Key, next.Value); });
     }
+
+    /// <summary>
+    /// For explicit type-class and type-instance mappings.
+    /// </summary>
+    /// <param name="Type_Class_Map">Type-Class map</param>
+    /// <param name="Type_Object_Map">Type-Object map</param>
     public TypeClassMapper(IEnumerable<KeyValuePair<Type, TypeClassID>> Type_Class_Map, IEnumerable<KeyValuePair<Type, object>> Type_Object_Map) : this(Type_Class_Map)
     {
       InitializeTypeObjectMap<Type>(Type_Object_Map, (whole, next) => { whole.Add(next.Key.FullName, next.Value); });
     }
+
+    /// <summary>
+    /// For explicit type-class and type-instance mappings.
+    /// </summary>
+    /// <param name="Type_Class_Map">Type-Class map</param>
+    /// <param name="Type_Object_Map">Type-Object map</param>
     public TypeClassMapper(IEnumerable<KeyValuePair<Type, Type>> Type_Class_Map, IEnumerable<KeyValuePair<TypeClassID, object>> Type_Object_Map) : this(Type_Class_Map)
     {
       InitializeTypeObjectMap<TypeClassID>(Type_Object_Map, (whole, next) => { whole.Add(next.Key, next.Value); });
     }
+
+    /// <summary>
+    /// For explicit type-class and type-instance mappings.
+    /// </summary>
+    /// <param name="Type_Class_Map">Type-Class map</param>
+    /// <param name="Type_Object_Map">Type-Object map</param>
     public TypeClassMapper(IEnumerable<KeyValuePair<Type, Type>> Type_Class_Map, IEnumerable<KeyValuePair<Type, object>> Type_Object_Map) : this(Type_Class_Map)
     {
       InitializeTypeObjectMap<Type>(Type_Object_Map, (whole, next) => { whole.Add(next.Key.FullName, next.Value); });
     }
 
     /// <summary>
-    /// For explicit type-class mappings.
+    /// For explicit type-class and type-creator mappings.
     /// </summary>
     /// <param name="Type_Class_Map">Type-Class map</param>
     /// <param name="Type_Creator_Map">Type-Creator map</param>
@@ -247,7 +247,7 @@ namespace nutility
     }
 
     /// <summary>
-    /// Type-object_creator mappings.
+    /// For explicit type-class and type-creator mappings.
     /// </summary>
     /// <param name="Type_Class_Map">Type-Class map</param>
     /// <param name="Type_Creator_Map">Type-Creator map</param>
@@ -256,22 +256,40 @@ namespace nutility
       InitializeTypeCreatorMap<TypeClassID>(Type_Creator_Map, (whole, next) => { whole.Add(next.Key, next.Value); });
     }
 
+    /// <summary>
+    /// For explicit type-class and name-object mappings.
+    /// </summary>
+    /// <param name="Type_Class_Map">Type-Class map</param>
+    /// <param name="Name_Object_Map">Name-Object map</param>
     public TypeClassMapper(IEnumerable<KeyValuePair<TypeClassID, TypeClassID>> Type_Class_Map, IEnumerable<KeyValuePair<string, object>> Name_Object_Map) : this(Type_Class_Map)
     {
       InitializeNameObjectMap(Name_Object_Map);
     }
 
+    /// <summary>
+    /// For explicit type-class and name-object mappings.
+    /// </summary>
+    /// <param name="Type_Class_Map">Type-Class map</param>
+    /// <param name="Name_Object_Map">Name-Object map</param>
     public TypeClassMapper(IEnumerable<KeyValuePair<Type, TypeClassID>> Type_Class_Map, IEnumerable<KeyValuePair<string, object>> Name_Object_Map) : this(Type_Class_Map)
     {
       InitializeNameObjectMap(Name_Object_Map);
     }
 
+    /// <summary>
+    /// For explicit type-class and name-object mappings.
+    /// </summary>
+    /// <param name="Type_Class_Map">Type-Class map</param>
+    /// <param name="Name_Object_Map">Name-Object map</param>
     public TypeClassMapper(IEnumerable<KeyValuePair<Type, Type>> Type_Class_Map, IEnumerable<KeyValuePair<string, object>> Name_Object_Map) : this(Type_Class_Map)
     {
       InitializeNameObjectMap(Name_Object_Map);
     }
 
-
+    /// <summary>
+    /// For explicit type-class mappings.
+    /// </summary>
+    /// <param name="Type_Class_Catalog">RequiredType-ClientType-MappedClass catalog</param>
     public TypeClassMapper(IEnumerable<Mapping<TypeClassID, TypeClassID>> Type_Class_Catalog)
     {
       InitializeTypeClassCatalog<Type, TypeClassID>(null, null, new List<Mapping<TypeClassID, TypeClassID>>(Type_Class_Catalog));
@@ -289,6 +307,10 @@ namespace nutility
       InitializeNameObjectMap(null, new Dictionary<string, object>());
     }*/
 
+    /// <summary>
+    /// For explicit type-class mappings.
+    /// </summary>
+    /// <param name="Type_Class_Catalog">RequiredType-ClientType-MappedClass catalog</param>
     public TypeClassMapper(IEnumerable<Mapping<Type, Type>> Type_Class_Catalog)
     {
       InitializeTypeClassCatalog<Type, TypeClassID>(null, null, Type_Class_Catalog.Aggregate(new List<Mapping<TypeClassID, TypeClassID>>(), (whole, next) => { whole.Add(new Mapping<TypeClassID, TypeClassID> { RequiredType = next.RequiredType.FullName, ClientType = next.ClientType?.FullName, MappedClass = next.MappedClass.AssemblyQualifiedName }); return whole; }));
@@ -297,6 +319,10 @@ namespace nutility
       InitializeNameObjectMap(null, new Dictionary<string, object>());
     }
 
+    /// <summary>
+    /// For explicit type-class mappings.
+    /// </summary>
+    /// <param name="Type_Class_Catalog">RequiredType-ClientType-MappedClass catalog</param>
     public TypeClassMapper(IEnumerable<Mapping<Type, TypeClassID>> Type_Class_Catalog)
     {
       InitializeTypeClassCatalog<Type, TypeClassID>(null, null, Type_Class_Catalog.Aggregate(new List<Mapping<TypeClassID, TypeClassID>>(), (whole, next) => { whole.Add(new Mapping<TypeClassID, TypeClassID> { RequiredType = next.RequiredType.FullName, ClientType = next.ClientType, MappedClass = next.MappedClass.AssemblyQualifiedName }); return whole; }));
@@ -305,6 +331,11 @@ namespace nutility
       InitializeNameObjectMap(null, new Dictionary<string, object>());
     }
 
+    /// <summary>
+    /// For explicit type-class mappings, in two parts.
+    /// </summary>
+    /// <param name="Type_Class_Catalog_part1">First part of the RequiredType-ClientType-MappedClass catalog</param>
+    /// <param name="Type_Class_Catalog_part2">Second part of the RequiredType-ClientType-MappedClass catalog</param>
     public TypeClassMapper(IEnumerable<Mapping<Type, TypeClassID>> Type_Class_Catalog_part1, IEnumerable<Mapping<Type, Type>> Type_Class_Catalog_part2)
     {
       //TODO: same input validation to all others
@@ -319,16 +350,31 @@ namespace nutility
       InitializeNameObjectMap(null, new Dictionary<string, object>());
     }
 
+    /// <summary>
+    /// For explicit type-class and type-instance mappings.
+    /// </summary>
+    /// <param name="Type_Class_Catalog">RequiredType-ClientType-MappedClass catalog</param>
+    /// <param name="Type_Object_Map">Type-Object map</param>
     public TypeClassMapper(IEnumerable<Mapping<Type, Type>> Type_Class_Catalog, IEnumerable<KeyValuePair<TypeClassID, object>> Type_Object_Map) : this(Type_Class_Catalog)
     {
       InitializeTypeObjectMap<TypeClassID>(Type_Object_Map, (whole, next) => { whole.Add(next.Key, next.Value); });
     }
 
+    /// <summary>
+    /// For explicit type-class and type-instance mappings.
+    /// </summary>
+    /// <param name="Type_Class_Catalog">RequiredType-ClientType-MappedClass catalog</param>
+    /// <param name="Type_Object_Map">Type-Object map</param>
     public TypeClassMapper(IEnumerable<Mapping<TypeClassID, TypeClassID>> Type_Class_Catalog, IEnumerable<KeyValuePair<TypeClassID, object>> Type_Object_Map) : this(Type_Class_Catalog)
     {
       InitializeTypeObjectMap<TypeClassID>(Type_Object_Map, (whole, next) => { whole.Add(next.Key, next.Value); });
     }
 
+    /// <summary>
+    /// For explicit type-class and type-instance mappings.
+    /// </summary>
+    /// <param name="Type_Class_Catalog">RequiredType-ClientType-MappedClass catalog</param>
+    /// <param name="Type_Object_Map">Type-Object map</param>
     public TypeClassMapper(IEnumerable<Mapping<TypeClassID, TypeClassID>> Type_Class_Catalog, IEnumerable<KeyValuePair<string,object>> Name_Object_Map) : this(Type_Class_Catalog)
     {
       InitializeNameObjectMap(Name_Object_Map);
@@ -398,6 +444,12 @@ namespace nutility
     /// <returns>Mapped Class</returns>
     public T GetService<T>() => (T)this.GetService(typeof(T));
 
+    /// <summary>
+    /// The requesting client passes its the runtime Type or a string value that could work a la COM ProgID, but not necessarily as a machine-wide ProgID but only for the very specific context of an application.
+    /// </summary>
+    /// <typeparam name="T">Required Type</typeparam>
+    /// <param name="Client_Type">Runtime-type of the requesting client</param>
+    /// <returns>Mapped Class</returns>
     public T GetService<T>(Type Client_Type)
     {
       if (Client_Type == null)
@@ -413,6 +465,12 @@ namespace nutility
       return mapped_instance;
     }
 
+    /// <summary>
+    /// The requesting client passes its the runtime Type or a string value that could work a la COM ProgID, but not necessarily as a machine-wide ProgID but only for the very specific context of an application.
+    /// </summary>
+    /// <typeparam name="T">Required Type</typeparam>
+    /// <param name="Client_Type">Runtime-type of the requesting client</param>
+    /// <returns>Mapped Class</returns>
     public T GetService<T>(TypeClassID Client_Type)
     {
       if (Client_Type == null)
@@ -428,6 +486,11 @@ namespace nutility
       return mapped_instance;
     }
 
+    /// <summary>
+    /// Adds a type-class mapping to the Type_Class_Catalog.
+    /// </summary>
+    /// <typeparam name="T">Required Type</typeparam>
+    /// <param name="value">Mapped type or object</param>
     public void AddMapping<T>(T value)
     {
       var mapped_types = value as Mapping<Type, Type>;
@@ -461,11 +524,23 @@ namespace nutility
       this.typeobjectmap.Add(typeof(T).FullName, value);
     }
 
+    /// <summary>
+    /// Adds a name-object to the Name_Object_Map.
+    /// </summary>
+    /// <typeparam name="T">Type of the object or value</typeparam>
+    /// <param name="name">ID for the object or value</param>
+    /// <param name="value">The object or value</param>
     public void SetValue<T>(string name, T value)
     {
       this.nameobjectmap.Add(name, value);
     }
 
+    /// <summary>
+    /// Get the value for a named object in the Name_Object_Map.
+    /// </summary>
+    /// <typeparam name="T">Type of the object or value</typeparam>
+    /// <param name="name">ID for the object or value</param>
+    /// <returns>The object or value</returns>
     public T GetValue<T>(string name)
     {
       T result = default(T);

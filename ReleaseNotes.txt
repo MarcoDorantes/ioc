@@ -1,11 +1,16 @@
-﻿Jul 31, 2016: v1.3.0 (Pending release)
+﻿Jul 31, 2016: v1.3.0
+	Released at 
 	Please notice the following breaking changes in this version:
-	-not compile string, not TypeClassID
-	-not compile ctors, new separated
+	-The System.String data type no longer specifies a Type name or a Class name; the new TypeClassID class is used instead. So, some constructors don’t compile if you pass a collection parameter declared with the System.String data type. Just change the declaration from System.String to TypeClassID; you can still pass string values in such constructors as TypeClassID has an implicit operator for strings.
+	-Now the Type-to-Class mappings (Type_Class_Map) are specified separately from Type-to-Instance mappings (Type_Object_Map). Hence, the constructors with Type-to-Instance mappings don’t compile or have different semantics.
 
-	Also, please take note of the following new features in this version:
-	-Type_Class_Catalog
-	-a la COM ProgID, but not necessarily a machine-wide ProgID, only for the very specific context of an application.
+	Also, please take note of the following new or renamed concepts in this version:
+
+	-Type_Class_Catalog - There is no longer a single Type-Class map; now there is a catalog of RequiredType –ClientType – MappedClass tuples. ClientType is optional, for backward compatibility purposes, and can be the runtime Type of a requesting client or a string value that could work a la COM ProgID, but not necessarily as a machine-wide ProgID but only for the very specific context of an application.
+
+	-Type_Object_Map - Type-to-Instance mappings continue to be supported, but now is called Type_Object_Map.
+
+	-Name_Object_Map - The support for Name-Value pairs continues, but now is called Name_Object_Map.
 
 Jul 18, 2016: v1.2.0
 	Released at https://www.nuget.org/packages/TypeClassMapper/1.2.0

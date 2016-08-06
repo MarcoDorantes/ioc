@@ -1,16 +1,15 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TypeClassMapper")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("TypeClassMapper - Basic .NET runtime dependency Type-Class mapping.")]
+[assembly: AssemblyDescription("Go to Project Site (README.md at https://github.com/MarcoDorantes/ioc) for a functional description of the TypeClassMapper class.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Textum - Marco A. Dorantes")]
 [assembly: AssemblyProduct("TypeClassMapper")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCopyright("Copyright © Textum 2016. Marco A. Dorantes")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
