@@ -102,7 +102,7 @@ Or, in the context of a host at a productive environment, where the type-class m
 ##Which other use cases are supported?
 The unit test cases in `TypeClassMapperSpec` Test Project could be of help to check other supported use cases. Next are a few examples:
 
-##What if I need to map the same required type for two different classes?
+##What if I need to map the same required type to two different classes?
 Given the following two concrete classes, `module1.Source` and `module3.Source1`, the following test case shows how different requests for the same type can get different mapped classes:
 
 ```
