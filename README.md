@@ -106,6 +106,16 @@ The unit test cases in `TypeClassMapperSpec` Test Project could be of help to ch
 Given the following two concrete classes, `module1.Source` and `module3.Source1`, the following test case shows how different requests for the same type can get different mapped classes:
 
 ```
+namespace module1
+{
+  public class Source : app1.ISource
+  {
+    public string Name { get { return GetType().FullName; } }
+  }
+}
+```
+
+```
 namespace module3
 {
   public abstract class Source : app1.ISource
@@ -128,16 +138,6 @@ namespace module3
       this.typemap_ctor = "nutility.TypeClassMapper";
     }
     public string Name => typemap_ctor;
-  }
-}
-```
-
-```
-namespace module1
-{
-  public class Source : app1.ISource
-  {
-    public string Name { get { return GetType().FullName; } }
   }
 }
 ```
