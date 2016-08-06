@@ -93,7 +93,7 @@ namespace aDesignUseCase
     public void ProcessorStaticOperation1()
     {
       //Arrange
-      var typemap = new nutility.TypeClassMapper(new Dictionary<string, object>
+      var typemap = new nutility.TypeClassMapper(new Dictionary<nutility.TypeClassID, nutility.TypeClassID>
       {
         { "App3.BusinessLayer.ITransit", "App3.DataAccess.Transit, aDesignUseCase" },
         { "App3.BusinessLayer.IProfile", "App3.DataAccess.Profile, aDesignUseCase" },
@@ -112,12 +112,17 @@ namespace aDesignUseCase
     public void ProcessorStaticOperation1WithInstances()
     {
       //Arrange
-      var typemap = new nutility.TypeClassMapper(new Dictionary<string, object>
-      {
-        { "App3.BusinessLayer.ITransit", new App3.DataAccess.Transit(100) },
-        { "App3.BusinessLayer.IProfile", "App3.DataAccess.Profile, aDesignUseCase" },
-        { "App3.BusinessLayer.IThreshold", new App3.DataAccess.Threshold(500) }
-      });
+      var typemap = new nutility.TypeClassMapper(
+        new Dictionary<Type, nutility.TypeClassID>
+        {
+          { typeof(App3.BusinessLayer.IProfile), "App3.DataAccess.Profile, aDesignUseCase" },
+        },
+        new Dictionary<Type, object>
+        {
+          { typeof(App3.BusinessLayer.ITransit), new App3.DataAccess.Transit(100) },
+          { typeof(App3.BusinessLayer.IThreshold), new App3.DataAccess.Threshold(500) }
+        }
+      );
       var request = new App3.Contract.RiskRequest() { Threshold = 501 };
 
       //Act

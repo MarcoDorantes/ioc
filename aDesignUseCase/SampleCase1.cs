@@ -65,6 +65,24 @@ namespace aDesignUseCase
       public int ID { get; private set; }
       public string Name { get; private set; }
     }
+    class B : lib1.ISource
+    {
+      public B(nutility.ITypeClassMapper typemap)
+      {
+        ID = typemap.GetService<int>();
+        Name = typemap.GetService<string>();
+      }
+      public int ID { get; private set; }
+      public string Name { get; private set; }
+    }
+    class C : lib1.ITarget
+    {
+      public C(nutility.ITypeClassMapper typemap)
+      {
+        Name = typemap.GetService<string>();
+      }
+      public string Name { get; set; }
+    }
   }
   #endregion
 
@@ -78,7 +96,7 @@ namespace aDesignUseCase
       var source_stub = new libx.SourceStub("source1", new string[] { "one", "two" });
       var target_stub = new libx.TargetStub("target1");
       var log_stub = new libx.LogBookStub();
-      var typemap = new nutility.TypeClassMapper(new Dictionary<Type, object>
+      var typemap = new nutility.TypeClassMapper(Type_Object_Map: new Dictionary<Type, object>
       {
         { typeof(lib1.sample.ISource), source_stub },
         { typeof(lib1.sample.ITarget), target_stub },
@@ -86,8 +104,8 @@ namespace aDesignUseCase
       });
 
       //Act
-      var processor = new lib1.sample.CopyProcessor(typemap);
-      processor.Copy();
+        var processor = new lib1.sample.CopyProcessor(typemap);
+        processor.Copy();
 
       //Assert
       Assert.AreEqual<int>(2, target_stub.values.Count);
@@ -133,6 +151,53 @@ namespace aDesignUseCase
       //Assert
       Assert.AreEqual<string>("name123", a.Name);
       Assert.AreEqual<int>(123, ((liby.A)a).ID);
+    }
+
+    [TestMethod]
+    public void AddMappingsAndGetAsValues()
+    {
+      //Arrange
+      nutility.ITypeClassMapper typemap = new nutility.TypeClassMapper
+      (
+        new Dictionary<Type, Type>
+        {
+          { typeof(lib1.ISource), typeof(liby.B) }
+        }
+      );
+      typemap.AddMapping<int>(123);
+      typemap.AddMapping<string>("name123");
+      typemap.AddMapping(new nutility.Mapping<nutility.TypeClassID, nutility.TypeClassID> { RequiredType = "lib1.ITarget", MappedClass = "aDesignUseCase.liby.C, aDesignUseCase" });
+
+      //Act
+      var b = typemap.GetService<lib1.ISource>();
+      var s = typemap.GetService<lib1.ITarget>();
+
+      //Assert
+      Assert.AreEqual<string>("name123", b.Name);
+      Assert.AreEqual<int>(123, ((liby.B)b).ID);
+      Assert.AreEqual<string>("name123", s.Name);
+    }
+
+    [TestMethod]
+    public void AddMappingsAndGetAsValues2()
+    {
+      //Arrange
+      nutility.ITypeClassMapper typemap = new nutility.TypeClassMapper
+      (
+        new Dictionary<Type, Type>
+        {
+          { typeof(lib1.ISource), typeof(liby.B) }
+        }
+      );
+      typemap.AddMapping<int>(321);
+      typemap.AddMapping<string>(null);
+
+      //Act
+      var b = typemap.GetService<lib1.ISource>();
+
+      //Assert
+      Assert.AreEqual<string>(null, b.Name);
+      Assert.AreEqual<int>(321, ((liby.B)b).ID);
     }
   }
 }

@@ -29,7 +29,7 @@ namespace TypeClassMapperSpec
       Exception exception = null;
       try
       {
-        var instance = (app1.ISource)typemap.GetService(requiredType: null);
+        var instance = (app1.ISource)typemap.GetService(Required_Type: null);
       }
       catch (Exception ex)
       {
@@ -39,7 +39,7 @@ namespace TypeClassMapperSpec
       //Assert
       Assert.IsNotNull(exception);
       Assert.AreEqual<Type>(typeof(nutility.TypeClassMapperException), exception.GetType());
-      Assert.AreEqual<string>("Parameter cannot be null: requiredType", exception.Message);
+      Assert.AreEqual<string>("Parameter cannot be null: Required_Type", exception.Message);
       Assert.IsInstanceOfType(exception.InnerException, typeof(ArgumentNullException));
     }
 
