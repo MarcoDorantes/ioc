@@ -7,6 +7,7 @@ namespace nutility
   /// <summary>
   /// Given the runtime dependency management tradition of early design patterns, e.g., Microsoft COM IUnknown::QueryInterface method, this class follows
   /// such design tradition and relies on basic equivalent mechanisms from .NET Framework (System.IServiceProvider interface).
+  /// Alternative names: TypeObjectMapper, TypeInstanceMapper
   /// </summary>
   public class TypeClassMapper : ITypeClassMapper
   {
