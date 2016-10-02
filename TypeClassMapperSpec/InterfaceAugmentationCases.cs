@@ -64,5 +64,46 @@ namespace TypeClassMapperSpec
       Assert.AreEqual<string>("module1.Source", source2.Name);
       Assert.AreEqual<string>("module1.Source, TypeClassMapperSpec, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", source2.GetType().AssemblyQualifiedName);
     }
+
+    [TestMethod]
+    public void NameWithResetableValue()
+    {
+      //Arrange
+      nutility.ITypeClassMapper typemap = new nutility.TypeClassMapper(new Dictionary<nutility.TypeClassID, nutility.TypeClassID> { { "some-type", "some-class" } });
+
+      //Act
+      typemap.SetValue("name1", "value1");
+      typemap.SetValue("name1", "value2");
+
+      //Assert
+      Assert.AreEqual<string>("value2", typemap.GetValue<string>("name1"));
+    }
+
+    [TestMethod]
+    public void CheckNameDoesNotExist()
+    {
+      //Arrange
+      nutility.ITypeClassMapper typemap = new nutility.TypeClassMapper(new Dictionary<nutility.TypeClassID, nutility.TypeClassID> { { "some-type", "some-class" } });
+
+      //Act
+      bool hasName = typemap.Values.Any(n => n.Key == "name1");
+
+      //Assert
+      Assert.IsFalse(hasName);
+    }
+
+    [TestMethod]
+    public void CheckNameExists()
+    {
+      //Arrange
+      nutility.ITypeClassMapper typemap = new nutility.TypeClassMapper(new Dictionary<nutility.TypeClassID, nutility.TypeClassID> { { "some-type", "some-class" } });
+
+      //Act
+      typemap.SetValue("name1", "value1");
+      bool hasName = typemap.Values.Any(n => n.Key == "name1");
+
+      //Assert
+      Assert.IsTrue(hasName);
+    }
   }
 }

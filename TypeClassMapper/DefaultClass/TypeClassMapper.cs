@@ -533,7 +533,11 @@ namespace nutility
     /// <param name="value">The object or value</param>
     public void SetValue<T>(string name, T value)
     {
-      this.nameobjectmap.Add(name, value);
+      if (name == null)
+      {
+        throw new ArgumentNullException(nameof(name));
+      }
+      this.nameobjectmap[name] = value;
     }
 
     /// <summary>
