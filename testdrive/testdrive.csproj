@@ -66,8 +66,11 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>md "$(TargetDir)lib2"
+
 md "$(TargetDir)lib3"
-copy "$(SolutionDir)lib2\$(OutDir)lib2.*" "$(TargetDir)lib2" 
+
+copy "$(SolutionDir)lib2\$(OutDir)lib2.*" "$(TargetDir)lib2"
+
 copy "$(SolutionDir)lib3\$(OutDir)lib3.*" "$(TargetDir)lib3"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
