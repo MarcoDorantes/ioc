@@ -82,4 +82,94 @@ namespace testdrive
       try { ioc6(); } catch (Exception ex) { WriteLine($"{ex.GetType().FullName}: {ex.Message}"); }
     }
   }
+
+  #region Fixed
+  interface ITopicSource { void Start(); void Stop(); string GetDispatcherInUse(); }
+  class Dispatcher1
+  {
+    public void Start()
+    {
+      WriteLine($"{GetType().Name}.{System.Reflection.MethodBase.GetCurrentMethod().Name}");
+    }
+    public void Stop()
+    {
+      WriteLine($"{GetType().Name}.{System.Reflection.MethodBase.GetCurrentMethod().Name}");
+    }
+  }
+  class Dispatcher2
+  {
+    public void Start()
+    {
+      WriteLine($"{GetType().Name}.{System.Reflection.MethodBase.GetCurrentMethod().Name}");
+    }
+    public void Stop()
+    {
+      WriteLine($"{GetType().Name}.{System.Reflection.MethodBase.GetCurrentMethod().Name}");
+    }
+  }
+  #endregion
+
+  #region Situation
+  class TopicSource : ITopicSource
+  {
+    Dispatcher1 subscription;
+    //Dispatcher2 subscription;
+
+    public void Start()
+    {
+      subscription.Start();
+    }
+    public void Stop()
+    {
+      subscription.Stop();
+    }
+    public string GetDispatcherInUse()
+    {
+      subscription = new Dispatcher1();
+      //subscription = new Dispatcher2();
+
+      return subscription.GetType().Name;
+    }
+  }
+  #endregion
+
+  #region Approach 1
+  class TopicSourceForSpecificDispatcher1Purpose : ITopicSource
+  {
+    Dispatcher1 subscription;
+
+    public void Start()
+    {
+      subscription.Start();
+    }
+    public void Stop()
+    {
+      subscription.Stop();
+    }
+    public string GetDispatcherInUse()
+    {
+      subscription = new Dispatcher1();
+      return subscription.GetType().Name;
+    }
+  }
+  class TopicSourceForOtherPurpose : ITopicSource
+  {
+    Dispatcher2 subscription;
+
+    public void Start()
+    {
+      subscription.Start();
+    }
+    public void Stop()
+    {
+      subscription.Stop();
+    }
+    public string GetDispatcherInUse()
+    {
+      subscription = new Dispatcher2();
+
+      return subscription.GetType().Name;
+    }
+  }
+  #endregion
 }
