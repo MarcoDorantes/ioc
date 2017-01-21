@@ -84,7 +84,7 @@ namespace testdrive
   }
 
   #region Fixed
-  interface ITopicSource { void Start(); void Stop(); string GetDispatcherInUse(); }
+  interface IInfoSource { void Start(); void Stop(); string GetDispatcherInUse(); }
   class Dispatcher1
   {
     public void Start()
@@ -110,7 +110,7 @@ namespace testdrive
   #endregion
 
   #region Situation
-  class TopicSource : ITopicSource
+  class TopicSource : IInfoSource
   {
     Dispatcher1 subscription;
     //Dispatcher2 subscription;
@@ -133,8 +133,8 @@ namespace testdrive
   }
   #endregion
 
-  #region Approach 1
-  class TopicSourceForSpecificDispatcher1Purpose : ITopicSource
+  #region Approach 1: Replicate into separated independent classes.
+  class TopicSourceForSpecificDispatcher1Purpose : IInfoSource
   {
     Dispatcher1 subscription;
 
@@ -152,7 +152,7 @@ namespace testdrive
       return subscription.GetType().Name;
     }
   }
-  class TopicSourceForOtherPurpose : ITopicSource
+  class TopicSourceForOtherPurpose : IInfoSource
   {
     Dispatcher2 subscription;
 
@@ -172,4 +172,59 @@ namespace testdrive
     }
   }
   #endregion
+  #region Approach 2: Templated Abstract Base
+  abstract class TopicSourceBase : IInfoSource
+  {
+    public void Start()
+    {
+      StartSubscription();
+    }
+    public void Stop()
+    {
+      StopSubscription();
+    }
+    public abstract string GetDispatcherInUse();
+    protected abstract void StartSubscription();
+    protected abstract void StopSubscription();
+  }
+  class TopicSourceWithDispatcher1 : TopicSourceBase
+  {
+    Dispatcher1 subscription;
+
+    protected override void StartSubscription()
+    {
+      subscription = new Dispatcher1();
+      subscription.Start();
+    }
+    protected override void StopSubscription()
+    {
+      subscription.Stop();
+    }
+    public override string GetDispatcherInUse()
+    {
+      return subscription.GetType().Name;
+    }
+  }
+  class TopicSourceWithDispatcher2 : TopicSourceBase
+  {
+    Dispatcher2 subscription;
+
+    protected override void StartSubscription()
+    {
+      subscription = new Dispatcher2();
+      subscription.Start();
+    }
+    protected override void StopSubscription()
+    {
+      subscription.Stop();
+    }
+    public override string GetDispatcherInUse()
+    {
+      return subscription.GetType().Name;
+    }
+  }
+  #endregion
+  #region Approach 3: Subscriber with Start/Stop Common Interface and the Abstract TopicSource calling abstract CreateDispatcher method (which returns the Subscriber Common Interface) <- this method is implemented by two separated derived clases that are used separately on the typemap.
+  #endregion
+
 }
