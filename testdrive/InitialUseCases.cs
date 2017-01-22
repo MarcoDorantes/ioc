@@ -133,7 +133,7 @@ namespace testdrive
   }
   #endregion
 
-  #region Approach 1: Replicate into separated independent classes.
+  #region Approach 1: Replicate into separated independent classes that are used separately on the typemap.
   class TopicSourceForSpecificDispatcher1Purpose : IInfoSource
   {
     Dispatcher1 subscription;
@@ -226,5 +226,4 @@ namespace testdrive
   #endregion
   #region Approach 3: Subscriber with Start/Stop Common Interface and the Abstract TopicSource calling abstract CreateDispatcher method (which returns the Subscriber Common Interface) <- this method is implemented by two separated derived clases that are used separately on the typemap.
   #endregion
-
 }
