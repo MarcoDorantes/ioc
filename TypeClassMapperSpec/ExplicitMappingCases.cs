@@ -723,5 +723,23 @@ namespace TypeClassMapperSpec
       Assert.AreEqual<string>("module4.Order", order.Name);
       Assert.AreEqual<string>("module4.Target", target.Name);
     }
+
+    [TestMethod]
+    public void Basic_Type_Creator_Map()
+    {
+      //Arrange
+      module3.Source1 source1 = null;
+      var typemap = new nutility.TypeClassMapper
+      (
+        new Dictionary<Type, Func<object>> { { typeof(app1.ISource), new Func<object>(() => { source1 = new module3.Source1(null);  return source1; } )} }
+      );
+
+      //Ack
+      app1.ISource source = typemap.GetService<app1.ISource>();
+
+      //Assert
+      Assert.IsNotNull(source1);
+      Assert.AreSame(source1, source);
+    }
   }
 }

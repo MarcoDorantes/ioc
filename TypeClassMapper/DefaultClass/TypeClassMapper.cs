@@ -258,6 +258,15 @@ namespace nutility
     }
 
     /// <summary>
+    /// For implicit empty type-class mapping and explicit type-creator mapping.
+    /// </summary>
+    /// <param name="Type_Creator_Map">Type-Creator map</param>
+    public TypeClassMapper(IEnumerable<KeyValuePair<Type, Func<object>>> Type_Creator_Map) : this(new Dictionary<Type,Type>())
+    {
+      InitializeTypeCreatorMap<Type>(Type_Creator_Map, (whole, next) => { whole.Add(next.Key.FullName, next.Value); });
+    }
+
+    /// <summary>
     /// For explicit type-class and name-object mappings.
     /// </summary>
     /// <param name="Type_Class_Map">Type-Class map</param>
