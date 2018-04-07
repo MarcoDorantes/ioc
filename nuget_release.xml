@@ -27,7 +27,7 @@ published at:
  -->
    <metadata>
      <id>TypeClassMapper</id>
-     <version>1.4.0</version>
+     <version>1.5.0</version>
      <title>Basic .NET runtime dependency Type-Class mapping.</title>
      <authors>Textum - Marco A. Dorantes</authors>
      <owners>Textum</owners>
