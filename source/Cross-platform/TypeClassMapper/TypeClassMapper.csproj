@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\TypeClassMapper\DefaultClass\Mapping.cs" Link="Mapping.cs" />
+    <Compile Include="..\..\TypeClassMapper\DefaultClass\TypeClassMapper.cs" Link="TypeClassMapper.cs" />
+    <Compile Include="..\..\TypeClassMapper\ConfigurationSection\MappingCollection.cs" Link="MappingCollection.cs" />
+    <Compile Include="..\..\TypeClassMapper\ConfigurationSection\MappingCollectionElement.cs" Link="MappingCollectionElement.cs" />
+    <Compile Include="..\..\TypeClassMapper\ConfigurationSection\ScopeCollection.cs" Link="ScopeCollection.cs" />
+    <Compile Include="..\..\TypeClassMapper\ConfigurationSection\ScopeCollectionElement.cs" Link="ScopeCollectionElement.cs" />
+    <Compile Include="..\..\TypeClassMapper\ConfigurationSection\TypeClassMapperConfigurationSection.cs" Link="TypeClassMapperConfigurationSection.cs" />
+    <Compile Include="..\..\TypeClassMapper\Exceptions\TypeClassMapperException.cs" Link="TypeClassMapperException.cs" />
+    <Compile Include="..\..\TypeClassMapper\ExtensibilityInterface\ITypeClassMapper.cs" Link="ITypeClassMapper.cs" />
+    <Compile Include="..\..\TypeClassMapper\ExtensibilityInterface\TypeClassID.cs" Link="TypeClassID.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
+  </ItemGroup>
+</Project>
