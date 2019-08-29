@@ -5,7 +5,18 @@ VisualStudioVersion = 16.0.28803.452
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TypeClassMapper", "source\Cross-platform\TypeClassMapper\TypeClassMapper.csproj", "{6FAD5CAB-58B4-4340-B3AE-F3D6538D47C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeClassMapperSpec", "source\Cross-platform\TypeClassMapperSpec\TypeClassMapperSpec.csproj", "{CBA272D7-4DCA-458C-9BD1-DB6A424CAC02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TypeClassMapperSpec", "source\Cross-platform\TypeClassMapperSpec\TypeClassMapperSpec.csproj", "{CBA272D7-4DCA-458C-9BD1-DB6A424CAC02}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Executable specification", "1 - Executable specification", "{257AC28D-D45F-422C-8D58-9F90D7BAE467}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Default implementation", "2 - Default implementation", "{8E8A1BC9-DD2B-4899-9966-893FFAF7A60F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7FF69B90-BA7E-4677-92C3-C15EA8F9AB95}"
+	ProjectSection(SolutionItems) = preProject
+		nuget_release.xml = nuget_release.xml
+		README.md = README.md
+		ReleaseNotes.txt = ReleaseNotes.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +35,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6FAD5CAB-58B4-4340-B3AE-F3D6538D47C8} = {8E8A1BC9-DD2B-4899-9966-893FFAF7A60F}
+		{CBA272D7-4DCA-458C-9BD1-DB6A424CAC02} = {257AC28D-D45F-422C-8D58-9F90D7BAE467}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {710661BB-F5E2-40B3-89D3-76FE58C3DD69}

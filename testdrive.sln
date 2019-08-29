@@ -3,21 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeClassMapperSpec", "TypeClassMapperSpec\TypeClassMapperSpec.csproj", "{8B258072-7AFA-43EC-8821-D441B6B36A02}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeClassMapperSpec", "source\Windows\TypeClassMapperSpec\TypeClassMapperSpec.csproj", "{3C638D91-D6ED-4BAD-873B-906FD8C2682C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "testdrive", "testdrive\testdrive.csproj", "{78957F01-94C0-4F78-84ED-D2D1115B1341}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "testdrive", "source\testdrive\testdrive.csproj", "{78957F01-94C0-4F78-84ED-D2D1115B1341}"
 	ProjectSection(ProjectDependencies) = postProject
 		{D05D3530-E10C-4732-8887-A54D923D472A} = {D05D3530-E10C-4732-8887-A54D923D472A}
 		{62257CE9-2541-4C85-AC6E-277D6538750C} = {62257CE9-2541-4C85-AC6E-277D6538750C}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeClassMapper", "TypeClassMapper\TypeClassMapper.csproj", "{6D93F0EB-25E5-43FF-BE62-A6F14C74FF02}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeClassMapper", "source\Windows\TypeClassMapper\TypeClassMapper.csproj", "{6D93F0EB-25E5-43FF-BE62-A6F14C74FF02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lib1", "lib1\lib1.csproj", "{9FE76E3E-9321-489F-80CE-2A1E7494C3A2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lib1", "source\lib1\lib1.csproj", "{9FE76E3E-9321-489F-80CE-2A1E7494C3A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lib2", "lib2\lib2.csproj", "{62257CE9-2541-4C85-AC6E-277D6538750C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lib2", "source\lib2\lib2.csproj", "{62257CE9-2541-4C85-AC6E-277D6538750C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lib3", "lib3\lib3.csproj", "{D05D3530-E10C-4732-8887-A54D923D472A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lib3", "source\lib3\lib3.csproj", "{D05D3530-E10C-4732-8887-A54D923D472A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Specification", "1 - Specification", "{75162D51-C319-4678-A747-C272BD10678E}"
 EndProject
@@ -29,7 +29,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Default implementation"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Design use case", "Design use case", "{22634EBA-5943-4C83-88B7-BF4A24117D87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aDesignUseCase", "aDesignUseCase\aDesignUseCase.csproj", "{E6872240-27EC-45EA-BD30-489E1C0F521D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aDesignUseCase", "source\aDesignUseCase\aDesignUseCase.csproj", "{E6872240-27EC-45EA-BD30-489E1C0F521D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2232BE89-DD92-4020-9139-F493E1095163}"
 	ProjectSection(SolutionItems) = preProject
@@ -44,10 +44,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8B258072-7AFA-43EC-8821-D441B6B36A02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8B258072-7AFA-43EC-8821-D441B6B36A02}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8B258072-7AFA-43EC-8821-D441B6B36A02}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8B258072-7AFA-43EC-8821-D441B6B36A02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C638D91-D6ED-4BAD-873B-906FD8C2682C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C638D91-D6ED-4BAD-873B-906FD8C2682C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C638D91-D6ED-4BAD-873B-906FD8C2682C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C638D91-D6ED-4BAD-873B-906FD8C2682C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{78957F01-94C0-4F78-84ED-D2D1115B1341}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{78957F01-94C0-4F78-84ED-D2D1115B1341}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78957F01-94C0-4F78-84ED-D2D1115B1341}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -77,7 +77,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{8B258072-7AFA-43EC-8821-D441B6B36A02} = {EFACE203-E261-4F27-942D-4309D91A5B6D}
+		{3C638D91-D6ED-4BAD-873B-906FD8C2682C} = {EFACE203-E261-4F27-942D-4309D91A5B6D}
 		{78957F01-94C0-4F78-84ED-D2D1115B1341} = {74042DB1-D787-4C8D-87E1-17EF2ABB3808}
 		{6D93F0EB-25E5-43FF-BE62-A6F14C74FF02} = {8F7BA8C8-C1A6-4AF6-A66C-E8752A1AA26C}
 		{9FE76E3E-9321-489F-80CE-2A1E7494C3A2} = {74042DB1-D787-4C8D-87E1-17EF2ABB3808}

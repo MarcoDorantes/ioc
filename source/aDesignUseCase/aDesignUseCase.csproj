@@ -3,12 +3,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8B258072-7AFA-43EC-8821-D441B6B36A02}</ProjectGuid>
+    <ProjectGuid>{E6872240-27EC-45EA-BD30-489E1C0F521D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TypeClassMapperSpec</RootNamespace>
-    <AssemblyName>TypeClassMapperSpec</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <RootNamespace>aDesignUseCase</RootNamespace>
+    <AssemblyName>aDesignUseCase</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -16,6 +16,7 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -52,20 +54,20 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="ExplicitMappingCases.cs" />
-    <Compile Include="ImplicitMappingCases.cs" />
-    <Compile Include="ImplicitMappingCasesAtNoDefaultSection.cs" />
-    <Compile Include="InterfaceAugmentationCases.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SampleCase1.cs" />
+    <Compile Include="StaticProcessorCase.cs" />
+    <Compile Include="StaticProcessorCaseWithStructs.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TypeClassMapper\TypeClassMapper.csproj">
+    <ProjectReference Include="..\lib1\lib1.csproj">
+      <Project>{9fe76e3e-9321-489f-80ce-2a1e7494c3a2}</Project>
+      <Name>lib1</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Windows\TypeClassMapper\TypeClassMapper.csproj">
       <Project>{6d93f0eb-25e5-43ff-be62-a6f14c74ff02}</Project>
       <Name>TypeClassMapper</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

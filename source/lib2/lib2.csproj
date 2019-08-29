@@ -4,13 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6D93F0EB-25E5-43FF-BE62-A6F14C74FF02}</ProjectGuid>
+    <ProjectGuid>{62257CE9-2541-4C85-AC6E-277D6538750C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>nutility</RootNamespace>
-    <AssemblyName>TypeClassMapper</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <RootNamespace>lib2</RootNamespace>
+    <AssemblyName>lib2</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -28,11 +29,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\TypeClassMapper.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -42,17 +41,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConfigurationSection\MappingCollection.cs" />
-    <Compile Include="ConfigurationSection\MappingCollectionElement.cs" />
-    <Compile Include="ConfigurationSection\ScopeCollection.cs" />
-    <Compile Include="ConfigurationSection\ScopeCollectionElement.cs" />
-    <Compile Include="ConfigurationSection\TypeClassMapperConfigurationSection.cs" />
-    <Compile Include="DefaultClass\Mapping.cs" />
-    <Compile Include="DefaultClass\TypeClassMapper.cs" />
-    <Compile Include="ExtensibilityInterface\ITypeClassMapper.cs" />
-    <Compile Include="ExtensibilityInterface\TypeClassID.cs" />
+    <Compile Include="lib2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Exceptions\TypeClassMapperException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\lib1\lib1.csproj">
+      <Project>{9fe76e3e-9321-489f-80ce-2a1e7494c3a2}</Project>
+      <Name>lib1</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

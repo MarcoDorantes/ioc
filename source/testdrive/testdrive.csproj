@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>testdrive</RootNamespace>
     <AssemblyName>testdrive</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -57,7 +58,7 @@
       <Project>{9fe76e3e-9321-489f-80ce-2a1e7494c3a2}</Project>
       <Name>lib1</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TypeClassMapper\TypeClassMapper.csproj">
+    <ProjectReference Include="..\Windows\TypeClassMapper\TypeClassMapper.csproj">
       <Project>{6d93f0eb-25e5-43ff-be62-a6f14c74ff02}</Project>
       <Name>TypeClassMapper</Name>
     </ProjectReference>
@@ -69,9 +70,9 @@
 
 md "$(TargetDir)lib3"
 
-copy "$(SolutionDir)lib2\$(OutDir)lib2.*" "$(TargetDir)lib2"
+copy "$(SolutionDir)source\lib2\$(OutDir)lib2.*" "$(TargetDir)lib2"
 
-copy "$(SolutionDir)lib3\$(OutDir)lib3.*" "$(TargetDir)lib3"</PostBuildEvent>
+copy "$(SolutionDir)source\lib3\$(OutDir)lib3.*" "$(TargetDir)lib3"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
