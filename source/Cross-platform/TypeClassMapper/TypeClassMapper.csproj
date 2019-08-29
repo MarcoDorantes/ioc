@@ -1,7 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>1.5.0</Version>
+    <Authors>Marco A. Dorantes</Authors>
+    <Description>TypeClassMapper is a basic .NET runtime dependency Type-Class mapping class - Given the runtime dependency management tradition of early design patterns, e.g., Microsoft COM IUnknown::QueryInterface method, this class follows such design tradition and relies on basic equivalent mechanisms from .NET Framework (System.IServiceProvider interface).</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/MarcoDorantes/ioc</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/MarcoDorantes/ioc</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <Copyright>Copyright © Textum 2016. Marco A. Dorantes</Copyright>
+    <PackageTags>IoC Container Dependency Inversion</PackageTags>
+    <PackageReleaseNotes>As .NET Standard</PackageReleaseNotes>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
