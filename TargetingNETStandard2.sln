@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29403.142
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TypeClassMapper", "source\Cross-platform\TypeClassMapper\TypeClassMapper.csproj", "{5350E726-DA20-4B7B-9670-409D9E626188}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - As .NET Standard 2.0", "2 - As .NET Standard 2.0", "{A1529E76-9D3B-472A-97EE-75CEE461375F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Executable specification", "1 - Executable specification", "{F19B9AC4-5D69-4C16-A5FE-2667A4FB55AC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".NET Framework Runtime", ".NET Framework Runtime", "{CE56F06C-C190-476B-B878-A09F413B859E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".NET Core Runtime", ".NET Core Runtime", "{CA36E684-9178-46C0-B8C4-4B0A959B995B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TypeClassMapperSpec", "source\NETCoreRuntime\TypeClassMapperSpec\TypeClassMapperSpec.csproj", "{BEECE480-1953-40FE-B357-3C3772DE41A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeClassMapperSpec", "source\NETFrameworkRuntime\TypeClassMapperSpec\TypeClassMapperSpec.csproj", "{3C638D91-D6ED-4BAD-873B-906FD8C2682C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5350E726-DA20-4B7B-9670-409D9E626188}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5350E726-DA20-4B7B-9670-409D9E626188}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5350E726-DA20-4B7B-9670-409D9E626188}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5350E726-DA20-4B7B-9670-409D9E626188}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEECE480-1953-40FE-B357-3C3772DE41A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEECE480-1953-40FE-B357-3C3772DE41A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEECE480-1953-40FE-B357-3C3772DE41A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEECE480-1953-40FE-B357-3C3772DE41A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C638D91-D6ED-4BAD-873B-906FD8C2682C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C638D91-D6ED-4BAD-873B-906FD8C2682C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C638D91-D6ED-4BAD-873B-906FD8C2682C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C638D91-D6ED-4BAD-873B-906FD8C2682C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5350E726-DA20-4B7B-9670-409D9E626188} = {A1529E76-9D3B-472A-97EE-75CEE461375F}
+		{CE56F06C-C190-476B-B878-A09F413B859E} = {F19B9AC4-5D69-4C16-A5FE-2667A4FB55AC}
+		{CA36E684-9178-46C0-B8C4-4B0A959B995B} = {F19B9AC4-5D69-4C16-A5FE-2667A4FB55AC}
+		{BEECE480-1953-40FE-B357-3C3772DE41A5} = {CA36E684-9178-46C0-B8C4-4B0A959B995B}
+		{3C638D91-D6ED-4BAD-873B-906FD8C2682C} = {CE56F06C-C190-476B-B878-A09F413B859E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D5FB74C1-FB71-468E-9B2F-295CBEAC1663}
+	EndGlobalSection
+EndGlobal
