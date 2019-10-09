@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29403.142
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TypeClassMapper", "source\Cross-platform\TypeClassMapper\TypeClassMapper.csproj", "{5350E726-DA20-4B7B-9670-409D9E626188}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - As .NET Standard 2.0", "2 - As .NET Standard 2.0", "{A1529E76-9D3B-472A-97EE-75CEE461375F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - As .NET Standard 2.0", "3 - As .NET Standard 2.0", "{A1529E76-9D3B-472A-97EE-75CEE461375F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Executable specification", "1 - Executable specification", "{F19B9AC4-5D69-4C16-A5FE-2667A4FB55AC}"
 EndProject
@@ -16,6 +16,14 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TypeClassMapperSpec", "source\NETCoreRuntime\TypeClassMapperSpec\TypeClassMapperSpec.csproj", "{BEECE480-1953-40FE-B357-3C3772DE41A5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeClassMapperSpec", "source\NETFrameworkRuntime\TypeClassMapperSpec\TypeClassMapperSpec.csproj", "{3C638D91-D6ED-4BAD-873B-906FD8C2682C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application Layer", "Application Layer", "{D3386BCB-4A99-4621-884F-65AF39FBF71D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".NET Core Runtime", ".NET Core Runtime", "{CB2C8870-A099-497F-B363-7B5DF4DF0EC7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".NET Framework Runtime", ".NET Framework Runtime", "{D0D60C62-7F04-4C6D-BDE8-699B00C51BBB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "app1", "source\NETCoreRuntime\app1\app1.csproj", "{C6013FF7-CE44-40AE-AC0B-4225446A7B4E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +43,10 @@ Global
 		{3C638D91-D6ED-4BAD-873B-906FD8C2682C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C638D91-D6ED-4BAD-873B-906FD8C2682C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C638D91-D6ED-4BAD-873B-906FD8C2682C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6013FF7-CE44-40AE-AC0B-4225446A7B4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6013FF7-CE44-40AE-AC0B-4225446A7B4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6013FF7-CE44-40AE-AC0B-4225446A7B4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6013FF7-CE44-40AE-AC0B-4225446A7B4E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -45,6 +57,9 @@ Global
 		{CA36E684-9178-46C0-B8C4-4B0A959B995B} = {F19B9AC4-5D69-4C16-A5FE-2667A4FB55AC}
 		{BEECE480-1953-40FE-B357-3C3772DE41A5} = {CA36E684-9178-46C0-B8C4-4B0A959B995B}
 		{3C638D91-D6ED-4BAD-873B-906FD8C2682C} = {CE56F06C-C190-476B-B878-A09F413B859E}
+		{CB2C8870-A099-497F-B363-7B5DF4DF0EC7} = {D3386BCB-4A99-4621-884F-65AF39FBF71D}
+		{D0D60C62-7F04-4C6D-BDE8-699B00C51BBB} = {D3386BCB-4A99-4621-884F-65AF39FBF71D}
+		{C6013FF7-CE44-40AE-AC0B-4225446A7B4E} = {CB2C8870-A099-497F-B363-7B5DF4DF0EC7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D5FB74C1-FB71-468E-9B2F-295CBEAC1663}
