@@ -329,6 +329,79 @@ namespace TypeClassMapperSpec
     }
 
     [TestMethod]
+    public void AddMappingDuplicatedNull()
+    {
+      //Arrange
+      var typemap = new nutility.TypeClassMapper(new Dictionary<Type, object> { { typeof(app1.ISource), null } });
+
+      //Act
+      typemap.AddMapping<app1.ISource>(null);
+      var source = (app1.ISource)typemap.GetService(typeof(app1.ISource));
+
+      //Assert
+      Assert.IsNull(source);
+    }
+
+    [TestMethod]
+    public void AddMappingDuplicatedSame()
+    {
+      //Arrange
+      var single_source = new module1.Source();
+      var typemap = new nutility.TypeClassMapper(new Dictionary<Type, object> { { typeof(app1.ISource), single_source } });
+      var same_source = single_source;
+
+      //Act
+      typemap.AddMapping<app1.ISource>(same_source);
+      var source = (app1.ISource)typemap.GetService(typeof(app1.ISource));
+
+      //Assert
+      Assert.IsNotNull(source);
+      Assert.AreSame(source, single_source);
+      Assert.AreSame(source, same_source);
+    }
+
+    [TestMethod]
+    public void AddMappingDuplicatedUnsupported()
+    {
+      //Arrange
+      var single_source = new module1.Source();
+      var other_source = new module1.Source();
+      var typemap = new nutility.TypeClassMapper(new Dictionary<Type, object> { { typeof(app1.ISource), single_source } });
+      nutility.TypeClassMapperException expected_exception = null;
+
+      //Act
+      try
+      {
+        typemap.AddMapping<app1.ISource>(other_source);
+      }
+      catch (nutility.TypeClassMapperException ex) { expected_exception = ex; }
+
+      //Assert
+      Assert.IsNotNull(expected_exception);
+      Assert.AreEqual("Unsupported non-deterministic object mapping (module1.Source:module1.Source, module1.Source:module1.Source) for app1.ISource.", expected_exception.Message);
+    }
+
+    [TestMethod]
+    public void AddMappingDuplicatedUnsupported2()
+    {
+      //Arrange
+      var single_source = new module1.Source();
+      var typemap = new nutility.TypeClassMapper(new Dictionary<Type, object> { { typeof(app1.ISource), single_source } });
+      nutility.TypeClassMapperException expected_exception = null;
+
+      //Act
+      try
+      {
+        typemap.AddMapping<app1.ISource>(null);
+      }
+      catch (nutility.TypeClassMapperException ex) { expected_exception = ex; }
+
+      //Assert
+      Assert.IsNotNull(expected_exception);
+      Assert.AreEqual("Unsupported non-deterministic object mapping (module1.Source:module1.Source, <null>) for app1.ISource.", expected_exception.Message);
+    }
+
+    [TestMethod]
     public void BadNullClassName2()
     {
       //Arrange
@@ -722,6 +795,28 @@ namespace TypeClassMapperSpec
       Assert.AreEqual<string>("nutility.TypeClassMapper", source1.Name);
       Assert.AreEqual<string>("module4.Order", order.Name);
       Assert.AreEqual<string>("module4.Target", target.Name);
+    }
+
+    [TestMethod]
+    public void TheTypeForMyCase6()
+    {
+      //Arrange
+      var typemap = new nutility.TypeClassMapper
+      (
+        new List<nutility.Mapping<nutility.TypeClassID, Type>>
+        {
+          new nutility.Mapping<nutility.TypeClassID, Type> { RequiredType = "app1.ISource", ClientType = typeof(module3.Source1), MappedClass = "module3.Source1, TypeClassMapperSpec" },
+          new nutility.Mapping<nutility.TypeClassID, Type> { RequiredType = "app1.ISource", ClientType = typeof(module1.Source), MappedClass = "module1.Source, TypeClassMapperSpec" }
+        }
+      );
+
+      //Act
+      app1.ISource source1 = typemap.GetService<app1.ISource>(Client_Type: typeof(module3.Source1));
+      app1.ISource source2 = typemap.GetService<app1.ISource>(Client_Type: typeof(module1.Source));
+
+      //Assert
+      Assert.AreEqual<string>("nutility.TypeClassMapper", source1.Name);
+      Assert.AreEqual<string>("module1.Source", source2.Name);
     }
 
     [TestMethod]

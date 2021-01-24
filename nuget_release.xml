@@ -19,6 +19,8 @@ https://www.nuget.org/packages/upload
 \Users\Marco\Documents\tools\nuget delete TypeClassMapper 1.0.0 31ab53ce-94a1-49e8-9a41-f837cfc04f31 -s https://www.nuget.org/api/v2/package
 )
 published at:
+  https://www.nuget.org/packages/TypeClassMapper/1.7.0 (uploaded directly from auto-generated Cross-platform\TypeClassMapper\bin\Release\TypeClassMapper.1.7.0.nupkg)
+  https://www.nuget.org/packages/TypeClassMapper/1.6.0 (uploaded directly from auto-generated Cross-platform\TypeClassMapper\bin\Release\TypeClassMapper.1.6.0.nupkg)
   https://www.nuget.org/packages/TypeClassMapper/1.5.0
   https://www.nuget.org/packages/TypeClassMapper/1.4.0
   https://www.nuget.org/packages/TypeClassMapper/1.3.0

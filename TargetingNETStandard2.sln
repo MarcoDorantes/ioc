@@ -23,7 +23,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".NET Core Runtime", ".NET C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".NET Framework Runtime", ".NET Framework Runtime", "{D0D60C62-7F04-4C6D-BDE8-699B00C51BBB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "app1", "source\NETCoreRuntime\app1\app1.csproj", "{C6013FF7-CE44-40AE-AC0B-4225446A7B4E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "app1", "source\NETCoreRuntime\app1\app1.csproj", "{C6013FF7-CE44-40AE-AC0B-4225446A7B4E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9023D905-6525-4C07-A047-97B063B6094A}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		nuget_release.xml = nuget_release.xml
+		README.md = README.md
+		ReleaseNotes.txt = ReleaseNotes.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

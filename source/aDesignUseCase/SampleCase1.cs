@@ -39,6 +39,8 @@ namespace aDesignUseCase
         values.Add(value);
         return "ACK";
       }
+
+      public override string ToString() => name;
     }
     class LogBookStub : lib1.sample.ILogBook
     {
@@ -104,12 +106,112 @@ namespace aDesignUseCase
       });
 
       //Act
-        var processor = new lib1.sample.CopyProcessor(typemap);
-        processor.Copy();
+      var processor = new lib1.sample.CopyProcessor(typemap);
+      processor.Copy();
 
       //Assert
       Assert.AreEqual<int>(2, target_stub.values.Count);
       Assert.IsTrue(log_stub.lines.All(line => line.EndsWith("ACK")));
+    }
+
+    [TestMethod]
+    public void ObjectMapDuplicate_Tolerable()
+    {
+      //Arrange
+      var source_stub = new libx.SourceStub("source1", new string[] { "one", "two" });
+      var target_stub = new libx.TargetStub("target1");
+      var log_stub = new libx.LogBookStub();
+      var typemap = new nutility.TypeClassMapper(Type_Object_Map: new Dictionary<Type, object>
+      {
+        { typeof(lib1.sample.ISource), source_stub },
+        { typeof(lib1.sample.ITarget), target_stub },
+        { typeof(lib1.sample.ILogBook), log_stub }
+      });
+
+      //Act
+      typemap.AddMapping<lib1.sample.ITarget>(target_stub);
+      var processor = new lib1.sample.CopyProcessor(typemap);
+      processor.Copy();
+
+      //Assert
+      Assert.AreEqual<int>(2, target_stub.values.Count);
+      Assert.IsTrue(log_stub.lines.All(line => line.EndsWith("ACK")));
+    }
+
+    [TestMethod]
+    public void ObjectMapDuplicate_Tolerable2()
+    {
+      //Arrange
+      var source_stub = new libx.SourceStub("source1", new string[] { "one", "two" });
+      var log_stub = new libx.LogBookStub();
+      var typemap = new nutility.TypeClassMapper(Type_Object_Map: new Dictionary<Type, object>
+      {
+        { typeof(lib1.sample.ISource), source_stub },
+        { typeof(lib1.sample.ITarget), null },
+        { typeof(lib1.sample.ILogBook), log_stub }
+      });
+
+      //Act
+      typemap.AddMapping<lib1.sample.ITarget>(null);
+      var target = (lib1.sample.ITarget)typemap.GetService(typeof(lib1.sample.ITarget));
+
+      //Assert
+      Assert.IsNull(target);
+    }
+
+    [TestMethod]
+    public void ObjectMapDuplicate_NonTolerable()
+    {
+      //Arrange
+      var source_stub = new libx.SourceStub("source1", new string[] { "one", "two" });
+      var target_stub = new libx.TargetStub("target1");
+      var targe_stub2 = new libx.TargetStub("target2");
+      var log_stub = new libx.LogBookStub();
+      var typemap = new nutility.TypeClassMapper(Type_Object_Map: new Dictionary<Type, object>
+      {
+        { typeof(lib1.sample.ISource), source_stub },
+        { typeof(lib1.sample.ITarget), target_stub },
+        { typeof(lib1.sample.ILogBook), log_stub }
+      });
+      nutility.TypeClassMapperException expected_exception = null;
+
+      //Act
+      try
+      {
+        typemap.AddMapping<lib1.sample.ITarget>(targe_stub2);
+      }
+      catch (nutility.TypeClassMapperException ex) { expected_exception = ex; }
+
+      //Assert
+      Assert.IsNotNull(expected_exception);
+      Assert.AreEqual("Unsupported non-deterministic object mapping (target1:aDesignUseCase.libx.TargetStub, target2:aDesignUseCase.libx.TargetStub) for lib1.sample.ITarget.", expected_exception.Message);
+    }
+
+    [TestMethod]
+    public void ObjectMapDuplicate_NonTolerable2()
+    {
+      //Arrange
+      var source_stub = new libx.SourceStub("source1", new string[] { "one", "two" });
+      var target_stub = new libx.TargetStub("target1");
+      var log_stub = new libx.LogBookStub();
+      var typemap = new nutility.TypeClassMapper(Type_Object_Map: new Dictionary<Type, object>
+      {
+        { typeof(lib1.sample.ISource), source_stub },
+        { typeof(lib1.sample.ITarget), target_stub },
+        { typeof(lib1.sample.ILogBook), log_stub }
+      });
+      nutility.TypeClassMapperException expected_exception = null;
+
+      //Act
+      try
+      {
+        typemap.AddMapping<lib1.sample.ITarget>(null);
+      }
+      catch (nutility.TypeClassMapperException ex) { expected_exception = ex; }
+
+      //Assert
+      Assert.IsNotNull(expected_exception);
+      Assert.AreEqual("Unsupported non-deterministic object mapping (target1:aDesignUseCase.libx.TargetStub, <null>) for lib1.sample.ITarget.", expected_exception.Message);
     }
 
     [TestMethod]
