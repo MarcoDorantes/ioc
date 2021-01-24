@@ -1,4 +1,15 @@
-﻿Aug 29, 2019: v1.5.0
+﻿Jan 24, 2021: v1.7.0
+	Released at https://www.nuget.org/packages/TypeClassMapper/1.7.0
+	Added net5.0 to existing test case runtimes (besides netcoreapp3.1).
+	AddMapping method adds exception for the case of unsupported non-deterministic object mapping.
+	Added ctor for Type_Class_Catalog with Client_Type type parameter is Type.
+
+Jan 24, 2021: v1.6.0
+	Released at https://www.nuget.org/packages/TypeClassMapper/1.6.0
+	Added net5.0 to existing test case runtimes (besides netcoreapp3.1).
+	AddMapping method adds exception for the case of unsupported non-deterministic object mapping.
+
+Aug 29, 2019: v1.5.0
 	Released at https://www.nuget.org/packages/TypeClassMapper/1.5.0
 	As .NET Standard
 
